@@ -124,7 +124,11 @@ export async function renderBook() {
   const cards = await Promise.all(visited.map(async stop => {
     const s = store.stopState(stop.id);
     const day = getDayOf(stop.id);
-    let inner = `<div class="ph">${stop.emoji}</div>`;
+    // Her own photo always wins. The thumbnail is the stand-in for stops she
+    // hasn't photographed yet, and the emoji is the last resort.
+    let inner = stop.thumb
+      ? `<div class="ph"><img src="${stop.thumb}" alt=""></div>`
+      : `<div class="ph">${stop.emoji}</div>`;
     if (s.photos.length) {
       const blob = await store.getPhoto(s.photos[0]);
       if (blob) inner = `<div class="ph"><img src="${blobUrl(s.photos[0], blob)}" alt=""></div>`;
@@ -174,7 +178,7 @@ export async function renderSheet() {
 
   body.innerHTML = `
     <div class="stophead">
-      <div class="em">${stop.emoji}</div>
+      <div class="em">${stop.thumb ? `<img src="${stop.thumb}" alt="">` : stop.emoji}</div>
       <div>
         <h2>${esc(t(stop.name))}</h2>
         <div class="alt">${esc(stop.name.ko || '')}</div>

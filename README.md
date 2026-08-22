@@ -85,7 +85,8 @@ Open any stop and you get an editor beneath the normal card:
 | **Coordinates** | Type them, or **📍 Use my location** while standing there, or **🎯 Use map centre** after dragging the map |
 | **Check-in radius** | Widen it if a stop turns out to be bigger than expected |
 | Hunt task + hint, both languages | |
-| **Reference photo** | Attach a picture of the thing she's meant to find — it appears above the hunt text |
+| **Thumbnail** | Replaces the emoji tile — shows in the stop's header and as its scrapbook card until she takes her own photo |
+| **Reference photo** | Attach a picture of the thing she's meant to find — it appears above the hunt text, after check-in |
 | Trivia question, 3 options, correct answer, explanation | |
 
 Edits save to the browser immediately (`localStorage`) so you can keep working.
@@ -96,10 +97,16 @@ They are **local to that browser** until you commit them:
 3. Redeploy
 4. Tap **🧹 Clear local edits** so the app reads the committed version again
 
-Reference photos are downscaled to 900 px JPEG and embedded in `stops.json` as
-data URIs. That keeps deployment to a single file with no asset pipeline, but
-`localStorage` caps out around 5 MB — if you attach a photo to all 16 stops and
-saving starts failing, export and commit, then clear local edits.
+Both image slots are embedded in `stops.json` as data URIs — thumbnails at
+600 px, reference photos at 900 px. That keeps deployment to a single file with
+no asset pipeline, but `localStorage` caps out around 5 MB. Filling both slots
+on all 16 stops will get close to that, so export and commit as you go rather
+than doing every stop in one sitting; if saving ever fails you'll get a warning
+telling you to export before you lose anything.
+
+The two images are different jobs. The **thumbnail** identifies the place and
+is always visible. The **reference photo** is a hint for the hunt and stays
+hidden until she checks in.
 
 ## Layout
 

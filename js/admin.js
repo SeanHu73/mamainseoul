@@ -125,6 +125,58 @@ function field(label, value, oninput, { multiline = false, type = 'text' } = {})
   return wrap;
 }
 
+/**
+ * Attach / replace / remove one embedded image. Used for both the thumbnail
+ * and the hunt reference photo — they differ only in size and where they show.
+ */
+function imagePicker({ label, get, set, maxEdge, save, refresh }) {
+  const wrap = document.createElement('div');
+
+  const l = document.createElement('label');
+  l.textContent = label;
+  wrap.append(l);
+
+  const current = get();
+  if (current) {
+    const img = document.createElement('img');
+    img.className = 'refphoto';
+    img.src = current;
+    wrap.append(img);
+  }
+
+  const row = document.createElement('div');
+  row.className = 'btnrow';
+
+  const add = document.createElement('button');
+  add.className = 'btn small ghost';
+  add.textContent = current ? '🖼️ Replace' : '🖼️ Add image';
+  add.addEventListener('click', () => {
+    const input = document.querySelector('#adminPhotoInput');
+    input.value = '';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      add.textContent = '⏳ Resizing…';
+      set(await shrinkToDataUrl(file, maxEdge));
+      save();
+      refresh();
+    };
+    input.click();
+  });
+  row.append(add);
+
+  if (current) {
+    const rm = document.createElement('button');
+    rm.className = 'btn small ghost';
+    rm.textContent = '🗑️ Remove';
+    rm.addEventListener('click', () => { set(null); save(); refresh(); });
+    row.append(rm);
+  }
+
+  wrap.append(row);
+  return wrap;
+}
+
 export function renderAdminPanel(host, stop, refresh) {
   host.innerHTML = '';
   const box = document.createElement('div');
@@ -206,46 +258,23 @@ export function renderAdminPanel(host, stop, refresh) {
     field('Hint (中文)', stop.hunt.hint?.zh, v => { (stop.hunt.hint ||= {}).zh = v; save(); })
   );
 
-  /* reference photo */
-  const photoLabel = document.createElement('label');
-  photoLabel.textContent = 'Reference photo (shown with the hunt)';
-  box.append(photoLabel);
+  /* thumbnail — fills the emoji tile in the sheet header and the scrapbook */
+  box.append(imagePicker({
+    label: 'Thumbnail (replaces the emoji tile)',
+    get: () => stop.thumb,
+    set: v => { stop.thumb = v; },
+    maxEdge: 600,
+    save, refresh
+  }));
 
-  if (stop.hunt.photo) {
-    const img = document.createElement('img');
-    img.className = 'refphoto';
-    img.src = stop.hunt.photo;
-    box.append(img);
-  }
-
-  const photoBtns = document.createElement('div');
-  photoBtns.className = 'btnrow';
-
-  const addPhoto = document.createElement('button');
-  addPhoto.className = 'btn small ghost';
-  addPhoto.textContent = stop.hunt.photo ? '🖼️ Replace photo' : '🖼️ Add photo';
-  addPhoto.addEventListener('click', () => {
-    const input = document.querySelector('#adminPhotoInput');
-    input.value = '';
-    input.onchange = async () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      stop.hunt.photo = await shrinkToDataUrl(file);
-      save();
-      refresh();
-    };
-    input.click();
-  });
-  photoBtns.append(addPhoto);
-
-  if (stop.hunt.photo) {
-    const rm = document.createElement('button');
-    rm.className = 'btn small ghost';
-    rm.textContent = '🗑️ Remove';
-    rm.addEventListener('click', () => { stop.hunt.photo = null; save(); refresh(); });
-    photoBtns.append(rm);
-  }
-  box.append(photoBtns);
+  /* reference photo — the hint image shown above the hunt task */
+  box.append(imagePicker({
+    label: 'Reference photo (shown with the hunt)',
+    get: () => stop.hunt.photo,
+    set: v => { stop.hunt.photo = v; },
+    maxEdge: 900,
+    save, refresh
+  }));
 
   /* trivia */
   box.append(

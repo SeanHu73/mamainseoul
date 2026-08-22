@@ -150,8 +150,9 @@ main { flex: 1; position: relative; overflow: hidden; }
 .stophead .em {
   flex: 0 0 52px; width: 52px; height: 52px; border-radius: 13px;
   display: flex; align-items: center; justify-content: center; font-size: 27px;
-  background: #F1EBDA;
+  background: #F1EBDA; overflow: hidden;
 }
+.stophead .em img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .stophead h2 { font-family: 'Quicksand', sans-serif; font-size: 19px; font-weight: 700; line-height: 1.2; }
 .stophead .alt { font-size: 12.5px; color: var(--muted); font-weight: 700; margin-top: 2px; }
 .stophead .meta { font-size: 12px; font-weight: 800; margin-top: 4px; }
