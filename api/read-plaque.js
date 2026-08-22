@@ -94,15 +94,7 @@ const TRANSLATION_SCHEMA = {
   additionalProperties: false
 };
 
-/**
- * Last-ditch recovery.
- *
- * A previous version of this asked for the data through a tool call, and the
- * model occasionally serialised it badly — the events ended up as literal
- * text inside another field, so a perfectly good reading of the sign was
- * thrown away. Structured outputs make that far less likely, but when the
- * answer is visibly present in the response it should never be discarded.
- */
+/** Everything the model said, as plain text. */
 function responseText(response) {
   return (response.content || [])
     .filter(b => b.type === 'text')
@@ -110,22 +102,31 @@ function responseText(response) {
     .join('\n');
 }
 
-function salvage(response) {
+/**
+ * The model's JSON, however it arrives.
+ *
+ * `parsed_output` is not always populated even when the response is a clean,
+ * schema-shaped JSON document — that was the bug that made plaque reading
+ * look broken while the model was answering perfectly. So the text is parsed
+ * directly as a fallback, and deliberately without caring about shape: an
+ * earlier version only recognised event-shaped payloads and silently
+ * discarded a valid translation. Callers validate what they get back.
+ */
+function readJSON(response) {
+  if (response.parsed_output) return response.parsed_output;
+
   let text = responseText(response);
   if (!text) return null;
 
-  // Models often wrap JSON in a markdown fence; drop it before matching.
-  text = text.replace(/```(?:json)?/gi, '');
+  // Models often wrap JSON in a markdown fence.
+  text = text.replace(/```(?:json)?/gi, '').trim();
 
-  // Prefer a complete JSON object, then a bare array of events.
+  try { return JSON.parse(text); } catch { /* try harder below */ }
+
   for (const re of [/\{[\s\S]*\}/, /\[[\s\S]*\]/]) {
     const m = re.exec(text);
     if (!m) continue;
-    try {
-      const parsed = JSON.parse(m[0]);
-      if (Array.isArray(parsed)) return { events: parsed, note: '' };
-      if (Array.isArray(parsed?.events)) return { events: parsed.events, note: parsed.note || '' };
-    } catch { /* not JSON after all */ }
+    try { return JSON.parse(m[0]); } catch { /* not JSON after all */ }
   }
   return null;
 }
@@ -211,8 +212,8 @@ export default async function handler(req, res) {
         }]
       });
 
-      const out = response.parsed_output || salvage(response);
-      if (!out) {
+      const out = readJSON(response);
+      if (!out || typeof out.title_en !== 'string') {
         res.status(502).json({
           error: 'no_result',
           stop_reason: response.stop_reason,
@@ -220,7 +221,12 @@ export default async function handler(req, res) {
         });
         return;
       }
-      res.status(200).json(out);
+      res.status(200).json({
+        title_en: String(out.title_en || ''),
+        title_zh: String(out.title_zh || ''),
+        description_en: String(out.description_en || ''),
+        description_zh: String(out.description_zh || '')
+      });
       return;
     }
 
@@ -271,7 +277,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    const out = response.parsed_output || salvage(response);
+    const out = readJSON(response);
     if (!out) {
       res.status(502).json({
         error: 'no_result',
@@ -281,7 +287,8 @@ export default async function handler(req, res) {
       return;
     }
 
-    const events = cleanEvents(out.events);
+    // Accept either the documented {events, note} object or a bare array.
+    const events = cleanEvents(Array.isArray(out) ? out : out.events);
     res.status(200).json({
       events,
       note: events.length ? '' : tidyNote(out.note) || 'No dated event on that sign.'
