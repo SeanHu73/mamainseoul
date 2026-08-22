@@ -206,7 +206,10 @@ export async function renderTimeline() {
     }
 
     const kind = e.source === 'ai' ? 'ai' : e.source === 'history' ? 'history' : '';
-    const node = `<span class="tlnode tldot ${kind}"></span>`;
+    // A period already marks itself with its ribbon, so its dot is painted
+    // out. The element stays, because the spine anchors on it and the tile is
+    // centred from it — removing it would take the geometry with it.
+    const node = `<span class="tlnode tldot ${kind}${item.bar ? ' anchor' : ''}"></span>`;
 
     // A period is drawn as a ribbon in the SVG rather than as a box here, so
     // it can follow the spine's curve. It is not part of the flow and does

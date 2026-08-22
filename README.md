@@ -208,7 +208,9 @@ is omitted for anything under a year, and BCE→CE spans account for there being
 no year zero.
 
 Marker colours: navy for her own entries, green for ones read off a plaque,
-orange for the history pack.
+orange for the history pack. A period is marked by its ribbon alone — its dot
+is painted out rather than removed, because the spine anchors on it and the
+tile is centred from it.
 
 ### The Korean history pack
 

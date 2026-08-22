@@ -337,6 +337,9 @@ main { flex: 1; position: relative; overflow: hidden; }
 }
 .tldot.ai { background: var(--green); }
 .tldot.history { background: var(--orange); }
+/* Periods are marked by their ribbon; the dot is kept only as a measuring
+   point for the spine and the tile centring, so it is painted out. */
+.tldot.anchor { background: transparent !important; border-color: transparent; }
 
 /* A period is a capsule spanning its row, so duration reads as length. */
 /* Era ribbons — drawn in the SVG so they follow the spine's curve. Height
