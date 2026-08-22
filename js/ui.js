@@ -27,7 +27,7 @@ export function applyStaticText() {
     el.textContent = ui(el.dataset.i18n);
   }
   $('#langBtn').textContent = getLang() === 'en' ? '中文' : 'EN';
-  document.documentElement.lang = getLang() === 'zh' ? 'zh' : 'en';
+  document.documentElement.lang = getLang() === 'zh' ? 'zh-Hant' : 'en';
 }
 
 export function updateProgressPill() {
@@ -129,7 +129,7 @@ export async function renderBook() {
       const blob = await store.getPhoto(s.photos[0]);
       if (blob) inner = `<div class="ph"><img src="${blobUrl(s.photos[0], blob)}" alt=""></div>`;
     }
-    const when = new Date(s.checkedInAt).toLocaleDateString(getLang() === 'zh' ? 'zh-CN' : 'en-GB',
+    const when = new Date(s.checkedInAt).toLocaleDateString(getLang() === 'zh' ? 'zh-TW' : 'en-GB',
       { day: 'numeric', month: 'short', timeZone: 'Asia/Seoul' });
     return `
       <button class="bookcard" data-stop="${stop.id}">
@@ -179,7 +179,7 @@ export async function renderSheet() {
         <h2>${esc(t(stop.name))}</h2>
         <div class="alt">${esc(stop.name.ko || '')}</div>
         <div class="meta" style="color:${day.color}">
-          ${esc(dayLabel(day.day))} · ${esc(stop.time)}
+          #${stop.n} · ${esc(dayLabel(day.day))} · ${esc(stop.time)}
         </div>
       </div>
     </div>
@@ -209,7 +209,7 @@ function renderCheckin(stop) {
   const s = store.stopState(stop.id);
 
   if (s.checkedInAt) {
-    const when = new Date(s.checkedInAt).toLocaleString(getLang() === 'zh' ? 'zh-CN' : 'en-GB',
+    const when = new Date(s.checkedInAt).toLocaleString(getLang() === 'zh' ? 'zh-TW' : 'en-GB',
       { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Seoul' });
     zone.innerHTML = `<div class="checkedin">✓ ${esc(ui('checkedIn'))} · ${esc(when)}</div>`;
     return;
