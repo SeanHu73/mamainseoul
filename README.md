@@ -119,12 +119,34 @@ they carry a photo. Each segment bows towards the tile it is travelling to,
 and since sides alternate, the result serpentines. It redraws on resize and
 after photos decode.
 
-**Spacing is deliberately uniform.** Vertical distance is not a measure of
-elapsed time. Where a real gap opens up — 25 years or more between the
-furthest point reached so far and the next entry — a dashed break is drawn
-across the spine, labelled "51 years pass". Comparing against the furthest
-point reached, rather than simply the previous entry, stops every small event
-inside a long dynasty from looking like a jump backwards.
+**Vertical distance is proportional to elapsed time**, at 0.5 px per year
+between entries' start dates. 250 years draws as 183 px, 146 years as 129 px,
+51 years as 88 px.
+
+Two limits keep that honest rather than absurd, since this timeline holds both
+2333 BCE and a cup of tea two days ago:
+
+- **A floor.** Tiles have physical size, so entries closer than about a
+  century sit at a minimum step. This is the one place the scale can't be
+  honoured, and it errs towards legibility.
+- **A ceiling.** Past 500 px a gap is compressed and labelled on the line
+  itself — *"2,276 years · not to scale"* — so a shortened stretch is never
+  mistaken for a short one.
+
+An earlier attempt measured each gap from the furthest point reached so far,
+to stop small events inside a long dynasty reading as a jump backwards. It
+collapsed the whole scale: the history pack is a chain of overlapping
+dynasties, so nearly every gap came out as zero and no proportion showed at
+all. Gaps are now measured start-to-start, which is never negative because
+entries are sorted by start.
+
+**Period capsules use the same scale**, so a bar and a stretch of spine of
+equal length mean an equal span of time — Joseon's 505 years draw as 253 px
+against Unified Silla's 267 years at 134 px. A capsule too long to draw at
+scale is hatched. Capsules are absolutely positioned beside the spine rather
+than on it, so an era runs down alongside the events that happened during it
+instead of pushing them apart. Before that change a 2-year gap rendered
+larger than a 250-year one, because a long capsule inflated its own row.
 
 Tiles carry only a date, a title and a photo. Tapping one opens a card with
 the full description, the photo at size, and a **Find on map** button that

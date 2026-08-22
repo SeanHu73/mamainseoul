@@ -92,47 +92,82 @@ function dateLine(entry) {
 
 /* ---------------- list view ---------------- */
 
-// Spacing is deliberately uniform: the vertical distance between two entries
-// says nothing about how much time passed. Real elapsed time is called out
-// separately, by a dashed break, so 2,000 years and 2 days don't silently
-// render the same way.
-const GAP_YEARS = 25;   // below this, consecutive entries just follow on
-const BOW = 26;         // how far the spine bulges towards each tile
+// Vertical distance is a real measure of elapsed time.
+//
+// The awkward part is dynamic range: this timeline holds both 2333 BCE and a
+// cup of tea two days ago — about 4,400 years against 0.005. A single honest
+// linear scale either makes the trip invisible or makes the page kilometres
+// tall. So distance is exactly proportional up to a ceiling, and past that it
+// is compressed and openly labelled as not to scale. Every comparison the eye
+// is likely to make stays truthful; the ones that can't be are called out.
+const PX_PER_YEAR = 0.5;
+const MIN_STEP = 58;     // floor, so tiles never collide when times nearly match
+const MAX_STEP = 500;    // beyond this a gap is compressed and marked
+const MIN_MARGIN = 14;
+const MIN_BAR = 20;      // shortest a period capsule can be and still read
+const MAX_BAR = 380;     // longest before the capsule itself is compressed
+const BOW = 26;          // how far the spine bulges towards each tile
 
-/** Where an entry's period ends, or where it happens if it's a moment. */
-function endYear(entry) {
-  const p = store.parseDate(entry.endDate || entry.date);
-  return p ? p.year : null;
+const DAYS = { 1: 0, 2: 31, 3: 59, 4: 90, 5: 120, 6: 151, 7: 181, 8: 212, 9: 243, 10: 273, 11: 304, 12: 334 };
+
+/** A date as a fractional year, so day-level gaps are measurable too. */
+function yearValue(date) {
+  const p = store.parseDate(date);
+  if (!p) return null;
+  const dayOfYear = (DAYS[p.month || 1] || 0) + ((p.day || 1) - 1);
+  return p.year + dayOfYear / 365;
 }
 
-function startYear(entry) {
-  const p = store.parseDate(entry.date);
-  return p ? p.year : null;
+function startValue(e) { return yearValue(e.date); }
+function endValue(e) { return yearValue(e.endDate || e.date); }
+
+/** Whole years between two fractional-year values, allowing for no year zero. */
+function yearsBetween(a, b) {
+  let years = b - a;
+  if (a < 0 && b > 0) years -= 1;
+  return years;
 }
 
 /**
- * Walks the entries and works out where to draw a time skip.
+ * Works out how far apart to draw each pair, and how tall each period capsule
+ * should be.
  *
- * Compares against the furthest end reached so far, not just the previous
- * entry — otherwise every point event inside a long dynasty would look like a
- * jump backwards and then forwards again.
+ * The gap is measured between the two entries' start dates. Measuring from
+ * the furthest point reached so far was tried first and collapsed the whole
+ * scale: the history pack is a chain of overlapping dynasties, so nearly
+ * every gap came out as zero and no proportion showed at all. Entries are
+ * sorted by start, so start-to-start is never negative.
  */
-function withGaps(entries) {
-  const out = [];
-  let reached = null;
+function layout(entries) {
+  let prevStart = null;
 
-  for (const e of entries) {
-    const s = startYear(e);
-    if (reached !== null && s !== null) {
-      let years = s - reached;
-      if (reached < 0 && s > 0) years -= 1;   // no year zero
-      if (years >= GAP_YEARS) out.push({ gap: years });
+  return entries.map(e => {
+    const s = startValue(e);
+    let gapYears = 0;
+
+    if (prevStart !== null && s !== null) gapYears = Math.max(0, yearsBetween(prevStart, s));
+    if (s !== null) prevStart = s;
+
+    const raw = MIN_STEP + gapYears * PX_PER_YEAR;
+    const step = Math.min(raw, MAX_STEP);
+    const compressed = raw > MAX_STEP;
+
+    const en = endValue(e);
+
+    // Period capsules are drawn on the same scale as the gaps, so a bar and a
+    // stretch of spine of equal length mean an equal span of time.
+    let bar = null;
+    if (e.endDate && s !== null && en !== null) {
+      const span = Math.max(0, yearsBetween(s, en));
+      const rawBar = span * PX_PER_YEAR;
+      bar = {
+        height: Math.max(MIN_BAR, Math.min(rawBar, MAX_BAR)),
+        compressed: rawBar > MAX_BAR
+      };
     }
-    out.push({ entry: e });
-    const en = endYear(e);
-    if (en !== null) reached = reached === null ? en : Math.max(reached, en);
-  }
-  return out;
+
+    return { entry: e, step, gapYears, compressed, bar };
+  });
 }
 
 export async function renderTimeline() {
@@ -155,13 +190,7 @@ export async function renderTimeline() {
   }
 
   let side = 'left';
-  const rows = await Promise.all(withGaps(entries).map(async item => {
-    if (item.gap) {
-      // A break doesn't take a side — it sits on the spine.
-      return `<li class="tlbreak"><span class="tlnode gapnode"></span>
-                <span class="tlbreaklabel">${esc(ui('tlGap', item.gap))}</span></li>`;
-    }
-
+  const rows = await Promise.all(layout(entries).map(async (item, i) => {
     const e = item.entry;
     side = side === 'left' ? 'right' : 'left';
 
@@ -172,14 +201,23 @@ export async function renderTimeline() {
     }
 
     const kind = e.source === 'ai' ? 'ai' : e.source === 'history' ? 'history' : '';
-    const node = e.endDate
-      ? `<span class="tlnode tlbar ${kind}"></span>`
+    const node = item.bar
+      ? `<span class="tlnode tlbar ${kind}${item.bar.compressed ? ' squeezed' : ''}"
+               style="height:${Math.round(item.bar.height)}px"></span>`
       : `<span class="tlnode tldot ${kind}"></span>`;
+
+    // A period's capsule is absolutely positioned and deliberately does NOT
+    // inflate its row. It runs down beside the spine, overlapping the entries
+    // that happened during it — which is exactly what an era should look
+    // like, and keeps a long period from distorting the gaps around it.
 
     // The tile is deliberately spare — date, title, picture. Everything else
     // lives in the card that opens when she taps it.
     return `
-      <li class="tlrow ${side}" data-side="${side}">
+      <li class="tlrow ${side}" data-side="${side}"
+          data-step="${Math.round(item.step)}"
+          data-gap="${Math.round(item.gapYears)}"
+          ${item.compressed && i > 0 ? 'data-compressed="1"' : ''}>
         ${node}
         <button class="tltile" data-entry="${e.id}">
           ${photo}
@@ -192,6 +230,7 @@ export async function renderTimeline() {
   view.innerHTML = actions + `
     <div class="tlwrap">
       <svg class="tlspine" aria-hidden="true"></svg>
+      <div class="tlmarks"></div>
       <ul class="tl">${rows.join('')}</ul>
     </div>
     ${seedBtn}
@@ -208,12 +247,38 @@ export async function renderTimeline() {
     onChange();
   });
 
-  drawSpine();
+  relayout();
   // Photos change row heights as they decode, which would leave the spine
-  // drawn against stale positions.
+  // drawn against stale positions and the spacing measured from the wrong
+  // heights.
   for (const img of view.querySelectorAll('.tiles')) {
-    if (!img.complete) img.addEventListener('load', drawSpine, { once: true });
+    if (!img.complete) img.addEventListener('load', relayout, { once: true });
   }
+}
+
+/**
+ * Second pass. Rows are laid out first so their real heights are known, then
+ * each margin is set so that node-to-node distance matches the time scale.
+ * A tile has physical size, so when two entries are minutes apart the floor
+ * wins — that is the one place the scale can't be honoured, and it errs
+ * towards legibility.
+ */
+function applySpacing() {
+  const list = document.querySelector('.tl');
+  if (!list) return;
+  const rows = [...list.children];
+
+  for (let i = 1; i < rows.length; i++) {
+    const step = Number(rows[i].dataset.step) || MIN_STEP;
+    const prevH = rows[i - 1].getBoundingClientRect().height;
+    rows[i - 1].style.marginBottom = `${Math.max(MIN_MARGIN, step - prevH)}px`;
+  }
+  if (rows.length) rows[rows.length - 1].style.marginBottom = '0px';
+}
+
+function relayout() {
+  applySpacing();
+  drawSpine();
 }
 
 /**
@@ -241,11 +306,13 @@ function drawSpine() {
       x: r.left - base.left + r.width / 2,
       y: r.top - base.top + r.height / 2,
       side: li.dataset.side === 'right' ? 1 : li.dataset.side === 'left' ? -1 : 0,
-      isGap: li.classList.contains('tlbreak')
+      compressed: li.dataset.compressed === '1',
+      gap: Number(li.dataset.gap) || 0
     };
   }).filter(Boolean);
 
   const parts = [];
+  const marks = [];
   for (let i = 0; i < items.length - 1; i++) {
     const a = items[i];
     const b = items[i + 1];
@@ -253,15 +320,24 @@ function drawSpine() {
     // Bow towards the tile we're travelling to, so the line leans into it.
     const bow = (b.side || a.side || 1) * BOW;
     const d = `M ${a.x} ${a.y} C ${a.x + bow} ${a.y + dy}, ${b.x + bow} ${b.y - dy}, ${b.x} ${b.y}`;
-    parts.push(`<path d="${d}" class="${a.isGap || b.isGap ? 'skip' : ''}"/>`);
+    parts.push(`<path d="${d}" class="${b.compressed ? 'skip' : ''}"/>`);
+
+    // Where the scale had to give up, say so on the line itself.
+    if (b.compressed) {
+      marks.push(`<span class="tlmark" style="top:${(a.y + b.y) / 2}px">
+                    ${esc(ui('tlGap', b.gap))}
+                  </span>`);
+    }
   }
   svg.innerHTML = parts.join('');
+  const marksEl = document.querySelector('.tlmarks');
+  if (marksEl) marksEl.innerHTML = marks.join('');
 }
 
 let spineRedrawTimer = null;
 window.addEventListener('resize', () => {
   clearTimeout(spineRedrawTimer);
-  spineRedrawTimer = setTimeout(drawSpine, 120);
+  spineRedrawTimer = setTimeout(relayout, 120);
 });
 
 /* ---------------- detail card ---------------- */
