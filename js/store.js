@@ -48,6 +48,20 @@ export function checkIn(id, how) {
   return s;
 }
 
+/**
+ * Undo a single stop — for a mis-tap, or for testing. Photos are deliberately
+ * kept: they're the one thing here that can't be recreated. They reappear if
+ * she checks in again, and can still be deleted individually.
+ */
+export function undoCheckIn(id) {
+  const s = stopState(id);
+  s.checkedInAt = null;
+  s.checkedInBy = null;
+  s.huntDone = false;
+  s.triviaPick = null;
+  saveProgress();
+}
+
 export function setHuntDone(id, done) {
   stopState(id).huntDone = !!done;
   saveProgress();

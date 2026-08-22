@@ -30,6 +30,8 @@ const UI = {
     stopsVisited: 'Stops', huntsDone: 'Hunts', triviaRight: 'Trivia',
     bookEmpty: 'Nothing here yet. Check in at your first stop and take a photo.',
     day: 'Day',
+    undo: 'Undo check-in',
+    undoConfirm: 'Undo the check-in for this stop? Your photos are kept.',
     reset: 'Reset all progress',
     resetConfirm: 'Erase every check-in, answer and photo? This cannot be undone.',
     all: 'All'
@@ -62,6 +64,8 @@ const UI = {
     stopsVisited: '打卡', huntsDone: '任務', triviaRight: '答對',
     bookEmpty: '還沒有內容。到第一站打卡並拍張照吧。',
     day: '第',
+    undo: '取消打卡',
+    undoConfirm: '要取消這一站的打卡嗎？照片會保留。',
     reset: '清除全部進度',
     resetConfirm: '確定要清除所有打卡、答案與照片嗎？此操作無法撤銷。',
     all: '全部'

@@ -63,8 +63,6 @@ function buildMarkers() {
     for (const stop of day.stops) {
       const el = document.createElement('div');
       el.className = 'mk';
-      el.style.background = day.color;
-      el.style.color = day.color;
       el.addEventListener('click', e => { e.stopPropagation(); onStopClick(stop.id); });
 
       const marker = new maplibregl.Marker({ element: el })
@@ -83,7 +81,10 @@ export function refreshMarkers() {
     const done = !!stopState(m.stop.id).checkedInAt;
     m.el.classList.toggle('done', done);
     m.el.textContent = done ? '✓' : String(m.stop.n);
+    // Background and text must always be set as a pair. Setting only one
+    // leaves the number drawn in the circle's own colour, i.e. invisible.
     m.el.style.background = done ? '#fff' : m.day.color;
+    m.el.style.color = done ? m.day.color : '#fff';
     m.el.classList.toggle('dim', dayFilter !== 0 && m.day.day !== dayFilter);
   }
 }

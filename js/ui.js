@@ -211,7 +211,15 @@ function renderCheckin(stop) {
   if (s.checkedInAt) {
     const when = new Date(s.checkedInAt).toLocaleString(getLang() === 'zh' ? 'zh-TW' : 'en-GB',
       { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Seoul' });
-    zone.innerHTML = `<div class="checkedin">✓ ${esc(ui('checkedIn'))} · ${esc(when)}</div>`;
+    zone.innerHTML = `
+      <div class="checkedin">✓ ${esc(ui('checkedIn'))} · ${esc(when)}</div>
+      <button class="undo" id="undoBtn">↩ ${esc(ui('undo'))}</button>`;
+    $('#undoBtn').addEventListener('click', () => {
+      if (!confirm(ui('undoConfirm'))) return;
+      store.undoCheckIn(stop.id);
+      renderSheet();
+      onProgressChange();
+    });
     return;
   }
 
