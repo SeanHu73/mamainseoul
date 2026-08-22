@@ -47,6 +47,9 @@
     <!-- ITINERARY -->
     <section class="view scrolls" id="view-list" hidden></section>
 
+    <!-- TIMELINE -->
+    <section class="view scrolls" id="view-timeline" hidden></section>
+
     <!-- SCRAPBOOK -->
     <section class="view scrolls" id="view-book" hidden></section>
   </main>
@@ -54,6 +57,7 @@
   <nav class="tabbar" id="tabs">
     <button data-view="map" aria-selected="true"><span class="ic">🗺️</span><span data-i18n="tabMap">Map</span></button>
     <button data-view="list" aria-selected="false"><span class="ic">📋</span><span data-i18n="tabList">Itinerary</span></button>
+    <button data-view="timeline" aria-selected="false"><span class="ic">🕰️</span><span data-i18n="tabTimeline">Timeline</span></button>
     <button data-view="book" aria-selected="false"><span class="ic">📖</span><span data-i18n="tabBook">Scrapbook</span></button>
   </nav>
 
@@ -63,6 +67,12 @@
 <div class="sheet" id="sheet" role="dialog" aria-modal="true">
   <div class="grip"><i></i></div>
   <div class="body" id="sheetBody"></div>
+</div>
+
+<div class="scrim" id="tlScrim"></div>
+<div class="sheet" id="tlSheet" role="dialog" aria-modal="true">
+  <div class="grip"><i></i></div>
+  <div class="body" id="tlSheetBody"></div>
 </div>
 
 <input type="file" id="photoInput" accept="image/*" capture="environment" hidden>

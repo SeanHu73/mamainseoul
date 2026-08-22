@@ -5,6 +5,7 @@ import { initMap, setDayFilter, refreshMarkers, flyToStop, showMe, resizeMap } f
 import { getStop } from './content.js';
 import { locate } from './geo.js';
 import { initAdmin } from './admin.js';
+import { initTimeline, renderTimeline, closeForm as closeTimelineForm } from './timeline.js';
 
 const $ = sel => document.querySelector(sel);
 
@@ -17,6 +18,7 @@ function redrawAll() {
   UI.renderDayFilter(currentDay, pickDay);
   UI.renderList(openStop);
   UI.renderBook();
+  renderTimeline();
   refreshMarkers();
   if (UI.currentStopId()) UI.renderSheet();
 }
@@ -36,7 +38,7 @@ function openStop(id) {
 
 function showView(name) {
   currentView = name;
-  for (const v of ['map', 'list', 'book']) {
+  for (const v of ['map', 'list', 'timeline', 'book']) {
     $(`#view-${v}`).hidden = v !== name;
   }
   for (const b of $('#tabs').querySelectorAll('button')) {
@@ -44,6 +46,7 @@ function showView(name) {
   }
   if (name === 'map') resizeMap();
   if (name === 'book') UI.renderBook();
+  if (name === 'timeline') renderTimeline();
 }
 
 async function main() {
@@ -58,6 +61,7 @@ async function main() {
 
   initMap('map', { onStopClick: openStop });
   initAdmin({ onChange: redrawAll });
+  initTimeline({ onChange: () => {} });
 
   for (const b of $('#tabs').querySelectorAll('button')) {
     b.addEventListener('click', () => showView(b.dataset.view));
@@ -65,6 +69,7 @@ async function main() {
 
   $('#langBtn').addEventListener('click', () => {
     toggleLang();
+    closeTimelineForm();   // its fields are language-specific; reopen fresh
     redrawAll();
   });
 

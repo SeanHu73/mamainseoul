@@ -108,6 +108,46 @@ The two images are different jobs. The **thumbnail** identifies the place and
 is always visible. The **reference photo** is a hint for the hunt and stays
 hidden until she checks in.
 
+## Timeline
+
+A fourth tab: a vertical, top-down timeline she builds as she goes.
+
+Entries carry a date, a title, an optional description, an optional photo and
+an optional location. Tapping **Use where I am** resolves her GPS to a place
+name — "near Bukchon Hanok Village" rather than a pair of coordinates — by
+matching against the 16 itinerary stops.
+
+Dates are stored as partial ISO strings, so `1395`, `1867-11` and `2026-08-22`
+all sort correctly against each other. That is the point of the feature: a
+plaque she photographs at Gyeongbokgung lands in 1395, her lunch lands today,
+and the whole thing reads as one history ending with her own trip. Entries she
+adds by hand get a navy dot; ones read from a sign get a green one.
+
+### Reading a plaque
+
+**📷 Read a plaque** photographs a sign and turns it into timeline entries,
+written in both English and Traditional Chinese. A palace board describing a
+founding, a fire and a reconstruction becomes three entries, not one. Nothing
+is saved until she has reviewed the results and ticked the ones she wants.
+
+**✨ Fill in the other language** does the same for an entry she typed herself.
+
+This is the one part of the app with a server component, and it is not
+optional: the Anthropic API key must never reach the browser, because anyone
+loading the page could read it out of the source and spend against it. So it
+runs as a Vercel serverless function in `api/read-plaque.js`.
+
+**To switch it on**, add an `ANTHROPIC_API_KEY` environment variable in the
+Vercel project settings (see `.env.example`), then redeploy. Without it the
+function returns 503 and the app says the feature is not switched on — the
+timeline still works fully by hand. It is also unavailable when running
+locally with a plain static server, which does not execute functions; use
+`npx vercel dev` if you want to exercise it locally.
+
+Model: `claude-opus-5`, with server-side refusal fallbacks enabled and
+structured output enforced through a strict tool schema, so the response is
+always a valid set of entries or an explicit "couldn't read it".
+
 ## Layout
 
 ```
@@ -124,6 +164,9 @@ js/
   photo.js              image downscaling
   i18n.js               EN/ZH strings
   admin.js              the editor described above
+  timeline.js           the timeline tab, plaque reading, entry form
+api/
+  read-plaque.js        serverless function — the only server-side code
 sw.js                   service worker (makes it installable)
 docs/                   the original ChatGPT itinerary, for reference
 ```

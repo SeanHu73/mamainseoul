@@ -15,6 +15,7 @@ const SHELL = [
   './js/photo.js',
   './js/admin.js',
   './js/content.js',
+  './js/timeline.js',
   './content/stops.json',
   './manifest.webmanifest'
 ];

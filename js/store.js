@@ -140,6 +140,89 @@ export async function deletePhoto(key) {
   return promisify(db.transaction(DB_STORE, 'readwrite').objectStore(DB_STORE).delete(key));
 }
 
+/* ---------------- timeline ---------------- */
+
+const K_TIMELINE = 'mis.timeline.v1';
+
+function readTimeline() {
+  try {
+    const raw = localStorage.getItem(K_TIMELINE);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+let timeline = readTimeline();
+
+function saveTimeline() {
+  localStorage.setItem(K_TIMELINE, JSON.stringify(timeline));
+}
+
+/**
+ * Dates span from Joseon-era plaques to this afternoon, so they're stored as
+ * partial ISO strings — "1395", "1592-04" or "2026-08-22" — and sorted on a
+ * derived number rather than a Date, which can't represent a bare year well.
+ */
+export function dateSortKey(date) {
+  const m = /^(\d{1,4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(date || '').trim());
+  if (!m) return Number.MAX_SAFE_INTEGER;
+  const [, y, mo, d] = m;
+  return Number(y) * 10000 + Number(mo || 1) * 100 + Number(d || 1);
+}
+
+export function getTimeline() {
+  return [...timeline].sort((a, b) => {
+    const d = dateSortKey(a.date) - dateSortKey(b.date);
+    return d !== 0 ? d : (a.createdAt || '').localeCompare(b.createdAt || '');
+  });
+}
+
+export function getTimelineEntry(id) {
+  return timeline.find(e => e.id === id) || null;
+}
+
+export function addTimelineEntry(entry) {
+  const full = {
+    id: `t${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    date: '',
+    title: { en: '', zh: '' },
+    description: { en: '', zh: '' },
+    photoKey: null,
+    place: null,
+    source: 'manual',
+    createdAt: new Date().toISOString(),
+    ...entry
+  };
+  timeline.push(full);
+  saveTimeline();
+  return full;
+}
+
+export function updateTimelineEntry(id, patch) {
+  const e = timeline.find(x => x.id === id);
+  if (!e) return null;
+  Object.assign(e, patch);
+  saveTimeline();
+  return e;
+}
+
+export async function removeTimelineEntry(id) {
+  const e = timeline.find(x => x.id === id);
+  if (e?.photoKey) await deletePhoto(e.photoKey);
+  timeline = timeline.filter(x => x.id !== id);
+  saveTimeline();
+}
+
+export async function clearTimeline() {
+  for (const e of timeline) {
+    if (e.photoKey) await deletePhoto(e.photoKey);
+  }
+  timeline = [];
+  localStorage.removeItem(K_TIMELINE);
+}
+
 /* ---------------- content override (admin) ---------------- */
 
 export function readOverride() {

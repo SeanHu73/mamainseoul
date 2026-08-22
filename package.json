@@ -1,0 +1,10 @@
+{
+  "name": "mamainseoul",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive 3-day Seoul itinerary with check-ins, scavenger hunts, trivia and a timeline.",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.71.0"
+  }
+}
