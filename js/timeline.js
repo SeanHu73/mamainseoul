@@ -104,9 +104,12 @@ const PX_PER_YEAR = 0.5;
 const MIN_STEP = 58;     // floor, so tiles never collide when times nearly match
 const MAX_STEP = 500;    // beyond this a gap is compressed and marked
 const MIN_MARGIN = 14;
-const MIN_BAR = 20;      // shortest a period capsule can be and still read
+const MIN_BAR = 26;      // shortest a period ribbon can be and still read
 const MAX_BAR = 380;     // longest before the capsule itself is compressed
 const BOW = 26;          // how far the spine bulges towards each tile
+const SPINE_SAMPLES = 22;   // points per segment, for tracing era ribbons
+const ERA_DAMP = 0.3;       // how much of the spine's bow an era ribbon copies
+const ERA_OFFSET = 14;      // how far the ribbon sits to the left of centre
 
 const DAYS = { 1: 0, 2: 31, 3: 59, 4: 90, 5: 120, 6: 151, 7: 181, 8: 212, 9: 243, 10: 273, 11: 304, 12: 334 };
 
@@ -201,15 +204,12 @@ export async function renderTimeline() {
     }
 
     const kind = e.source === 'ai' ? 'ai' : e.source === 'history' ? 'history' : '';
-    const node = item.bar
-      ? `<span class="tlnode tlbar ${kind}${item.bar.compressed ? ' squeezed' : ''}"
-               style="height:${Math.round(item.bar.height)}px"></span>`
-      : `<span class="tlnode tldot ${kind}"></span>`;
+    const node = `<span class="tlnode tldot ${kind}"></span>`;
 
-    // A period's capsule is absolutely positioned and deliberately does NOT
-    // inflate its row. It runs down beside the spine, overlapping the entries
-    // that happened during it — which is exactly what an era should look
-    // like, and keeps a long period from distorting the gaps around it.
+    // A period is drawn as a ribbon in the SVG rather than as a box here, so
+    // it can follow the spine's curve. It is not part of the flow and does
+    // not inflate its row — an era runs down alongside the entries that
+    // happened during it instead of pushing them apart.
 
     // The tile is deliberately spare — date, title, picture. Everything else
     // lives in the card that opens when she taps it.
@@ -217,7 +217,10 @@ export async function renderTimeline() {
       <li class="tlrow ${side}" data-side="${side}"
           data-step="${Math.round(item.step)}"
           data-gap="${Math.round(item.gapYears)}"
-          ${item.compressed && i > 0 ? 'data-compressed="1"' : ''}>
+          ${item.compressed && i > 0 ? 'data-compressed="1"' : ''}
+          data-kind="${kind}"
+          ${item.bar ? `data-bar="${Math.round(item.bar.height)}"` : ''}
+          ${item.bar?.compressed ? 'data-barsqueezed="1"' : ''}>
         ${node}
         <button class="tltile" data-entry="${e.id}">
           ${photo}
@@ -248,6 +251,7 @@ export async function renderTimeline() {
   });
 
   relayout();
+  watchSize(view.querySelector('.tlwrap'));
   // Photos change row heights as they decode, which would leave the spine
   // drawn against stale positions and the spacing measured from the wrong
   // heights.
@@ -307,20 +311,29 @@ function drawSpine() {
       y: r.top - base.top + r.height / 2,
       side: li.dataset.side === 'right' ? 1 : li.dataset.side === 'left' ? -1 : 0,
       compressed: li.dataset.compressed === '1',
-      gap: Number(li.dataset.gap) || 0
+      gap: Number(li.dataset.gap) || 0,
+      bar: Number(li.dataset.bar) || 0,
+      barSqueezed: li.dataset.barsqueezed === '1',
+      kind: li.dataset.kind || ''
     };
   }).filter(Boolean);
 
+  const centre = base.width / 2;
   const parts = [];
   const marks = [];
+  const samples = [];   // the spine, densely sampled, for the era ribbons
+
   for (let i = 0; i < items.length - 1; i++) {
     const a = items[i];
     const b = items[i + 1];
     const dy = (b.y - a.y) * 0.42;
     // Bow towards the tile we're travelling to, so the line leans into it.
     const bow = (b.side || a.side || 1) * BOW;
-    const d = `M ${a.x} ${a.y} C ${a.x + bow} ${a.y + dy}, ${b.x + bow} ${b.y - dy}, ${b.x} ${b.y}`;
-    parts.push(`<path d="${d}" class="${b.compressed ? 'skip' : ''}"/>`);
+    const c1 = { x: a.x + bow, y: a.y + dy };
+    const c2 = { x: b.x + bow, y: b.y - dy };
+
+    parts.push(`<path d="M ${a.x} ${a.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${b.x} ${b.y}" ` +
+               `class="${b.compressed ? 'skip' : ''}"/>`);
 
     // Where the scale had to give up, say so on the line itself.
     if (b.compressed) {
@@ -328,16 +341,106 @@ function drawSpine() {
                     ${esc(ui('tlGap', b.gap))}
                   </span>`);
     }
+
+    for (let k = 0; k < SPINE_SAMPLES; k++) {
+      samples.push(bezierAt(a, c1, c2, b, k / SPINE_SAMPLES));
+    }
   }
+  if (items.length) samples.push({ x: items[items.length - 1].x, y: items[items.length - 1].y });
+
+  // Era ribbons trace the spine's shape at a damped amplitude, so they curve
+  // with it while staying inside the gutter between the two columns of tiles.
+  for (const item of items) {
+    if (!item.bar) continue;
+    const top = item.y;
+    const bottom = item.y + item.bar;
+
+    // Anchor both ends exactly, then trace the sampled spine between them.
+    // Relying on the samples alone left short eras visibly shorter than the
+    // time scale asked for, because no sample landed on either endpoint.
+    const inner = samples.filter(p => p.y > top && p.y < bottom);
+    const pts = [
+      { x: xAtY(samples, top), y: top },
+      ...inner,
+      { x: xAtY(samples, bottom), y: bottom }
+    ].map(p => ({ x: centre + (p.x - centre) * ERA_DAMP - ERA_OFFSET, y: p.y }));
+
+    const d = 'M ' + pts.map(p => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ');
+
+    parts.unshift(`<path d="${d}" class="era ${item.kind}${item.barSqueezed ? ' squeezed' : ''}"/>`);
+  }
+
   svg.innerHTML = parts.join('');
   const marksEl = document.querySelector('.tlmarks');
   if (marksEl) marksEl.innerHTML = marks.join('');
 }
 
+/** The spine's x where it crosses a given y, interpolated between samples. */
+function xAtY(samples, y) {
+  if (!samples.length) return 0;
+  let best = samples[0];
+  for (let i = 0; i < samples.length - 1; i++) {
+    const a = samples[i];
+    const b = samples[i + 1];
+    if ((a.y <= y && b.y >= y) || (b.y <= y && a.y >= y)) {
+      const span = b.y - a.y;
+      const f = Math.abs(span) < 0.001 ? 0 : (y - a.y) / span;
+      return a.x + (b.x - a.x) * f;
+    }
+    if (Math.abs(a.y - y) < Math.abs(best.y - y)) best = a;
+  }
+  return best.x;
+}
+
+/** A point on a cubic bezier at parameter t. */
+function bezierAt(p0, p1, p2, p3, t) {
+  const u = 1 - t;
+  const a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, d = t * t * t;
+  return {
+    x: a * p0.x + b * p1.x + c * p2.x + d * p3.x,
+    y: a * p0.y + b * p1.y + c * p2.y + d * p3.y
+  };
+}
+
+/**
+ * Watch the container rather than the window.
+ *
+ * A window resize listener missed real cases — rotating the phone, the tab
+ * becoming visible, fonts finishing loading — and left the spine drawn at the
+ * old width while the tiles had already moved. Only width changes are acted
+ * on, because relayout() alters heights and reacting to those would loop.
+ */
 let spineRedrawTimer = null;
-window.addEventListener('resize', () => {
+let lastWidth = 0;
+let sizeWatcher = null;
+
+function watchSize(el) {
+  sizeWatcher?.disconnect();
+  if (!el || typeof ResizeObserver === 'undefined') return;
+  lastWidth = Math.round(el.getBoundingClientRect().width);
+  sizeWatcher = new ResizeObserver(entries => {
+    const w = Math.round(entries[0].contentRect.width);
+    if (w === lastWidth) return;
+    lastWidth = w;
+    clearTimeout(spineRedrawTimer);
+    spineRedrawTimer = setTimeout(relayout, 100);
+  });
+  sizeWatcher.observe(el);
+}
+
+const nudge = () => {
   clearTimeout(spineRedrawTimer);
   spineRedrawTimer = setTimeout(relayout, 120);
+};
+
+// ResizeObserver is the right tool but its callbacks ride the rendering
+// steps, so a throttled or non-compositing tab never gets them. These are
+// plain events and arrive regardless — orientationchange in particular is
+// the case that matters on a phone.
+window.addEventListener('resize', nudge);
+window.addEventListener('orientationchange', nudge);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) nudge();
 });
 
 /* ---------------- detail card ---------------- */

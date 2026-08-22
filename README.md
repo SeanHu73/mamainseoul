@@ -140,13 +140,23 @@ dynasties, so nearly every gap came out as zero and no proportion showed at
 all. Gaps are now measured start-to-start, which is never negative because
 entries are sorted by start.
 
-**Period capsules use the same scale**, so a bar and a stretch of spine of
+**Period ribbons use the same scale**, so a ribbon and a stretch of spine of
 equal length mean an equal span of time — Joseon's 505 years draw as 253 px
-against Unified Silla's 267 years at 134 px. A capsule too long to draw at
-scale is hatched. Capsules are absolutely positioned beside the spine rather
-than on it, so an era runs down alongside the events that happened during it
-instead of pushing them apart. Before that change a 2-year gap rendered
-larger than a 250-year one, because a long capsule inflated its own row.
+against Unified Silla's 267 years at 134 px. A ribbon too long to draw at
+scale is dashed.
+
+Ribbons are drawn in the SVG, not as boxes, so they follow the spine's curve:
+the spine is sampled densely, the samples between the era's start and end are
+offset sideways at a damped amplitude, and both endpoints are anchored exactly
+so a short era isn't drawn short. Being in the SVG they take no space in the
+flow, so an era runs down alongside the events that happened during it instead
+of pushing them apart. Before that, a 2-year gap rendered larger than a
+250-year one because a long capsule inflated its own row.
+
+The spine and ribbons are redrawn by a `ResizeObserver` on the container.
+Because its callbacks ride the browser's rendering steps and never arrive in
+a throttled or non-compositing tab, `resize`, `orientationchange` and
+`visibilitychange` are wired as plain-event fallbacks.
 
 Tiles carry only a date, a title and a photo. Tapping one opens a card with
 the full description, the photo at size, and a **Find on map** button that

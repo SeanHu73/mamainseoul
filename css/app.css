@@ -327,8 +327,8 @@ main { flex: 1; position: relative; overflow: hidden; }
 /* Uniform spacing on purpose: vertical distance is not a measure of elapsed
    time. Time skips are called out explicitly instead. */
 .tlrow { position: relative; min-height: 74px; display: flex; }  /* margin set by applySpacing() */
-.tlrow.left  { justify-content: flex-start; padding-right: calc(50% + 21px); }
-.tlrow.right { justify-content: flex-end;   padding-left:  calc(50% + 21px); }
+.tlrow.left  { justify-content: flex-start; padding-right: calc(50% + 27px); }
+.tlrow.right { justify-content: flex-end;   padding-left:  calc(50% + 27px); }
 
 .tlnode { position: absolute; left: 50%; transform: translateX(-50%); z-index: 2; }
 .tldot {
@@ -339,27 +339,18 @@ main { flex: 1; position: relative; overflow: hidden; }
 .tldot.history { background: var(--orange); }
 
 /* A period is a capsule spanning its row, so duration reads as length. */
-/* An era track running beside the spine, not on it. Height comes from the
-   time scale, and because it is absolutely positioned it overlaps the
-   entries that fall inside the period instead of pushing them apart. */
-.tlbar {
-  top: 14px; left: calc(50% - 18px); transform: none;
-  width: 7px; border-radius: 4px; opacity: .85;
-  background: var(--navy);
+/* Era ribbons — drawn in the SVG so they follow the spine's curve. Height
+   comes from the time scale; they overlap the entries inside the period
+   rather than pushing them apart. */
+.tlspine path.era {
+  stroke: var(--navy); stroke-width: 7; stroke-linecap: round;
+  stroke-linejoin: round; opacity: .8; fill: none;
 }
-/* A capsule too long to draw at scale gets hatched, so a shortened bar is
-   never mistaken for a shorter period. */
-.tlbar.squeezed::after {
-  content: ''; position: absolute; inset: 0; border-radius: 6px;
-  background: repeating-linear-gradient(45deg,
-    rgba(253,250,241,.55) 0 3px, transparent 3px 7px);
-}
-.tlbar.ai { background: var(--green); }
-.tlbar.history {
-  /* Faded ends: these boundary dates are conventions, not moments. */
-  background: linear-gradient(180deg,
-    rgba(217,119,6,.3), var(--orange) 20%, var(--orange) 80%, rgba(217,119,6,.3));
-}
+.tlspine path.era.ai { stroke: var(--green); }
+.tlspine path.era.history { stroke: var(--orange); }
+/* An era too long to draw at scale is dashed, so a shortened ribbon is never
+   mistaken for a shorter period. */
+.tlspine path.era.squeezed { stroke-dasharray: 11 5; opacity: .62; }
 
 .tltile {
   width: 100%; text-align: left; overflow: hidden;
