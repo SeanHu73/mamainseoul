@@ -1,0 +1,16 @@
+{
+  "name": "Mama in Seoul",
+  "short_name": "Seoul",
+  "description": "A 3-day Seoul itinerary with check-ins, scavenger hunts and trivia.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F2E4",
+  "theme_color": "#FDFAF1",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

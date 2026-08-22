@@ -1,0 +1,8 @@
+# Vercel CLI build cache — stale output here silently overrides config edits
+.vercel
+
+node_modules/
+*.log
+
+.DS_Store
+Thumbs.db

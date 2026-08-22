@@ -1,0 +1,1013 @@
+{
+  "version": 1,
+  "title": {
+    "en": "Mama in Seoul",
+    "zh": "妈妈在首尔"
+  },
+  "subtitle": {
+    "en": "3 days · 16 stops · a scavenger hunt",
+    "zh": "三天 · 16 站 · 寻宝之旅"
+  },
+  "days": [
+    {
+      "day": 1,
+      "color": "#1E3A8A",
+      "title": {
+        "en": "Traditional Seoul",
+        "zh": "传统首尔"
+      },
+      "theme": {
+        "en": "Palaces × Hanok × Old Streets × Night Views",
+        "zh": "宫殿 × 韩屋 × 老街 × 夜景"
+      },
+      "stops": [
+        {
+          "id": "gyeongbokgung",
+          "n": 1,
+          "time": "09:00",
+          "emoji": "🏯",
+          "lat": 37.5796,
+          "lng": 126.977,
+          "radius": 400,
+          "name": {
+            "en": "Gyeongbokgung Palace",
+            "zh": "景福宫",
+            "ko": "경복궁"
+          },
+          "blurb": {
+            "en": "The main royal palace of the Joseon dynasty, first built in 1395.",
+            "zh": "朝鲜王朝的正宫，始建于 1395 年。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 15–20 min",
+              "zh": "步行 15–20 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "In the wide courtyard in front of the throne hall (Geunjeongjeon), two rows of small stone markers line the path — each one marked where an official of that rank had to stand. Walk to the marker nearest the throne and photograph the rank carved on it.",
+              "zh": "在勤政殿前的宽阔庭院里，石板路两侧立着一排排小石碑，每一块都标示着当年官员按品级站立的位置。走到离王座最近的那一块，拍下上面刻的品阶。"
+            },
+            "hint": {
+              "en": "The one closest to the throne reads 正一品 — the highest rank at court.",
+              "zh": "离王座最近的那块刻着「正一品」，是朝中最高品阶。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Gyeongbokgung burned down in 1592 and then sat in ruins for nearly 270 years. What finally brought it back?",
+              "zh": "景福宫在 1592 年被焚毁，此后荒废了近 270 年。最终是什么让它重建起来？"
+            },
+            "options": [
+              {
+                "en": "A royal wedding",
+                "zh": "一场王室婚礼"
+              },
+              {
+                "en": "A rebuilding ordered by the regent Heungseon Daewongun in 1867",
+                "zh": "1867 年兴宣大院君下令重建"
+              },
+              {
+                "en": "A Japanese colonial restoration in the 1920s",
+                "zh": "1920 年代日本殖民当局的修复工程"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "The regent Heungseon Daewongun rebuilt it in 1867 to restore royal authority — a project so expensive it nearly bankrupted the treasury.",
+              "zh": "1867 年，兴宣大院君为重振王权下令重建，工程耗资巨大，几乎拖垮国库。"
+            }
+          }
+        },
+        {
+          "id": "bukchon",
+          "n": 2,
+          "time": "11:15",
+          "emoji": "🏘️",
+          "lat": 37.5826,
+          "lng": 126.9849,
+          "radius": 450,
+          "name": {
+            "en": "Bukchon Hanok Village",
+            "zh": "北村韩屋村",
+            "ko": "북촌한옥마을"
+          },
+          "blurb": {
+            "en": "A hillside of tiled hanok roofs between the two great palaces.",
+            "zh": "两座王宫之间山坡上的韩屋瓦顶聚落。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 10–15 min",
+              "zh": "步行 10–15 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Bukchon has eight official photo viewpoints, each marked with a small numbered sign reading 북촌 8경 (Bukchon's 8 Views). Find any one of them and photograph the number.",
+              "zh": "北村设有八处官方摄影景点，每处都立有标示「북촌 8경」（北村八景）的小牌子。找到其中任意一处，拍下上面的编号。"
+            },
+            "hint": {
+              "en": "View 6, looking down the steep lane over a sea of tiled roofs, is the famous one.",
+              "zh": "第六景最有名 —— 站在陡坡巷口俯瞰一片瓦顶。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Bukchon means \"north village.\" North of what?",
+              "zh": "北村意为「北边的村子」。是在什么的北边？"
+            },
+            "options": [
+              {
+                "en": "North of the Han River",
+                "zh": "汉江以北"
+              },
+              {
+                "en": "North of the Cheonggyecheon stream, on the ridge between the two palaces",
+                "zh": "清溪川以北，两座王宫之间的高坡上"
+              },
+              {
+                "en": "North of Namsan mountain",
+                "zh": "南山以北"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "It sat north of the Cheonggyecheon stream, on the slope between Gyeongbokgung and Changdeokgung — the most prestigious address in Joseon Seoul, where senior officials and royals lived.",
+              "zh": "它位于清溪川以北、景福宫与昌德宫之间的坡地上，是朝鲜时代汉城最尊贵的地段，高官与王族聚居于此。"
+            }
+          }
+        },
+        {
+          "id": "changdeokgung",
+          "n": 3,
+          "time": "13:45",
+          "emoji": "⛩️",
+          "lat": 37.5794,
+          "lng": 126.991,
+          "radius": 400,
+          "name": {
+            "en": "Changdeokgung Palace",
+            "zh": "昌德宫",
+            "ko": "창덕궁"
+          },
+          "blurb": {
+            "en": "A UNESCO World Heritage palace, laid out to follow the hillside rather than flatten it.",
+            "zh": "联合国教科文组织世界遗产，宫殿依山势而建，而非削平地形。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 15 min",
+              "zh": "步行 15 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Look behind the throne inside Injeongjeon hall. A folding screen hangs there that stood behind every Joseon king — a sun, a moon, and a row of mountain peaks. Count the peaks, then photograph the screen.",
+              "zh": "走进仁政殿，看王座背后。那里悬着一幅屏风，历代朝鲜国王身后都有它 —— 日、月，以及一排山峰。数一数有几座山峰，然后把屏风拍下来。"
+            },
+            "hint": {
+              "en": "Five peaks. The painting is called Irworobongdo — \"sun, moon and five peaks.\"",
+              "zh": "五座。这幅画叫「日月五峰图」。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Changdeokgung's rear garden was so restricted that it earned a name meaning \"secret garden.\" What is it called?",
+              "zh": "昌德宫的后苑因禁止外人进入，得了一个意为「秘密花园」的名字。它叫什么？"
+            },
+            "options": [
+              {
+                "en": "Huwon (후원), also known as Biwon — the Secret Garden",
+                "zh": "后苑（후원），又称秘苑"
+              },
+              {
+                "en": "Nakwon (낙원) — the Paradise Garden",
+                "zh": "乐园（낙원）"
+              },
+              {
+                "en": "Hanwon (한원) — the Cold Garden",
+                "zh": "寒园（한원）"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Huwon covers roughly 60% of the palace grounds and can still only be entered on a timed guided tour.",
+              "zh": "后苑约占宫殿总面积的六成，至今仍只能跟随定时导览团进入。"
+            }
+          }
+        },
+        {
+          "id": "insadong",
+          "n": 4,
+          "time": "16:00",
+          "emoji": "🏮",
+          "lat": 37.5732,
+          "lng": 126.9855,
+          "radius": 300,
+          "name": {
+            "en": "Insadong",
+            "zh": "仁寺洞",
+            "ko": "인사동"
+          },
+          "blurb": {
+            "en": "A street of antique dealers, tea houses, brush shops and handmade paper.",
+            "zh": "古董店、茶馆、笔庄与手工韩纸汇聚的老街。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 10 min",
+              "zh": "步行 10 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Insadong is the one street in Seoul where international chains must write their signs in Hangul. Find the Starbucks — its sign reads 스타벅스 — and photograph it.",
+              "zh": "仁寺洞是首尔唯一要求国际连锁店必须用韩文书写招牌的街道。找到那家星巴克 —— 招牌上写着「스타벅스」—— 把它拍下来。"
+            },
+            "hint": {
+              "en": "It is on the main Insadong-gil strip. Look for the green circle with Korean letters instead of English.",
+              "zh": "就在仁寺洞主街上。找那个绿色圆形标志 —— 上面是韩文，不是英文。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "What has Insadong been known for selling since the Joseon era?",
+              "zh": "自朝鲜时代起，仁寺洞就以卖什么闻名？"
+            },
+            "options": [
+              {
+                "en": "Antiques, calligraphy brushes and hanji paper",
+                "zh": "古董、毛笔与韩纸"
+              },
+              {
+                "en": "Silk and imported spices",
+                "zh": "丝绸与进口香料"
+              },
+              {
+                "en": "Medicine and dried herbs",
+                "zh": "药材与干货"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Court officials living nearby sold off family heirlooms here, and the antique-and-art trade never left.",
+              "zh": "当年住在附近的官员在此变卖家传器物，古董与书画的生意就此扎根，延续至今。"
+            }
+          }
+        },
+        {
+          "id": "ikseondong",
+          "n": 5,
+          "time": "17:00",
+          "emoji": "🏮",
+          "lat": 37.5725,
+          "lng": 126.9901,
+          "radius": 300,
+          "name": {
+            "en": "Ikseon-dong Hanok Village",
+            "zh": "益善洞韩屋村",
+            "ko": "익선동"
+          },
+          "blurb": {
+            "en": "1920s hanok alleys, now packed with tiny cafes and restaurants.",
+            "zh": "1920 年代的韩屋小巷，如今挤满了小咖啡馆与餐厅。"
+          },
+          "travelToNext": {
+            "mode": "metro",
+            "label": {
+              "en": "Subway 15–20 min",
+              "zh": "地铁 15–20 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Almost every cafe here is a converted 1920s hanok. Find one that has left its original wooden roof beams exposed, and photograph the ceiling from underneath.",
+              "zh": "这里几乎每家咖啡馆都由 1920 年代的韩屋改建而成。找一家保留了原始木梁的店，从下往上拍下它的天花板。"
+            },
+            "hint": {
+              "en": "The alleys are narrow enough to touch both walls — look up as you walk.",
+              "zh": "巷子窄到伸手能碰到两边墙壁 —— 边走边抬头看。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Ikseon-dong is Seoul's oldest planned hanok neighbourhood, built in the 1920s. Why was it built?",
+              "zh": "益善洞是首尔最早的规划式韩屋区，建于 1920 年代。它为何而建？"
+            },
+            "options": [
+              {
+                "en": "As housing for Japanese colonial officials",
+                "zh": "为日本殖民官员兴建的住宅"
+              },
+              {
+                "en": "By developer Jeong Se-gwon, who mass-built affordable hanok so Koreans could keep living in central Seoul",
+                "zh": "由开发商郑世权大量兴建的平价韩屋，让韩国人得以继续住在市中心"
+              },
+              {
+                "en": "As quarters for palace servants",
+                "zh": "供宫中仆役居住的房舍"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Jeong Se-gwon built small, affordable hanok at scale during the colonial period — a quiet act of resistance to keep the old city Korean.",
+              "zh": "殖民时期，郑世权大规模兴建小型平价韩屋，以此默默抵抗，守住老城的韩国面貌。"
+            }
+          }
+        },
+        {
+          "id": "myeongdong",
+          "n": 6,
+          "time": "19:00",
+          "emoji": "🌃",
+          "lat": 37.5636,
+          "lng": 126.9856,
+          "radius": 400,
+          "name": {
+            "en": "Myeongdong",
+            "zh": "明洞",
+            "ko": "명동"
+          },
+          "blurb": {
+            "en": "Seoul's brightest shopping street, and a wall of street-food carts after dark.",
+            "zh": "首尔最热闹的购物街，入夜后是一整条街的小吃摊。"
+          },
+          "travelToNext": {
+            "mode": "car",
+            "label": {
+              "en": "Walk + cable car / bus 25–35 min",
+              "zh": "步行 + 缆车／巴士 25–35 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Walk the main strip until you reach Myeongdong Cathedral, the red-brick Gothic church up on the rise. Photograph its spire — then photograph the strangest thing you saw for sale on a street cart along the way.",
+              "zh": "沿着主街一直走，直到看见明洞圣堂 —— 坡上那座红砖哥特式教堂。拍下它的尖塔，再拍下你一路上在小吃摊看到的最稀奇的东西。"
+            },
+            "hint": {
+              "en": "Two photos for this one. The cart one is the fun half.",
+              "zh": "这一站要拍两张。小吃摊那张才是有趣的部分。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Myeongdong Cathedral, completed in 1898, became famous a century later as what?",
+              "zh": "明洞圣堂建成于 1898 年，一个世纪后又因什么而闻名？"
+            },
+            "options": [
+              {
+                "en": "A concert venue",
+                "zh": "一处音乐演出场地"
+              },
+              {
+                "en": "A sanctuary and rallying point for the 1980s pro-democracy movement",
+                "zh": "1980 年代民主运动的庇护所与集会中心"
+              },
+              {
+                "en": "The tallest building in Seoul",
+                "zh": "首尔最高的建筑"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Police were unwilling to enter church grounds, so protesters sheltered there — and the cathedral became a symbol of Korea's democratisation.",
+              "zh": "警方不愿进入教堂范围，示威者便在此避难，明洞圣堂由此成为韩国民主化的象征。"
+            }
+          }
+        },
+        {
+          "id": "nseoultower",
+          "n": 7,
+          "time": "20:30",
+          "emoji": "🗼",
+          "lat": 37.5512,
+          "lng": 126.9882,
+          "radius": 250,
+          "name": {
+            "en": "N Seoul Tower",
+            "zh": "N 首尔塔（南山塔）",
+            "ko": "남산서울타워"
+          },
+          "blurb": {
+            "en": "The city laid out below you, from the top of Namsan.",
+            "zh": "站在南山顶上，整座城市在脚下铺开。"
+          },
+          "travelToNext": null,
+          "hunt": {
+            "task": {
+              "en": "The fences around the deck are buried under thousands of \"love locks.\" Find one written in a language you don't recognise, and photograph it.",
+              "zh": "观景台周围的栏杆上挂满了成千上万把「同心锁」。找一把用你不认识的语言写的，把它拍下来。"
+            },
+            "hint": {
+              "en": "The lock trees near the base of the tower have the densest clusters.",
+              "zh": "塔底附近的「锁树」挂得最密。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "The tower's spire is lit in changing colours each night. What is it telling the city?",
+              "zh": "首尔塔的塔尖每晚亮起不同颜色。它在向这座城市传达什么？"
+            },
+            "options": [
+              {
+                "en": "Tomorrow's weather",
+                "zh": "明天的天气"
+              },
+              {
+                "en": "Seoul's air quality — blue means the air is clean",
+                "zh": "首尔的空气质量 —— 蓝色代表空气清新"
+              },
+              {
+                "en": "The time of night",
+                "zh": "现在的时间"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Blue light means good air quality. Locals check the tower from across the city.",
+              "zh": "亮蓝色表示空气良好。首尔人从城市各处抬头就能查看。"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "color": "#15803D",
+      "title": {
+        "en": "Art, Architecture & Contemporary Seoul",
+        "zh": "艺术、建筑与当代首尔"
+      },
+      "theme": {
+        "en": "Museums × Architecture × Seongsu-dong",
+        "zh": "博物馆 × 建筑 × 圣水洞"
+      },
+      "stops": [
+        {
+          "id": "national-museum",
+          "n": 1,
+          "time": "09:30",
+          "emoji": "🏛️",
+          "lat": 37.524,
+          "lng": 126.9803,
+          "radius": 350,
+          "name": {
+            "en": "National Museum of Korea",
+            "zh": "国立中央博物馆",
+            "ko": "국립중앙박물관"
+          },
+          "blurb": {
+            "en": "Five thousand years of Korean history, in one very long building.",
+            "zh": "五千年韩国历史，收纳在一栋极长的建筑里。"
+          },
+          "travelToNext": {
+            "mode": "car",
+            "label": {
+              "en": "Taxi 15 min",
+              "zh": "出租车 15 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Find the Room of Quiet Contemplation — a dark, hushed gallery holding two gilt-bronze Pensive Bodhisattvas (반가사유상), each seated with one leg crossed and fingertips resting at the cheek. Photograph one.",
+              "zh": "找到「思惟之室」—— 一间幽暗静谧的展厅，里面陈列着两尊金铜半跏思惟像，皆是一腿交叠、指尖轻触脸颊的姿态。拍下其中一尊。"
+            },
+            "hint": {
+              "en": "It is a room of its own, deliberately kept dim and almost silent. Second floor.",
+              "zh": "它独占一室，刻意保持昏暗与静默。在二楼。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "The ten-storey Gyeongcheonsa Pagoda stands inside the museum's great hall. What makes its material unusual for a Korean pagoda?",
+              "zh": "馆内大厅立着十层敬天寺石塔。它的材质对韩国石塔而言有何特别之处？"
+            },
+            "options": [
+              {
+                "en": "It is carved from marble, not granite",
+                "zh": "它由大理石雕成，而非花岗岩"
+              },
+              {
+                "en": "It is cast in bronze",
+                "zh": "它是青铜铸造的"
+              },
+              {
+                "en": "It is built entirely from wood",
+                "zh": "它完全用木材建造"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Almost every Korean stone pagoda is granite. This one, from 1348, is marble — and it was looted to Japan in 1907 before being returned.",
+              "zh": "韩国石塔几乎清一色为花岗岩。这座建于 1348 年的塔却是大理石，1907 年曾被掠往日本，后归还。"
+            }
+          }
+        },
+        {
+          "id": "leeum",
+          "n": 2,
+          "time": "12:20",
+          "emoji": "🖼️",
+          "lat": 37.5383,
+          "lng": 126.9991,
+          "radius": 250,
+          "name": {
+            "en": "Leeum Museum of Art",
+            "zh": "Leeum 三星美术馆",
+            "ko": "리움미술관"
+          },
+          "blurb": {
+            "en": "Traditional and contemporary art in three buildings by three architects.",
+            "zh": "三位建筑师设计的三栋建筑，收藏传统与当代艺术。"
+          },
+          "travelToNext": {
+            "mode": "car",
+            "label": {
+              "en": "Drive 20–25 min",
+              "zh": "车程 20–25 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Inside Mario Botta's terracotta-brick cone (Museum 1), a staircase spirals up the inside of the rotunda. Stand at the bottom, point your camera straight up, and photograph the spiral.",
+              "zh": "在马里奥·博塔设计的赤陶砖圆锥体（一号馆）内，有一道盘旋而上的楼梯环绕着圆厅。站在底部，镜头朝正上方，拍下这道螺旋。"
+            },
+            "hint": {
+              "en": "The cone is the building that looks like an upside-down pot.",
+              "zh": "那栋看起来像倒扣陶罐的建筑就是圆锥体。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Leeum's buildings were designed by three different star architects. Which trio?",
+              "zh": "Leeum 的建筑由三位不同的知名建筑师设计。是哪三位？"
+            },
+            "options": [
+              {
+                "en": "Zaha Hadid, Frank Gehry and I. M. Pei",
+                "zh": "扎哈·哈迪德、弗兰克·盖里、贝聿铭"
+              },
+              {
+                "en": "Mario Botta, Jean Nouvel and Rem Koolhaas",
+                "zh": "马里奥·博塔、让·努维尔、雷姆·库哈斯"
+              },
+              {
+                "en": "Tadao Ando, Kengo Kuma and Renzo Piano",
+                "zh": "安藤忠雄、隈研吾、伦佐·皮亚诺"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Botta designed the traditional-art building, Nouvel the corroded-steel contemporary wing, and Koolhaas the education centre.",
+              "zh": "博塔设计古美术馆，努维尔设计锈蚀钢材的当代馆，库哈斯设计教育文化中心。"
+            }
+          }
+        },
+        {
+          "id": "ddp",
+          "n": 3,
+          "time": "15:00",
+          "emoji": "🛸",
+          "lat": 37.5665,
+          "lng": 127.0092,
+          "radius": 300,
+          "name": {
+            "en": "Dongdaemun Design Plaza",
+            "zh": "东大门设计广场（DDP）",
+            "ko": "동대문디자인플라자"
+          },
+          "blurb": {
+            "en": "A silver, seamless, gravity-defying building with no straight lines.",
+            "zh": "一栋银色、无缝、违反重力感的建筑，找不到一条直线。"
+          },
+          "travelToNext": {
+            "mode": "metro",
+            "label": {
+              "en": "Subway 20 min",
+              "zh": "地铁 20 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "When they dug DDP's foundations they hit the old Joseon city wall and a stone water gate. The ruins were preserved on site — find them and photograph a section of the original wall.",
+              "zh": "当年开挖 DDP 地基时，挖到了朝鲜时代的都城城墙与一座石造水门。遗址被原地保留下来 —— 找到它们，拍下一段原始城墙。"
+            },
+            "hint": {
+              "en": "They are outdoors, on the park side of the building, below the main deck.",
+              "zh": "遗址在户外，位于建筑靠公园的一侧，主平台下方。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Who designed DDP's seamless, curving aluminium shell?",
+              "zh": "DDP 那层无缝弯曲的铝制外壳出自谁手？"
+            },
+            "options": [
+              {
+                "en": "Zaha Hadid",
+                "zh": "扎哈·哈迪德"
+              },
+              {
+                "en": "Norman Foster",
+                "zh": "诺曼·福斯特"
+              },
+              {
+                "en": "Santiago Calatrava",
+                "zh": "圣地亚哥·卡拉特拉瓦"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Zaha Hadid's design opened in 2014. Its skin is roughly 45,000 aluminium panels, nearly all of them a different shape.",
+              "zh": "扎哈·哈迪德的设计于 2014 年落成。外壳由约 45,000 块铝板构成，几乎每一块形状都不相同。"
+            }
+          }
+        },
+        {
+          "id": "seongsu",
+          "n": 4,
+          "time": "16:40",
+          "emoji": "☕",
+          "lat": 37.5446,
+          "lng": 127.0559,
+          "radius": 500,
+          "name": {
+            "en": "Seongsu-dong",
+            "zh": "圣水洞",
+            "ko": "성수동"
+          },
+          "blurb": {
+            "en": "Old factories and warehouses reborn as cafes, studios and flagship stores.",
+            "zh": "旧工厂与仓库改头换面，成了咖啡馆、工作室与品牌旗舰店。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 10–20 min",
+              "zh": "步行 10–20 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Seongsu made shoes and fixed cars long before it made flat whites. Find a cafe that kept its industrial bones on show — raw brick, factory windows, or old machinery still standing inside — and photograph it.",
+              "zh": "在卖咖啡之前，圣水洞是做鞋和修车的地方。找一家保留了工业痕迹的咖啡馆 —— 裸露的砖墙、厂房窗户，或是仍立在店里的旧机器 —— 把它拍下来。"
+            },
+            "hint": {
+              "en": "Daelim Changgo, a converted warehouse, is the most famous example.",
+              "zh": "大林仓库（대림창고）是最有名的一处仓库改造案例。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Seongsu-dong's nickname borrows from a New York neighbourhood. Which one?",
+              "zh": "圣水洞的绰号借自纽约的一个街区。是哪一个？"
+            },
+            "options": [
+              {
+                "en": "SoHo",
+                "zh": "苏活区（SoHo）"
+              },
+              {
+                "en": "Brooklyn",
+                "zh": "布鲁克林"
+              },
+              {
+                "en": "Queens",
+                "zh": "皇后区"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "\"The Brooklyn of Seoul\" — a working industrial district that filled up with cafes, studios and design shops.",
+              "zh": "「首尔的布鲁克林」—— 一个仍在运作的工业区，如今挤满了咖啡馆、工作室与设计店铺。"
+            }
+          }
+        },
+        {
+          "id": "seoul-forest",
+          "n": 5,
+          "time": "19:30",
+          "emoji": "🌳",
+          "lat": 37.5443,
+          "lng": 127.0385,
+          "radius": 700,
+          "name": {
+            "en": "Seoul Forest Park",
+            "zh": "首尔林公园",
+            "ko": "서울숲"
+          },
+          "blurb": {
+            "en": "Seoul's big riverside park, and a small herd of deer.",
+            "zh": "首尔的滨江大公园，还有一小群梅花鹿。"
+          },
+          "travelToNext": null,
+          "hunt": {
+            "task": {
+              "en": "There is a deer enclosure in the park where a small herd of spotted deer live. Find the deer and photograph one.",
+              "zh": "公园里有一处鹿苑，住着一小群梅花鹿。找到它们，拍下其中一只。"
+            },
+            "hint": {
+              "en": "If it is too dark by the time you arrive, photograph the illuminated old water-treatment pillars instead — they are lit at night.",
+              "zh": "如果到的时候天已太黑，就改拍那排亮着灯的旧净水厂柱廊 —— 它们夜里会打灯。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "What stood on this land before it opened as a park in 2005?",
+              "zh": "这片土地在 2005 年辟为公园之前，曾是什么？"
+            },
+            "options": [
+              {
+                "en": "An airport",
+                "zh": "一座机场"
+              },
+              {
+                "en": "A horse racetrack — and before that, a royal hunting ground",
+                "zh": "一座赛马场 —— 更早之前是王室猎场"
+              },
+              {
+                "en": "A shipyard",
+                "zh": "一处造船厂"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Ttukseom was a royal hunting ground for Joseon kings, later Seoul's racecourse, then a water treatment plant and a golf course.",
+              "zh": "纛岛曾是朝鲜国王的狩猎场，后来成为首尔赛马场，再后来是净水厂与高尔夫球场。"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "color": "#D97706",
+      "title": {
+        "en": "Gangnam, New Seoul",
+        "zh": "江南，新首尔"
+      },
+      "theme": {
+        "en": "Temple × Commercial City × Han River",
+        "zh": "古刹 × 商业都会 × 汉江"
+      },
+      "stops": [
+        {
+          "id": "bongeunsa",
+          "n": 1,
+          "time": "09:30",
+          "emoji": "🛕",
+          "lat": 37.5147,
+          "lng": 127.058,
+          "radius": 350,
+          "name": {
+            "en": "Bongeunsa Temple",
+            "zh": "奉恩寺",
+            "ko": "봉은사"
+          },
+          "blurb": {
+            "en": "A 1,200-year-old temple sitting directly across the road from a shopping mall.",
+            "zh": "一座有 1200 年历史的古刹，与一座购物中心隔街相望。"
+          },
+          "travelToNext": {
+            "mode": "walk",
+            "label": {
+              "en": "Walk 5 min",
+              "zh": "步行 5 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Find the Maitreya Buddha (미륵대불) — a 23-metre stone Buddha standing above the temple courtyard, with Gangnam's office towers directly behind it. Photograph it so both the Buddha and the skyscrapers are in frame.",
+              "zh": "找到弥勒大佛（미륵대불）—— 一尊 23 米高的石佛，立在寺院庭院上方，身后正是江南的办公大楼。找一个角度，把佛像和摩天楼同时拍进画面。"
+            },
+            "hint": {
+              "en": "It is at the top of the temple grounds, up the steps behind the main hall.",
+              "zh": "它在寺院最高处，沿大雄宝殿后方的台阶往上走。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Bongeunsa was founded in which century?",
+              "zh": "奉恩寺创建于哪个世纪？"
+            },
+            "options": [
+              {
+                "en": "The 8th century, in 794",
+                "zh": "8 世纪，794 年"
+              },
+              {
+                "en": "The 15th century",
+                "zh": "15 世纪"
+              },
+              {
+                "en": "The 19th century",
+                "zh": "19 世纪"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Founded in 794 during the Silla kingdom — roughly 1,200 years before COEX was built across the road.",
+              "zh": "创建于新罗时代的 794 年 —— 比对街的 COEX 早了约 1200 年。"
+            }
+          }
+        },
+        {
+          "id": "coex",
+          "n": 2,
+          "time": "11:00",
+          "emoji": "📚",
+          "lat": 37.5096,
+          "lng": 127.0602,
+          "radius": 300,
+          "name": {
+            "en": "COEX Starfield Library",
+            "zh": "COEX 星空图书馆",
+            "ko": "별마당 도서관"
+          },
+          "blurb": {
+            "en": "Three enormous open bookshelves in the middle of a shopping mall.",
+            "zh": "购物中心正中央的三座巨型开放式书架。"
+          },
+          "travelToNext": {
+            "mode": "metro",
+            "label": {
+              "en": "Subway / walk 15–25 min",
+              "zh": "地铁／步行 15–25 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "Find the tallest of the great shelves — it runs 13 metres from floor to top. Photograph it from base to ceiling in a single shot.",
+              "zh": "找到最高的那座书架 —— 从地面到顶端有 13 米。用一张照片把它从底拍到顶。"
+            },
+            "hint": {
+              "en": "Stand back on the opposite balcony and shoot vertically.",
+              "zh": "退到对面的楼层平台，竖着拍。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "Roughly how many books sit on Starfield Library's shelves?",
+              "zh": "星空图书馆的书架上大约有多少本书？"
+            },
+            "options": [
+              {
+                "en": "7,000",
+                "zh": "7,000 本"
+              },
+              {
+                "en": "70,000",
+                "zh": "70,000 本"
+              },
+              {
+                "en": "700,000",
+                "zh": "700,000 本"
+              }
+            ],
+            "answer": 1,
+            "explain": {
+              "en": "Around 70,000 books and magazines. The volumes near the top are far out of reach — and a good many of them are dummies.",
+              "zh": "约有 70,000 册图书与杂志。顶部那些根本够不着 —— 其中不少其实是道具书。"
+            }
+          }
+        },
+        {
+          "id": "garosugil",
+          "n": 3,
+          "time": "14:00",
+          "emoji": "🏙️",
+          "lat": 37.5205,
+          "lng": 127.023,
+          "radius": 400,
+          "name": {
+            "en": "Gangnam / Sinsa-dong (Garosu-gil)",
+            "zh": "江南·新沙洞（林荫道）",
+            "ko": "가로수길"
+          },
+          "blurb": {
+            "en": "A tree-lined shopping street and the side alleys behind it.",
+            "zh": "一条绿树成荫的购物街，以及它背后的小巷。"
+          },
+          "travelToNext": {
+            "mode": "car",
+            "label": {
+              "en": "Taxi 15–25 min",
+              "zh": "出租车 15–25 分钟"
+            }
+          },
+          "hunt": {
+            "task": {
+              "en": "\"Garosu-gil\" is named after the trees lining it — ginkgo trees, with fan-shaped leaves. Find one and photograph a leaf up close.",
+              "zh": "「가로수길」（林荫道）得名于街道两旁的树 —— 银杏树，叶子呈扇形。找一棵，近距离拍下一片叶子。"
+            },
+            "hint": {
+              "en": "The fan shape with a split down the middle is unmistakable once you see it.",
+              "zh": "扇形、中间有一道裂口 —— 认出一次就再也不会认错。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "What does \"Gangnam\" literally mean?",
+              "zh": "「江南」的字面意思是什么？"
+            },
+            "options": [
+              {
+                "en": "South of the river",
+                "zh": "江的南边"
+              },
+              {
+                "en": "The new city",
+                "zh": "新的城市"
+              },
+              {
+                "en": "The golden south",
+                "zh": "金色的南方"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "강남 — \"south of the river,\" meaning south of the Han. It was farmland until the 1970s, and is now Seoul's most expensive district.",
+              "zh": "강남 —— 即「汉江以南」。这里直到 1970 年代都还是农田，如今是首尔地价最高的地区。"
+            }
+          }
+        },
+        {
+          "id": "banpo",
+          "n": 4,
+          "time": "18:00",
+          "emoji": "⛲",
+          "lat": 37.511,
+          "lng": 126.9953,
+          "radius": 550,
+          "name": {
+            "en": "Banpo Hangang Park",
+            "zh": "盘浦汉江公园",
+            "ko": "반포한강공원"
+          },
+          "blurb": {
+            "en": "The Moonlight Rainbow Fountain, firing coloured water off the bridge after dark.",
+            "zh": "月光彩虹喷泉 —— 入夜后从桥上喷出彩色水幕。"
+          },
+          "travelToNext": null,
+          "hunt": {
+            "task": {
+              "en": "Wait for the Moonlight Rainbow Fountain — Banpo Bridge fires coloured water from both sides in a timed show after dark. Catch the water mid-air in a photo.",
+              "zh": "等待月光彩虹喷泉 —— 天黑后，盘浦大桥两侧会按时喷出彩色水柱。抓拍水在空中的那一刻。"
+            },
+            "hint": {
+              "en": "Shows usually run several times an evening, April to October. Check the day's schedule before settling in.",
+              "zh": "四月至十月，每晚通常有数场演出。落座前先查一下当天的时间表。"
+            },
+            "photo": null
+          },
+          "trivia": {
+            "q": {
+              "en": "The Moonlight Rainbow Fountain holds a Guinness World Record. For what?",
+              "zh": "月光彩虹喷泉保持着一项吉尼斯世界纪录。是什么？"
+            },
+            "options": [
+              {
+                "en": "The world's longest bridge fountain",
+                "zh": "世界最长的桥梁喷泉"
+              },
+              {
+                "en": "The world's tallest fountain",
+                "zh": "世界最高的喷泉"
+              },
+              {
+                "en": "The world's oldest working fountain",
+                "zh": "世界现存最古老的喷泉"
+              }
+            ],
+            "answer": 0,
+            "explain": {
+              "en": "Nearly 1,140 metres long, with around 380 nozzles per side pumping water straight out of the Han River.",
+              "zh": "全长近 1,140 米，两侧各约 380 个喷嘴，直接从汉江抽水喷出。"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

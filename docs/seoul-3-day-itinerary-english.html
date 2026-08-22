@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seoul 3-Day Itinerary Route Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F2E4;
+  --panel:#FDFAF1;
+  --ink:#1F2937;
+  --navy:#1E3A8A;
+  --navy-deep:#16296B;
+  --green:#15803D;
+  --green-deep:#0F6330;
+  --orange:#D97706;
+  --orange-deep:#B45F04;
+  --map:#EFEAD8;
+  --line:#D8D0BA;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--cream);
+  font-family:'Nunito Sans',system-ui,sans-serif;
+  color:var(--ink);
+  padding:18px;
+}
+.sheet{max-width:1520px;margin:0 auto;display:flex;flex-direction:column;gap:14px;}
+
+/* ---------- header ---------- */
+.header{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;}
+.titlebox{
+  background:var(--panel);border:2px solid var(--navy);border-radius:14px;
+  padding:14px 22px;display:flex;align-items:center;gap:16px;flex:1 1 420px;
+}
+.titlebox .tower{font-size:34px;}
+.titlebox h1{
+  font-family:'Quicksand',sans-serif;font-weight:700;font-size:26px;color:var(--navy);
+  letter-spacing:.3px;line-height:1.15;
+}
+.titlebox .sub{font-size:13.5px;font-weight:700;color:#4B5563;margin-top:4px;letter-spacing:.4px;}
+.titlebox .flag{font-size:30px;margin-left:auto;}
+.legend{
+  background:var(--panel);border:1.5px solid var(--line);border-radius:14px;
+  padding:12px 18px;flex:1 1 330px;display:flex;flex-direction:column;justify-content:center;gap:10px;
+  font-size:13px;font-weight:700;
+}
+.legend .row{display:flex;gap:22px;flex-wrap:wrap;align-items:center;}
+.legend .item{display:flex;align-items:center;gap:7px;}
+.keyline{display:inline-block;width:44px;height:0;border-top-width:3px;}
+.keyline.walk{border-top-style:dashed;border-top-color:var(--navy);}
+.keyline.metro{border-top-style:solid;border-top-color:var(--green);}
+.keyline.car{border-top-style:dashed;border-top-color:var(--orange);}
+.tips{
+  background:var(--panel);border:1.5px solid var(--line);border-radius:14px;
+  padding:12px 18px;flex:1 1 320px;font-size:12.5px;line-height:1.55;
+}
+.tips b{color:var(--navy);font-size:13px;}
+.tips ul{list-style:none;margin-top:4px;}
+.tips li::before{content:"• ";color:var(--navy);font-weight:800;}
+.compass{
+  background:var(--panel);border:1.5px solid var(--line);border-radius:14px;
+  min-width:74px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  font-weight:800;color:var(--navy);
+}
+.compass .rose{font-size:30px;}
+
+/* ---------- day band ---------- */
+.day{display:flex;gap:0;background:var(--panel);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;}
+.day-side{
+  flex:0 0 330px;padding:0 0 18px 0;border-right:1.5px solid var(--line);
+  background:linear-gradient(180deg,#FBF7EC, #F6F1E1);
+}
+.day-head{
+  display:flex;align-items:baseline;gap:10px;color:#fff;padding:10px 16px;margin-bottom:14px;
+  font-family:'Quicksand',sans-serif;
+}
+.day-head .dnum{font-size:19px;font-weight:700;}
+.day-head .dtitle{font-size:13.5px;font-weight:600;letter-spacing:.2px;}
+.d1 .day-head{background:linear-gradient(90deg,var(--navy-deep),var(--navy));}
+.d2 .day-head{background:linear-gradient(90deg,var(--green-deep),var(--green));}
+.d3 .day-head{background:linear-gradient(90deg,var(--orange-deep),var(--orange));}
+
+.itin{padding:0 18px;display:flex;flex-direction:column;}
+.stopline{display:flex;align-items:baseline;gap:10px;}
+.badge{
+  flex:0 0 22px;width:22px;height:22px;border-radius:50%;color:#fff;
+  font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  transform:translateY(3px);
+}
+.d1 .badge{background:var(--navy);}
+.d2 .badge{background:var(--green);}
+.d3 .badge{background:var(--orange);}
+.stopline .time{font-weight:800;font-size:14px;min-width:48px;}
+.d1 .stopline .time{color:var(--navy);}
+.d2 .stopline .time{color:var(--green);}
+.d3 .stopline .time{color:var(--orange);}
+.stopline .name{font-weight:700;font-size:14.5px;}
+.leg{
+  margin:2px 0 2px 10px;padding-left:22px;border-left:2px dotted #B9B29A;
+  font-size:12.5px;color:#57606C;font-weight:600;line-height:1.9;
+}
+
+/* ---------- map area ---------- */
+.day-map{
+  flex:1;position:relative;padding:22px 22px 26px;
+  background:
+    linear-gradient(rgba(216,208,186,.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(216,208,186,.35) 1px, transparent 1px),
+    var(--map);
+  background-size:46px 46px;
+}
+.district{
+  position:absolute;font-family:'Quicksand',sans-serif;font-weight:600;
+  color:#A79F86;font-size:19px;letter-spacing:1px;pointer-events:none;
+}
+.river{
+  position:absolute;left:0;right:0;height:26px;border-radius:14px;
+  background:linear-gradient(90deg,#BFD8EA,#A9CBE3);opacity:.65;pointer-events:none;
+}
+.flow{position:relative;display:flex;flex-wrap:wrap;align-items:center;row-gap:26px;column-gap:0;}
+.stopcard{
+  background:#fff;border:1.5px solid #E2DCC8;border-radius:12px;
+  box-shadow:0 3px 10px rgba(31,41,55,.10);
+  width:150px;padding:8px 8px 10px;position:relative;z-index:2;
+}
+.stopcard .pic{
+  height:74px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;margin-bottom:7px;
+}
+.stopcard .cap{display:flex;align-items:flex-start;gap:6px;}
+.stopcard .cap .badge{transform:none;flex:0 0 20px;width:20px;height:20px;font-size:11.5px;}
+.stopcard .cap .nm{font-weight:800;font-size:12.5px;line-height:1.25;}
+.stopcard .cap .nm small{display:block;font-weight:600;color:#6B7280;font-size:11px;}
+.connector{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:78px;flex:1 0 78px;max-width:130px;gap:3px;z-index:1;
+}
+.connector .lbl{font-size:11.5px;font-weight:800;}
+.connector .track{width:100%;height:0;border-top-width:3px;}
+.connector.walk .track{border-top-style:dashed;border-top-color:var(--navy);}
+.connector.walk .lbl{color:var(--navy);}
+.connector.metro .track{border-top-style:solid;border-top-color:var(--green);}
+.connector.metro .lbl{color:var(--green);}
+.connector.car .track{border-top-style:dashed;border-top-color:var(--orange);}
+.connector.car .lbl{color:var(--orange);}
+
+/* pic tints */
+.pic.palace{background:linear-gradient(135deg,#E8EEF9,#CBD9F2);}
+.pic.hanok{background:linear-gradient(135deg,#F3E9DA,#E4D2B8);}
+.pic.street{background:linear-gradient(135deg,#FBE8E4,#F3CFC6);}
+.pic.night{background:linear-gradient(135deg,#2B3355,#4A548A);}
+.pic.museum{background:linear-gradient(135deg,#E7F2E9,#CFE5D4);}
+.pic.modern{background:linear-gradient(135deg,#E4EDF2,#C8DAE4);}
+.pic.parkg{background:linear-gradient(135deg,#E4F2DF,#CBE6C2);}
+.pic.temple{background:linear-gradient(135deg,#F6EBD9,#EAD7B4);}
+.pic.mall{background:linear-gradient(135deg,#EEE9F7,#D9CFF0;);}
+.pic.rivern{background:linear-gradient(135deg,#28304F,#41649B);}
+
+/* ---------- footer ---------- */
+.footer{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch;}
+.summary{
+  flex:1 1 460px;background:var(--panel);border:2px solid var(--navy);border-radius:14px;padding:14px 20px;
+}
+.summary h2{font-family:'Quicksand',sans-serif;color:var(--navy);font-size:16px;font-weight:700;margin-bottom:8px;}
+.summary .srow{display:flex;gap:10px;font-size:13px;line-height:1.7;}
+.summary .srow b{min-width:52px;}
+.summary .srow.s1 b{color:var(--navy);}
+.summary .srow.s2 b{color:var(--green);}
+.summary .srow.s3 b{color:var(--orange);}
+.transit{
+  flex:2 1 560px;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:14px 22px;
+  display:flex;flex-direction:column;gap:10px;justify-content:center;
+}
+.transit h2{font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;color:#374151;}
+.transit .trow{display:flex;gap:34px;flex-wrap:wrap;font-size:13.5px;font-weight:700;}
+.transit .titem{display:flex;align-items:center;gap:8px;}
+.transit .ticon{font-size:18px;}
+.tagline{
+  text-align:right;font-size:13px;font-weight:800;color:var(--navy);
+  padding:2px 6px 0;width:100%;
+}
+.tagline .heart{color:#E0435A;}
+
+@media (max-width:900px){
+  .day{flex-direction:column;}
+  .day-side{flex:1 1 auto;border-right:none;border-bottom:1.5px solid var(--line);}
+  .district{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="titlebox">
+      <div class="tower">🗼</div>
+      <div>
+        <h1>Seoul 3-Day Trip · Recommended Itinerary Route Map</h1>
+        <div class="sub">Traditional Seoul &nbsp;×&nbsp; Art &amp; Architecture &nbsp;×&nbsp; Modern City &nbsp;×&nbsp; Han River Views</div>
+      </div>
+      <div class="flag">🇰🇷</div>
+    </div>
+    <div class="legend">
+      <div class="row">
+        <span class="item">🚶 Walking</span>
+        <span class="item">🚇 Subway</span>
+        <span class="item">🚕 Taxi</span>
+      </div>
+      <div class="row">
+        <span class="item"><span class="keyline walk"></span> Walking route</span>
+        <span class="item"><span class="keyline metro"></span> Subway route</span>
+        <span class="item"><span class="keyline car"></span> Driving route</span>
+      </div>
+    </div>
+    <div class="tips">
+      <b>Tips</b>
+      <ul>
+        <li>Use Naver Map / Kakao Map for navigation</li>
+        <li>Travel times are estimates under normal conditions — for reference only</li>
+        <li>Check official announcements for attraction opening hours</li>
+      </ul>
+    </div>
+    <div class="compass"><span class="rose">🧭</span><span>N</span></div>
+  </div>
+
+  <!-- DAY 1 -->
+  <div class="day d1">
+    <div class="day-side">
+      <div class="day-head"><span class="dnum">Day 1</span><span class="dtitle">Traditional Seoul (Palaces × Hanok × Old Streets × Night Views)</span></div>
+      <div class="itin">
+        <div class="stopline"><span class="badge">1</span><span class="time">09:00</span><span class="name">Gyeongbokgung Palace</span></div>
+        <div class="leg">🚶 Walk 15–20 min</div>
+        <div class="stopline"><span class="badge">2</span><span class="time">11:15</span><span class="name">Bukchon Hanok Village</span></div>
+        <div class="leg">🚶 Walk 10–15 min</div>
+        <div class="stopline"><span class="badge">3</span><span class="time">13:45</span><span class="name">Changdeokgung Palace</span></div>
+        <div class="leg">🚶 Walk 15 min</div>
+        <div class="stopline"><span class="badge">4</span><span class="time">16:00</span><span class="name">Insadong</span></div>
+        <div class="leg">🚶 Walk 10 min</div>
+        <div class="stopline"><span class="badge">5</span><span class="time">17:00</span><span class="name">Ikseon-dong Hanok Village</span></div>
+        <div class="leg">🚇 Subway 15–20 min</div>
+        <div class="stopline"><span class="badge">6</span><span class="time">19:00</span><span class="name">Myeongdong</span></div>
+        <div class="leg">🚶 Walk + cable car / bus 25–35 min</div>
+        <div class="stopline"><span class="badge">7</span><span class="time">20:30</span><span class="name">N Seoul Tower (Namsan Tower)</span></div>
+      </div>
+    </div>
+    <div class="day-map">
+      <div class="district" style="top:14px;right:26%;">Jongno-gu</div>
+      <div class="district" style="bottom:110px;left:38%;">Jung-gu</div>
+      <div class="district" style="bottom:34px;right:12%;">Namsan Park</div>
+      <div class="district" style="top:52%;left:6%;font-size:14px;">Gwanghwamun Square</div>
+      <div class="district" style="top:47%;left:44%;font-size:14px;color:#8FB4CC;">Cheonggyecheon</div>
+      <div class="flow">
+        <div class="stopcard"><div class="pic palace">🏯</div><div class="cap"><span class="badge">1</span><span class="nm">Gyeongbokgung Palace</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 15–20 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic hanok">🏘️</div><div class="cap"><span class="badge">2</span><span class="nm">Bukchon Hanok Village</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 10–15 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic palace">⛩️</div><div class="cap"><span class="badge">3</span><span class="nm">Changdeokgung Palace</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 15 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic street">🏮</div><div class="cap"><span class="badge">4</span><span class="nm">Insadong</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 10 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic hanok">🏮</div><div class="cap"><span class="badge">5</span><span class="nm">Ikseon-dong Hanok Village</span></div></div>
+        <div class="connector metro"><span class="lbl">🚇 15–20 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic street">🌃</div><div class="cap"><span class="badge">6</span><span class="nm">Myeongdong</span></div></div>
+        <div class="connector car"><span class="lbl">🚡 25–35 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic night">🗼</div><div class="cap"><span class="badge">7</span><span class="nm">N Seoul Tower<small>Namsan Tower</small></span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day d2">
+    <div class="day-side">
+      <div class="day-head"><span class="dnum">Day 2</span><span class="dtitle">Art, Architecture &amp; Contemporary Seoul (Museums × Architecture × Seongsu-dong)</span></div>
+      <div class="itin">
+        <div class="stopline"><span class="badge">1</span><span class="time">09:30</span><span class="name">National Museum of Korea</span></div>
+        <div class="leg">🚕 Taxi 15 min</div>
+        <div class="stopline"><span class="badge">2</span><span class="time">12:20</span><span class="name">Leeum Museum of Art</span></div>
+        <div class="leg">🚕 Drive 20–25 min</div>
+        <div class="stopline"><span class="badge">3</span><span class="time">15:00</span><span class="name">Dongdaemun Design Plaza (DDP)</span></div>
+        <div class="leg">🚇 Subway 20 min</div>
+        <div class="stopline"><span class="badge">4</span><span class="time">16:40</span><span class="name">Seongsu-dong</span></div>
+        <div class="leg">🚶 Walk 10–20 min</div>
+        <div class="stopline"><span class="badge">5</span><span class="time">19:30</span><span class="name">Seoul Forest Park</span></div>
+      </div>
+    </div>
+    <div class="day-map">
+      <div class="district" style="bottom:30px;left:6%;">Yongsan-gu</div>
+      <div class="district" style="bottom:30px;right:22%;">Seongdong-gu</div>
+      <div class="flow">
+        <div class="stopcard"><div class="pic museum">🏛️</div><div class="cap"><span class="badge">1</span><span class="nm">National Museum of Korea</span></div></div>
+        <div class="connector car"><span class="lbl">🚕 15 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic museum">🖼️</div><div class="cap"><span class="badge">2</span><span class="nm">Leeum Museum of Art</span></div></div>
+        <div class="connector car"><span class="lbl">🚕 20–25 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic modern">🛸</div><div class="cap"><span class="badge">3</span><span class="nm">DDP<small>Dongdaemun Design Plaza</small></span></div></div>
+        <div class="connector metro"><span class="lbl">🚇 20 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic street">☕</div><div class="cap"><span class="badge">4</span><span class="nm">Seongsu-dong</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 10–20 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic parkg">🌳</div><div class="cap"><span class="badge">5</span><span class="nm">Seoul Forest Park</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day d3">
+    <div class="day-side">
+      <div class="day-head"><span class="dnum">Day 3</span><span class="dtitle">Gangnam, New Seoul (Temple × Commercial City × Han River)</span></div>
+      <div class="itin">
+        <div class="stopline"><span class="badge">1</span><span class="time">09:30</span><span class="name">Bongeunsa Temple</span></div>
+        <div class="leg">🚶 Walk 5 min</div>
+        <div class="stopline"><span class="badge">2</span><span class="time">11:00</span><span class="name">COEX (Starfield Library)</span></div>
+        <div class="leg">🚇 Subway / walk 15–25 min</div>
+        <div class="stopline"><span class="badge">3</span><span class="time">14:00</span><span class="name">Gangnam / Sinsa-dong</span></div>
+        <div class="leg">🚕 Taxi 15–25 min</div>
+        <div class="stopline"><span class="badge">4</span><span class="time">18:00</span><span class="name">Banpo Hangang Park (night views)</span></div>
+      </div>
+    </div>
+    <div class="day-map">
+      <div class="district" style="top:16px;right:6%;color:#8FB4CC;">Han River</div>
+      <div class="district" style="bottom:30px;left:42%;">Gangnam-gu</div>
+      <div class="flow">
+        <div class="stopcard"><div class="pic temple">🛕</div><div class="cap"><span class="badge">1</span><span class="nm">Bongeunsa Temple</span></div></div>
+        <div class="connector walk"><span class="lbl">🚶 5 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic mall">📚</div><div class="cap"><span class="badge">2</span><span class="nm">COEX<small>Starfield Library</small></span></div></div>
+        <div class="connector metro"><span class="lbl">🚇 15–25 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic modern">🏙️</div><div class="cap"><span class="badge">3</span><span class="nm">Gangnam / Sinsa-dong</span></div></div>
+        <div class="connector car"><span class="lbl">🚕 15–25 min</span><span class="track"></span></div>
+        <div class="stopcard"><div class="pic rivern">⛲</div><div class="cap"><span class="badge">4</span><span class="nm">Banpo Hangang Park<small>Rainbow Fountain night view</small></span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="summary">
+      <h2>3-Day Itinerary Highlights</h2>
+      <div class="srow s1"><b>Day 1</b><span>Step into Joseon-era Seoul and soak up the historic atmosphere of its palaces and hanok villages</span></div>
+      <div class="srow s2"><b>Day 2</b><span>Explore cultural and creative spaces, experiencing the design and artistic energy of contemporary Seoul</span></div>
+      <div class="srow s3"><b>Day 3</b><span>Feel the pulse of Gangnam — from a thousand-year-old temple to Han River night views, all in one day</span></div>
+    </div>
+    <div class="transit">
+      <h2>Travel Time Reference</h2>
+      <div class="trow">
+        <span class="titem"><span class="ticon">🚶</span> Walking&nbsp; 5–20 min</span>
+        <span class="titem"><span class="ticon">🚇</span> Subway&nbsp; 15–25 min</span>
+        <span class="titem"><span class="ticon">🚕</span> Taxi&nbsp; 15–25 min</span>
+        <span class="titem"><span class="ticon">🚌</span> Bus / Cable car&nbsp; 25–35 min</span>
+      </div>
+    </div>
+    <div class="tagline">📷 Explore Seoul on foot, and collect beautiful memories along the way! <span class="heart">❤️</span></div>
+  </div>
+
+</div>
+</body>
+</html>

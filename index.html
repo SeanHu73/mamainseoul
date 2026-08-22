@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#FDFAF1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Mama in Seoul</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div id="app">
+
+  <div class="adminbar" id="adminbar" hidden>
+    <span>🔧 ADMIN MODE</span>
+    <span class="spacer"></span>
+    <button id="admExport">Export stops.json</button>
+    <button id="admOff">Exit</button>
+  </div>
+
+  <header class="topbar">
+    <div id="brand">
+      <h1 data-i18n="title">Mama in Seoul</h1>
+      <div class="sub" data-i18n="subtitle"></div>
+    </div>
+    <span class="spacer"></span>
+    <button class="pill count" id="progressPill">0 / 16</button>
+    <button class="pill" id="langBtn">中文</button>
+  </header>
+
+  <main>
+    <!-- MAP -->
+    <section class="view" id="view-map">
+      <div id="map"></div>
+      <div class="dayfilter" id="dayFilter"></div>
+      <button class="locbtn" id="locBtn" title="Find me">📍</button>
+    </section>
+
+    <!-- ITINERARY -->
+    <section class="view scrolls" id="view-list" hidden></section>
+
+    <!-- SCRAPBOOK -->
+    <section class="view scrolls" id="view-book" hidden></section>
+  </main>
+
+  <nav class="tabbar" id="tabs">
+    <button data-view="map" aria-selected="true"><span class="ic">🗺️</span><span data-i18n="tabMap">Map</span></button>
+    <button data-view="list" aria-selected="false"><span class="ic">📋</span><span data-i18n="tabList">Itinerary</span></button>
+    <button data-view="book" aria-selected="false"><span class="ic">📖</span><span data-i18n="tabBook">Scrapbook</span></button>
+  </nav>
+
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="grip"><i></i></div>
+  <div class="body" id="sheetBody"></div>
+</div>
+
+<input type="file" id="photoInput" accept="image/*" capture="environment" hidden>
+<input type="file" id="adminPhotoInput" accept="image/*" hidden>
+<input type="file" id="importInput" accept="application/json,.json" hidden>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
