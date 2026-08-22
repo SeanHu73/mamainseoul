@@ -287,8 +287,7 @@ async function openDetail(entryId) {
       ${e.place ? `<div class="tlplace">📍 ${esc(t(e.place.label))}</div>` : ''}
     </div>
 
-    <button class="btn" id="dMap" ${e.place ? '' : 'disabled'}>🗺️ ${esc(ui('tlFindOnMap'))}</button>
-    ${e.place ? '' : `<div class="distnote">${esc(ui('tlNoPin'))}</div>`}
+    ${e.place ? `<button class="btn" id="dMap">🗺️ ${esc(ui('tlFindOnMap'))}</button>` : ''}
 
     <div class="tlformbtns">
       <button class="btn ghost" id="dEdit">${esc(ui('tlEdit'))}</button>
@@ -297,8 +296,9 @@ async function openDetail(entryId) {
 
   $('#dClose').addEventListener('click', closeForm);
   $('#dEdit').addEventListener('click', () => openForm(entryId));
-  $('#dMap').addEventListener('click', () => {
-    if (!e.place) return;
+  // Nothing to offer when the entry was never pinned, so the button isn't
+  // there at all rather than sitting greyed out.
+  $('#dMap')?.addEventListener('click', () => {
     closeForm();
     onFindOnMap(e.place.lat, e.place.lng, t(e.title));
   });

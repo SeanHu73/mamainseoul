@@ -128,8 +128,9 @@ inside a long dynasty from looking like a jump backwards.
 
 Tiles carry only a date, a title and a photo. Tapping one opens a card with
 the full description, the photo at size, and a **Find on map** button that
-switches to the map and drops a pin where the entry was recorded. The button
-is disabled for entries with no location.
+switches to the map and drops a pin where the entry was recorded. Entries
+with no location simply don't get the button — there is nothing to offer, so
+there is nothing to grey out.
 
 Entries carry a date, a title, an optional description, an optional photo and
 an optional location. Tapping **Use where I am** resolves her GPS to a place
