@@ -112,6 +112,25 @@ hidden until she checks in.
 
 A fourth tab: a vertical, top-down timeline she builds as she goes.
 
+Entries alternate either side of a curving spine that runs down the middle.
+The spine is an SVG drawn in script from measured node positions, because the
+curve has to follow real layout — tiles differ in height depending on whether
+they carry a photo. Each segment bows towards the tile it is travelling to,
+and since sides alternate, the result serpentines. It redraws on resize and
+after photos decode.
+
+**Spacing is deliberately uniform.** Vertical distance is not a measure of
+elapsed time. Where a real gap opens up — 25 years or more between the
+furthest point reached so far and the next entry — a dashed break is drawn
+across the spine, labelled "51 years pass". Comparing against the furthest
+point reached, rather than simply the previous entry, stops every small event
+inside a long dynasty from looking like a jump backwards.
+
+Tiles carry only a date, a title and a photo. Tapping one opens a card with
+the full description, the photo at size, and a **Find on map** button that
+switches to the map and drops a pin where the entry was recorded. The button
+is disabled for entries with no location.
+
 Entries carry a date, a title, an optional description, an optional photo and
 an optional location. Tapping **Use where I am** resolves her GPS to a place
 name — "near Bukchon Hanok Village" rather than a pair of coordinates — by

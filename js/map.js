@@ -130,6 +130,30 @@ export function showMe(pos) {
 
 export function resizeMap() { if (map) map.resize(); }
 
+let pinMarker = null;
+
+/** Drops a one-off pin for a timeline entry and flies to it. */
+export function showPoint(lat, lng, label) {
+  if (!map) return;
+  if (!pinMarker) {
+    const el = document.createElement('div');
+    el.className = 'tlpin';
+    el.textContent = '🕰️';
+    pinMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' });
+  }
+  pinMarker.setLngLat([lng, lat]);
+  if (label) {
+    pinMarker.setPopup(new maplibregl.Popup({ offset: 26, closeButton: false }).setText(label));
+  }
+  pinMarker.addTo(map);
+  map.flyTo({ center: [lng, lat], zoom: 15.5, duration: 800 });
+  pinMarker.togglePopup();
+}
+
+export function clearPoint() {
+  pinMarker?.remove();
+}
+
 export function getMapCenter() {
   const c = map.getCenter();
   return { lat: +c.lat.toFixed(6), lng: +c.lng.toFixed(6) };

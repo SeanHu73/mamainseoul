@@ -1,7 +1,7 @@
 import { loadContent } from './content.js';
 import { toggleLang } from './i18n.js';
 import * as UI from './ui.js';
-import { initMap, setDayFilter, refreshMarkers, flyToStop, showMe, resizeMap } from './map.js';
+import { initMap, setDayFilter, refreshMarkers, flyToStop, showMe, resizeMap, showPoint } from './map.js';
 import { getStop } from './content.js';
 import { locate } from './geo.js';
 import { initAdmin } from './admin.js';
@@ -61,7 +61,17 @@ async function main() {
 
   initMap('map', { onStopClick: openStop });
   initAdmin({ onChange: redrawAll });
-  initTimeline({ onChange: () => {} });
+  initTimeline({
+    onChange: () => {},
+    onFindOnMap: (lat, lng, label) => {
+      // showView unhides the map synchronously, so resize and fly right away.
+      // This used to sit inside requestAnimationFrame, which never fires in a
+      // backgrounded or throttled tab — the button did nothing at all.
+      showView('map');
+      resizeMap();
+      showPoint(lat, lng, label);
+    }
+  });
 
   for (const b of $('#tabs').querySelectorAll('button')) {
     b.addEventListener('click', () => showView(b.dataset.view));

@@ -1,4 +1,4 @@
-import { t, ui, getLang } from './i18n.js';
+import { t, ui, uiIn, getLang } from './i18n.js';
 import * as store from './store.js';
 import { allStops } from './content.js';
 import { locate, distance } from './geo.js';
@@ -9,9 +9,11 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 let onChange = () => {};
+let onFindOnMap = () => {};
 
 export function initTimeline(handlers) {
   onChange = handlers.onChange || (() => {});
+  onFindOnMap = handlers.onFindOnMap || (() => {});
   $('#tlScrim').addEventListener('click', closeForm);
   $('#tlSheet .grip').addEventListener('click', closeForm);
 }
@@ -41,8 +43,8 @@ function describePlace(pos) {
       lng: +pos.lng.toFixed(5),
       stopId: best.stop.id,
       label: {
-        en: `${ui('tlNear')} ${best.stop.name.en}`,
-        zh: `${best.stop.name.zh}${ui('tlNear')}`
+        en: `${uiIn('en', 'tlNear')} ${best.stop.name.en}`,
+        zh: `${uiIn('zh', 'tlNear')}${best.stop.name.zh}`
       }
     };
   }
@@ -90,6 +92,49 @@ function dateLine(entry) {
 
 /* ---------------- list view ---------------- */
 
+// Spacing is deliberately uniform: the vertical distance between two entries
+// says nothing about how much time passed. Real elapsed time is called out
+// separately, by a dashed break, so 2,000 years and 2 days don't silently
+// render the same way.
+const GAP_YEARS = 25;   // below this, consecutive entries just follow on
+const BOW = 26;         // how far the spine bulges towards each tile
+
+/** Where an entry's period ends, or where it happens if it's a moment. */
+function endYear(entry) {
+  const p = store.parseDate(entry.endDate || entry.date);
+  return p ? p.year : null;
+}
+
+function startYear(entry) {
+  const p = store.parseDate(entry.date);
+  return p ? p.year : null;
+}
+
+/**
+ * Walks the entries and works out where to draw a time skip.
+ *
+ * Compares against the furthest end reached so far, not just the previous
+ * entry — otherwise every point event inside a long dynasty would look like a
+ * jump backwards and then forwards again.
+ */
+function withGaps(entries) {
+  const out = [];
+  let reached = null;
+
+  for (const e of entries) {
+    const s = startYear(e);
+    if (reached !== null && s !== null) {
+      let years = s - reached;
+      if (reached < 0 && s > 0) years -= 1;   // no year zero
+      if (years >= GAP_YEARS) out.push({ gap: years });
+    }
+    out.push({ entry: e });
+    const en = endYear(e);
+    if (en !== null) reached = reached === null ? en : Math.max(reached, en);
+  }
+  return out;
+}
+
 export async function renderTimeline() {
   const view = $('#view-timeline');
   const entries = store.getTimeline();
@@ -109,42 +154,52 @@ export async function renderTimeline() {
     return;
   }
 
-  const rows = await Promise.all(entries.map(async e => {
+  let side = 'left';
+  const rows = await Promise.all(withGaps(entries).map(async item => {
+    if (item.gap) {
+      // A break doesn't take a side — it sits on the spine.
+      return `<li class="tlbreak"><span class="tlnode gapnode"></span>
+                <span class="tlbreaklabel">${esc(ui('tlGap', item.gap))}</span></li>`;
+    }
+
+    const e = item.entry;
+    side = side === 'left' ? 'right' : 'left';
+
     let photo = '';
     if (e.photoKey) {
       const blob = await store.getPhoto(e.photoKey);
-      if (blob) photo = `<img class="tlphoto" src="${blobUrl(e.photoKey, blob)}" alt="">`;
+      if (blob) photo = `<img class="tiles" src="${blobUrl(e.photoKey, blob)}" alt="">`;
     }
-    const desc = t(e.description);
-    const place = e.place
-      ? `<div class="tlplace">📍 ${esc(t(e.place.label))}</div>` : '';
-    // A period gets a capsule running the height of its card instead of a
-    // dot, so "this covers a stretch of time" reads at a glance.
+
     const kind = e.source === 'ai' ? 'ai' : e.source === 'history' ? 'history' : '';
-    const marker = e.endDate
-      ? `<span class="tlbar ${kind}"></span>`
-      : `<span class="tldot ${kind}"></span>`;
+    const node = e.endDate
+      ? `<span class="tlnode tlbar ${kind}"></span>`
+      : `<span class="tlnode tldot ${kind}"></span>`;
+
+    // The tile is deliberately spare — date, title, picture. Everything else
+    // lives in the card that opens when she taps it.
     return `
-      <li class="tlrow${e.endDate ? ' span' : ''}">
-        <div class="tlspine">${marker}</div>
-        <div class="tlcard" data-entry="${e.id}">
-          <div class="tldate">${esc(dateLine(e))}</div>
-          <div class="tltitle">${esc(t(e.title))}</div>
+      <li class="tlrow ${side}" data-side="${side}">
+        ${node}
+        <button class="tltile" data-entry="${e.id}">
           ${photo}
-          ${desc ? `<p class="tldesc">${esc(desc)}</p>` : ''}
-          ${place}
-        </div>
+          <span class="tldate">${esc(dateLine(e))}</span>
+          <span class="tltitle">${esc(t(e.title))}</span>
+        </button>
       </li>`;
   }));
 
-  view.innerHTML = actions +
-    `<ul class="tl">${rows.join('')}</ul>
-     ${seedBtn}
-     <button class="btn ghost" id="tlClearBtn" style="margin-top:8px">${esc(ui('tlClear'))}</button>`;
+  view.innerHTML = actions + `
+    <div class="tlwrap">
+      <svg class="tlspine" aria-hidden="true"></svg>
+      <ul class="tl">${rows.join('')}</ul>
+    </div>
+    ${seedBtn}
+    <button class="btn ghost" id="tlClearBtn" style="margin-top:8px">${esc(ui('tlClear'))}</button>`;
 
   wireActions();
-  for (const card of view.querySelectorAll('[data-entry]')) {
-    card.addEventListener('click', () => openForm(card.dataset.entry));
+  for (const tile of view.querySelectorAll('[data-entry]')) {
+    tile.addEventListener('click', () => openDetail(tile.dataset.entry));
   }
   view.querySelector('#tlClearBtn').addEventListener('click', async () => {
     if (!confirm(ui('tlClearConfirm'))) return;
@@ -152,6 +207,103 @@ export async function renderTimeline() {
     renderTimeline();
     onChange();
   });
+
+  drawSpine();
+  // Photos change row heights as they decode, which would leave the spine
+  // drawn against stale positions.
+  for (const img of view.querySelectorAll('.tiles')) {
+    if (!img.complete) img.addEventListener('load', drawSpine, { once: true });
+  }
+}
+
+/**
+ * Draws the spine as a run of bezier segments between the nodes, bowing
+ * towards whichever side the next tile sits on. Done in script rather than
+ * CSS because the curve has to follow real measured positions — tiles vary
+ * in height depending on whether they carry a photo.
+ */
+function drawSpine() {
+  const wrap = document.querySelector('.tlwrap');
+  const svg = document.querySelector('.tlspine');
+  const list = document.querySelector('.tl');
+  if (!wrap || !svg || !list) return;
+
+  const base = list.getBoundingClientRect();
+  svg.setAttribute('width', base.width);
+  svg.setAttribute('height', base.height);
+  svg.setAttribute('viewBox', `0 0 ${base.width} ${base.height}`);
+
+  const items = [...list.children].map(li => {
+    const node = li.querySelector('.tlnode');
+    if (!node) return null;
+    const r = node.getBoundingClientRect();
+    return {
+      x: r.left - base.left + r.width / 2,
+      y: r.top - base.top + r.height / 2,
+      side: li.dataset.side === 'right' ? 1 : li.dataset.side === 'left' ? -1 : 0,
+      isGap: li.classList.contains('tlbreak')
+    };
+  }).filter(Boolean);
+
+  const parts = [];
+  for (let i = 0; i < items.length - 1; i++) {
+    const a = items[i];
+    const b = items[i + 1];
+    const dy = (b.y - a.y) * 0.42;
+    // Bow towards the tile we're travelling to, so the line leans into it.
+    const bow = (b.side || a.side || 1) * BOW;
+    const d = `M ${a.x} ${a.y} C ${a.x + bow} ${a.y + dy}, ${b.x + bow} ${b.y - dy}, ${b.x} ${b.y}`;
+    parts.push(`<path d="${d}" class="${a.isGap || b.isGap ? 'skip' : ''}"/>`);
+  }
+  svg.innerHTML = parts.join('');
+}
+
+let spineRedrawTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(spineRedrawTimer);
+  spineRedrawTimer = setTimeout(drawSpine, 120);
+});
+
+/* ---------------- detail card ---------------- */
+
+async function openDetail(entryId) {
+  const e = store.getTimelineEntry(entryId);
+  if (!e) return;
+
+  let photo = '';
+  if (e.photoKey) {
+    const blob = await store.getPhoto(e.photoKey);
+    if (blob) photo = `<img class="tlphoto" src="${blobUrl(e.photoKey, blob)}" alt="">`;
+  }
+
+  const desc = t(e.description);
+  const body = $('#tlSheetBody');
+  body.innerHTML = `
+    <div class="tldetail">
+      <div class="tldate">${esc(dateLine(e))}</div>
+      <h2 class="tlformtitle">${esc(t(e.title))}</h2>
+      ${photo}
+      ${desc ? `<p class="tldetaildesc">${esc(desc)}</p>` : ''}
+      ${e.place ? `<div class="tlplace">📍 ${esc(t(e.place.label))}</div>` : ''}
+    </div>
+
+    <button class="btn" id="dMap" ${e.place ? '' : 'disabled'}>🗺️ ${esc(ui('tlFindOnMap'))}</button>
+    ${e.place ? '' : `<div class="distnote">${esc(ui('tlNoPin'))}</div>`}
+
+    <div class="tlformbtns">
+      <button class="btn ghost" id="dEdit">${esc(ui('tlEdit'))}</button>
+      <button class="btn ghost" id="dClose">${esc(ui('tlClose'))}</button>
+    </div>`;
+
+  $('#dClose').addEventListener('click', closeForm);
+  $('#dEdit').addEventListener('click', () => openForm(entryId));
+  $('#dMap').addEventListener('click', () => {
+    if (!e.place) return;
+    closeForm();
+    onFindOnMap(e.place.lat, e.place.lng, t(e.title));
+  });
+
+  openSheetEl();
 }
 
 function wireActions() {

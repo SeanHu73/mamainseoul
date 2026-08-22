@@ -310,71 +310,97 @@ main { flex: 1; position: relative; overflow: hidden; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- timeline ---------- */
-.tlactions { display: flex; gap: 9px; margin-bottom: 14px; }
+.tlactions { display: flex; gap: 9px; margin-bottom: 16px; }
 .tlactions .btn { font-size: 14px; padding: 12px 10px; }
 .tlactions .btn:last-child { background: var(--green); box-shadow: 0 3px 10px rgba(21,128,61,.28); }
 
-.tl { list-style: none; }
-.tlrow { display: flex; gap: 11px; align-items: stretch; }
+.tlwrap { position: relative; }
 
-/* The spine is a full-height rule with the dot floated on top, so the line
-   runs unbroken between entries however tall each card is. */
-.tlspine { flex: 0 0 14px; position: relative; }
-.tlspine::before {
-  content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
-  width: 2px; background: var(--line);
-}
-.tlrow:first-child .tlspine::before { top: 14px; }
-.tlrow:last-child .tlspine::before { bottom: calc(100% - 14px); }
+/* The spine is drawn in script from measured node positions — see drawSpine().
+   CSS can't curve between elements whose heights depend on their content. */
+.tlspine { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: visible; }
+.tlspine path { fill: none; stroke: #CFC7B0; stroke-width: 2.5; stroke-linecap: round; }
+.tlspine path.skip { stroke-dasharray: 4 7; stroke: #BDB49B; }
+
+.tl { list-style: none; position: relative; z-index: 1; }
+
+/* Uniform spacing on purpose: vertical distance is not a measure of elapsed
+   time. Time skips are called out explicitly instead. */
+.tlrow { position: relative; min-height: 74px; margin-bottom: 22px; display: flex; }
+.tlrow.left  { justify-content: flex-start; padding-right: calc(50% + 15px); }
+.tlrow.right { justify-content: flex-end;   padding-left:  calc(50% + 15px); }
+
+.tlnode { position: absolute; left: 50%; transform: translateX(-50%); z-index: 2; }
 .tldot {
-  position: absolute; left: 0; top: 8px;
-  width: 14px; height: 14px; border-radius: 50%;
+  top: 16px; width: 13px; height: 13px; border-radius: 50%;
   background: var(--navy); border: 3px solid var(--cream); box-sizing: content-box;
 }
 .tldot.ai { background: var(--green); }
 .tldot.history { background: var(--orange); }
 
-/* A period is a capsule spanning its whole card, so duration reads as length
-   rather than as another dot on the line. */
-.tlrow.span .tlspine::before { display: none; }
+/* A period is a capsule spanning its row, so duration reads as length. */
 .tlbar {
-  position: absolute; left: 3px; top: 6px; bottom: 18px;
-  width: 8px; border-radius: 5px;
-  background: var(--navy); border: 2px solid var(--cream); box-sizing: content-box;
+  top: 12px; bottom: 12px; width: 9px; border-radius: 6px;
+  background: var(--navy); border: 3px solid var(--cream); box-sizing: content-box;
 }
 .tlbar.ai { background: var(--green); }
 .tlbar.history {
-  /* Faded at both ends: most of these periods have soft boundaries, and the
-     dates on them are conventions rather than moments. */
+  /* Faded ends: these boundary dates are conventions, not moments. */
   background: linear-gradient(180deg,
-    rgba(217,119,6,.35), var(--orange) 18%, var(--orange) 82%, rgba(217,119,6,.35));
+    rgba(217,119,6,.3), var(--orange) 20%, var(--orange) 80%, rgba(217,119,6,.3));
 }
-.tlrow.span .tlcard { background: #FBF7EC; }
 
-.tlcard {
-  flex: 1; text-align: left; width: 100%;
-  background: var(--panel); border: 1.5px solid var(--line); border-radius: 13px;
-  padding: 11px 13px 12px; margin-bottom: 12px;
+.tltile {
+  width: 100%; text-align: left; overflow: hidden;
+  background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(31,41,55,.07);
+  display: flex; flex-direction: column;
 }
+.tltile:active { transform: scale(.98); }
+.tltile .tiles { width: 100%; height: 76px; object-fit: cover; display: block; }
+.tltile .tldate { padding: 8px 10px 0; }
+.tltile .tltitle { padding: 1px 10px 10px; }
+
 .tldate {
-  font-size: 11.5px; font-weight: 800; color: var(--muted);
-  letter-spacing: .4px; text-transform: uppercase;
+  font-size: 10.5px; font-weight: 800; color: var(--muted);
+  letter-spacing: .3px; text-transform: uppercase; line-height: 1.3;
 }
 .tltitle {
-  font-family: 'Quicksand', sans-serif; font-size: 15.5px; font-weight: 700;
-  line-height: 1.25; margin-top: 2px;
+  font-family: 'Quicksand', sans-serif; font-size: 13.5px; font-weight: 700;
+  line-height: 1.3;
 }
-.tldesc { font-size: 13.5px; color: #4B5563; margin-top: 5px; }
+
+/* a jump of years, sitting on the spine between two entries */
+.tlbreak {
+  position: relative; display: flex; justify-content: center;
+  margin-bottom: 22px; min-height: 34px; align-items: center;
+}
+.tlbreak .gapnode { top: 50%; width: 5px; height: 5px; margin-top: -2px; border-radius: 50%; background: #BDB49B; }
+.tlbreaklabel {
+  background: var(--cream); padding: 3px 11px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 800; color: #9A9179;
+  letter-spacing: .4px; text-transform: uppercase; z-index: 2;
+  border: 1px dashed #CFC7B0;
+}
+
+/* detail card */
+.tldetail { padding-bottom: 4px; }
+.tldetail .tlformtitle { padding-top: 2px; }
+.tldetaildesc { font-size: 14.5px; color: #4B5563; margin-top: 4px; line-height: 1.55; }
 .tlphoto {
-  width: 100%; border-radius: 9px; margin-top: 8px; display: block;
-  border: 1px solid var(--line); max-height: 240px; object-fit: cover;
+  width: 100%; border-radius: 10px; margin: 10px 0 4px; display: block;
+  border: 1px solid var(--line); max-height: 300px; object-fit: cover;
 }
-.tlplace { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-top: 7px; }
+.tlplace { font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 9px; }
+.tldesc { font-size: 13.5px; color: #4B5563; margin-top: 5px; }
+
+/* one-off pin dropped on the map by "Find on map" */
+.tlpin { font-size: 26px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.35)); cursor: pointer; }
 
 /* form */
 .tlformtitle {
   font-family: 'Quicksand', sans-serif; font-size: 18px; font-weight: 700;
-  color: var(--navy); padding: 4px 0 8px;
+  color: var(--navy); padding: 4px 0 8px; line-height: 1.25;
 }
 .tllabel {
   display: block; font-size: 11px; font-weight: 800; color: var(--muted);
@@ -395,6 +421,13 @@ main { flex: 1; position: relative; overflow: hidden; }
   padding: 11px 13px; margin-bottom: 9px;
 }
 .tlreview input { margin-top: 4px; width: 19px; height: 19px; flex: 0 0 19px; accent-color: var(--green); }
+
+@media (min-width: 620px) {
+  .tlrow.left  { padding-right: calc(50% + 26px); }
+  .tlrow.right { padding-left:  calc(50% + 26px); }
+  .tltile .tiles { height: 110px; }
+  .tltitle { font-size: 15px; }
+}
 
 /* ---------- admin ---------- */
 .adminbar {

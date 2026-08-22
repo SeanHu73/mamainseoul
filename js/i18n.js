@@ -41,6 +41,10 @@ const UI = {
     tlEndDate: 'End date (optional — makes it a period)',
     tlYearsFmt: (n) => n === 1 ? '1 year' : `${n} years`,
     tlBce: (y) => `${y} BCE`,
+    tlFindOnMap: 'Find on map',
+    tlClose: 'Close',
+    tlGap: (n) => `${n.toLocaleString('en')} years pass`,
+    tlNoPin: 'No location saved for this one',
     tlSeed: 'Add Korean history',
     tlSeedDone: (n) => `Added ${n} events`,
     tlSeedNone: 'Already added',
@@ -113,6 +117,10 @@ const UI = {
     tlEndDate: '結束日期（選填 —— 填了就成為一段時期）',
     tlYearsFmt: (n) => `${n} 年`,
     tlBce: (y) => `西元前 ${y} 年`,
+    tlFindOnMap: '在地圖上找',
+    tlClose: '關閉',
+    tlGap: (n) => `${n.toLocaleString('zh-TW')} 年過去`,
+    tlNoPin: '這筆紀錄沒有地點',
     tlSeed: '加入韓國歷史',
     tlSeedDone: (n) => `已加入 ${n} 個事件`,
     tlSeedNone: '已經加過了',
@@ -178,6 +186,16 @@ export function t(obj) {
 /** UI string by key. Values may be functions taking args. */
 export function ui(key, ...args) {
   const v = UI[lang][key] ?? UI.en[key] ?? key;
+  return typeof v === 'function' ? v(...args) : v;
+}
+
+/**
+ * A UI string in a specific language, regardless of the current one. Needed
+ * when building a bilingual value for storage — using ui() there would write
+ * whatever language happened to be active into both sides.
+ */
+export function uiIn(which, key, ...args) {
+  const v = UI[which]?.[key] ?? UI.en[key] ?? key;
   return typeof v === 'function' ? v(...args) : v;
 }
 
