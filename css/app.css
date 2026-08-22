@@ -43,6 +43,13 @@ input, textarea, select { font: inherit; color: inherit; }
   border-bottom: 1px solid var(--line);
   z-index: 20;
 }
+#brand {
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
 .topbar h1 {
   font-family: 'Quicksand', sans-serif;
   font-size: 17px; font-weight: 700; color: var(--navy);
@@ -290,6 +297,16 @@ main { flex: 1; position: relative; overflow: hidden; }
 
 .empty { text-align: center; color: var(--muted); font-size: 13.5px; padding: 40px 20px; }
 .empty .big { font-size: 40px; display: block; margin-bottom: 10px; }
+
+.toast {
+  position: fixed; left: 50%; top: 64px; transform: translate(-50%, -6px);
+  background: rgba(31,41,55,.92); color: #fff;
+  padding: 7px 14px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 800; letter-spacing: .2px;
+  z-index: 90; pointer-events: none;
+  opacity: 0; transition: opacity .16s, transform .16s;
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- admin ---------- */
 .adminbar {

@@ -70,7 +70,12 @@ locked out of her own trip.
 
 For reviewing and correcting the content before she leaves, or on the ground.
 
-**Turn it on:** add `?admin=1` to the URL, or tap the app title five times.
+**Turn it on:** tap the app title five times. From the second tap a small
+counter appears so you can see it registering. Or add `?admin=1` to the URL.
+
+Admin mode sticks across reloads until you tap **Exit** in the black bar, so
+it survives the page refreshes that editing involves — and works inside the
+installed app, where there is no address bar to put `?admin=1` into.
 
 Open any stop and you get an editor beneath the normal card:
 

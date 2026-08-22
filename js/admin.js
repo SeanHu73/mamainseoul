@@ -12,24 +12,48 @@ import { moveMarker, getMapCenter } from './map.js';
 let admin = false;
 let onExitAdmin = () => {};
 
+const K_ADMIN = 'mis.admin';
+
 export function isAdmin() { return admin; }
 
 export function initAdmin(handlers) {
   onExitAdmin = handlers.onChange;
 
-  if (new URLSearchParams(location.search).get('admin') === '1') enter();
+  // Sticky across reloads. Without this, ?admin=1 evaporates the moment the
+  // page reloads — and inside an installed PWA the query string is gone
+  // entirely, so the URL route alone was never enough on a phone.
+  if (new URLSearchParams(location.search).get('admin') === '1' ||
+      localStorage.getItem(K_ADMIN) === '1') {
+    enter();
+  }
 
-  // Five taps on the title — discoverable if you know, invisible if you don't.
+  // Five taps on the title. On a phone, repeated taps on text select the
+  // word instead of counting, so the target is user-select:none and we
+  // listen on pointerdown — click can be swallowed or delayed on touch.
   let taps = 0, timer = null;
-  document.querySelector('#brand').addEventListener('click', () => {
+  const brand = document.querySelector('#brand');
+  const onTap = e => {
+    if (admin) return;
+    e.preventDefault();
     taps++;
     clearTimeout(timer);
-    timer = setTimeout(() => { taps = 0; }, 1200);
-    if (taps >= 5) { taps = 0; enter(); }
-  });
+    timer = setTimeout(() => { taps = 0; hideToast(); }, 2500);
+    const left = 5 - taps;
+    if (left <= 0) {
+      taps = 0;
+      hideToast();
+      enter();
+    } else if (taps >= 2) {
+      // Silent counting feels broken on a phone. Show progress once it is
+      // clear this is deliberate rather than a stray tap.
+      toast(left === 1 ? '1 more tap' : `${left} more taps`);
+    }
+  };
+  brand.addEventListener('pointerdown', onTap);
 
   document.querySelector('#admOff').addEventListener('click', () => {
     admin = false;
+    localStorage.removeItem(K_ADMIN);
     document.querySelector('#adminbar').hidden = true;
     onExitAdmin();
   });
@@ -39,8 +63,27 @@ export function initAdmin(handlers) {
 
 function enter() {
   admin = true;
+  localStorage.setItem(K_ADMIN, '1');
   document.querySelector('#adminbar').hidden = false;
   onExitAdmin();
+}
+
+/* ---------------- tap feedback ---------------- */
+
+let toastEl = null;
+
+function toast(msg) {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast';
+    document.body.append(toastEl);
+  }
+  toastEl.textContent = msg;
+  toastEl.classList.add('on');
+}
+
+function hideToast() {
+  toastEl?.classList.remove('on');
 }
 
 /* ---------------- export ---------------- */
