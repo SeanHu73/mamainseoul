@@ -103,12 +103,19 @@ const TRANSLATION_SCHEMA = {
  * thrown away. Structured outputs make that far less likely, but when the
  * answer is visibly present in the response it should never be discarded.
  */
-function salvage(response) {
-  const text = (response.content || [])
+function responseText(response) {
+  return (response.content || [])
     .filter(b => b.type === 'text')
     .map(b => b.text)
     .join('\n');
+}
+
+function salvage(response) {
+  let text = responseText(response);
   if (!text) return null;
+
+  // Models often wrap JSON in a markdown fence; drop it before matching.
+  text = text.replace(/```(?:json)?/gi, '');
 
   // Prefer a complete JSON object, then a bare array of events.
   for (const re of [/\{[\s\S]*\}/, /\[[\s\S]*\]/]) {
