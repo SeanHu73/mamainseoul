@@ -106,10 +106,9 @@ const MAX_STEP = 500;    // beyond this a gap is compressed and marked
 const MIN_MARGIN = 14;
 const MIN_BAR = 26;      // shortest a period ribbon can be and still read
 const MAX_BAR = 380;     // longest before the capsule itself is compressed
-const BOW = 26;          // how far the spine bulges towards each tile
+const BOW = 20;          // how far the spine bulges towards each tile
 const SPINE_SAMPLES = 22;   // points per segment, for tracing era ribbons
-const ERA_DAMP = 0.3;       // how much of the spine's bow an era ribbon copies
-const ERA_OFFSET = 14;      // how far the ribbon sits to the left of centre
+const ERA_OFFSET = 12;      // perpendicular distance from the spine to a ribbon
 
 const DAYS = { 1: 0, 2: 31, 3: 59, 4: 90, 5: 120, 6: 151, 7: 181, 8: 212, 9: 243, 10: 273, 11: 304, 12: 334 };
 
@@ -359,11 +358,29 @@ function drawSpine() {
     // Relying on the samples alone left short eras visibly shorter than the
     // time scale asked for, because no sample landed on either endpoint.
     const inner = samples.filter(p => p.y > top && p.y < bottom);
-    const pts = [
+    const on = [
       { x: xAtY(samples, top), y: top },
       ...inner,
       { x: xAtY(samples, bottom), y: bottom }
-    ].map(p => ({ x: centre + (p.x - centre) * ERA_DAMP - ERA_OFFSET, y: p.y }));
+    ];
+
+    // A true parallel offset: shift each point along the curve's normal so the
+    // ribbon stays the same distance from the spine the whole way down. A
+    // fixed horizontal shift was tried first and visibly drifted — the gap
+    // opened and closed as the line swung from side to side.
+    //
+    // The shift is applied in x only, scaled by len/|dy|, which gives the same
+    // perpendicular distance while leaving y untouched, so the ribbon keeps
+    // the exact height the time scale asked for.
+    const pts = on.map((p, k) => {
+      const a = on[Math.max(0, k - 1)];
+      const b = on[Math.min(on.length - 1, k + 1)];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const scale = Math.min(len / Math.max(Math.abs(dy), 0.001), 1.6);
+      return { x: p.x - ERA_OFFSET * scale, y: p.y };
+    });
 
     const d = 'M ' + pts.map(p => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ');
 

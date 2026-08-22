@@ -147,8 +147,16 @@ scale is dashed.
 
 Ribbons are drawn in the SVG, not as boxes, so they follow the spine's curve:
 the spine is sampled densely, the samples between the era's start and end are
-offset sideways at a damped amplitude, and both endpoints are anchored exactly
-so a short era isn't drawn short. Being in the SVG they take no space in the
+offset along the curve's normal, and both endpoints are anchored exactly so a
+short era isn't drawn short.
+
+The offset is a true parallel — the ribbon stays 12 px from the spine the
+whole way down, measured at 11.5–12.2 px along the longest era. Copying a
+fraction of the spine's bow at a fixed horizontal distance was tried first and
+visibly drifted, the gap opening and closing as the line swung from side to
+side. The shift is applied in x only, scaled by `len/|dy|`, which produces a
+constant perpendicular distance while leaving y untouched, so ribbons keep the
+exact height the time scale asked for. Being in the SVG they take no space in the
 flow, so an era runs down alongside the events that happened during it instead
 of pushing them apart. Before that, a 2-year gap rendered larger than a
 250-year one because a long capsule inflated its own row.

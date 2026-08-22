@@ -327,8 +327,8 @@ main { flex: 1; position: relative; overflow: hidden; }
 /* Uniform spacing on purpose: vertical distance is not a measure of elapsed
    time. Time skips are called out explicitly instead. */
 .tlrow { position: relative; min-height: 74px; display: flex; }  /* margin set by applySpacing() */
-.tlrow.left  { justify-content: flex-start; padding-right: calc(50% + 27px); }
-.tlrow.right { justify-content: flex-end;   padding-left:  calc(50% + 27px); }
+.tlrow.left  { justify-content: flex-start; padding-right: calc(50% + 37px); }
+.tlrow.right { justify-content: flex-end;   padding-left:  calc(50% + 37px); }
 
 .tlnode { position: absolute; left: 50%; transform: translateX(-50%); z-index: 2; }
 .tldot {
@@ -422,8 +422,8 @@ main { flex: 1; position: relative; overflow: hidden; }
 .tlreview input { margin-top: 4px; width: 19px; height: 19px; flex: 0 0 19px; accent-color: var(--green); }
 
 @media (min-width: 620px) {
-  .tlrow.left  { padding-right: calc(50% + 30px); }
-  .tlrow.right { padding-left:  calc(50% + 30px); }
+  .tlrow.left  { padding-right: calc(50% + 44px); }
+  .tlrow.right { padding-left:  calc(50% + 44px); }
   .tltile .tiles { height: 110px; }
   .tltitle { font-size: 15px; }
 }
