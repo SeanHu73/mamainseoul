@@ -117,11 +117,36 @@ an optional location. Tapping **Use where I am** resolves her GPS to a place
 name — "near Bukchon Hanok Village" rather than a pair of coordinates — by
 matching against the 16 itinerary stops.
 
-Dates are stored as partial ISO strings, so `1395`, `1867-11` and `2026-08-22`
-all sort correctly against each other. That is the point of the feature: a
+Dates are stored as partial ISO strings, so `1395`, `1867-11`, `2026-08-22`
+and `-2333` (2333 BCE) all sort correctly against each other. That is the point of the feature: a
 plaque she photographs at Gyeongbokgung lands in 1395, her lunch lands today,
 and the whole thing reads as one history ending with her own trip. Entries she
 adds by hand get a navy dot; ones read from a sign get a green one.
+
+### Periods, not just moments
+
+An entry can carry an **end date**, which makes it a span rather than a point.
+Periods are drawn as a capsule running the height of their card instead of a
+dot on the line, and the date reads `1392 – 1897 · 505 years`. The year count
+is omitted for anything under a year, and BCE→CE spans account for there being
+no year zero.
+
+Marker colours: navy for her own entries, green for ones read off a plaque,
+orange for the history pack.
+
+### The Korean history pack
+
+**📜 Add Korean history** drops 18 curated events into the timeline, in both
+languages — Gojoseon through Gangnam Style, weighted towards what she will
+actually stand in front of. Ten of them are periods.
+
+It is idempotent: entries carry a `seedId`, so tapping it twice adds nothing
+the second time, and anything she deletes stays deleted. The content lives in
+`content/history.json` and is edited like any other content file.
+
+The point of mixing it with her own entries is that the timeline becomes one
+continuous history — Gyeongbokgung burning in 1592, her lunch in Ikseon-dong,
+her flight home — rather than two separate lists.
 
 ### Reading a plaque
 

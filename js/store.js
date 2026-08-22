@@ -161,15 +161,34 @@ function saveTimeline() {
 }
 
 /**
- * Dates span from Joseon-era plaques to this afternoon, so they're stored as
- * partial ISO strings — "1395", "1592-04" or "2026-08-22" — and sorted on a
- * derived number rather than a Date, which can't represent a bare year well.
+ * Dates span from the founding of Gojoseon to this afternoon, so they're
+ * stored as partial ISO strings rather than Dates, which can't represent a
+ * bare year — let alone a BCE one.
+ *
+ *   "2026-08-22"  a day
+ *   "1867-11"     a month
+ *   "1395"        a year
+ *   "-2333"       2333 BCE
+ *
+ * An entry may also carry an endDate in the same format, making it a period
+ * rather than a moment. Periods sort by where they start.
  */
+export function parseDate(date) {
+  const m = /^(-?\d{1,4})(?:-(\d{2})(?:-(\d{2}))?)?$/.exec(String(date || '').trim());
+  if (!m) return null;
+  return { year: Number(m[1]), month: m[2] ? Number(m[2]) : null, day: m[3] ? Number(m[3]) : null };
+}
+
 export function dateSortKey(date) {
-  const m = /^(\d{1,4})(?:-(\d{2}))?(?:-(\d{2}))?$/.exec(String(date || '').trim());
-  if (!m) return Number.MAX_SAFE_INTEGER;
-  const [, y, mo, d] = m;
-  return Number(y) * 10000 + Number(mo || 1) * 100 + Number(d || 1);
+  const p = parseDate(date);
+  if (!p) return Number.MAX_SAFE_INTEGER;
+  // Month and day are added to a possibly-negative year base; ordering still
+  // holds within a BCE year because later months add more.
+  return p.year * 10000 + (p.month || 1) * 100 + (p.day || 1);
+}
+
+export function isValidDate(date) {
+  return parseDate(date) !== null;
 }
 
 export function getTimeline() {
@@ -187,6 +206,8 @@ export function addTimelineEntry(entry) {
   const full = {
     id: `t${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     date: '',
+    endDate: null,        // set makes this a period rather than a moment
+    seedId: null,         // set for entries that came from the history pack
     title: { en: '', zh: '' },
     description: { en: '', zh: '' },
     photoKey: null,

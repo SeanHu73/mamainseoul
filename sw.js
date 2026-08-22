@@ -17,6 +17,7 @@ const SHELL = [
   './js/content.js',
   './js/timeline.js',
   './content/stops.json',
+  './content/history.json',
   './manifest.webmanifest'
 ];
 

@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "title": { "en": "Korean history", "zh": "韓國歷史" },
+  "note": {
+    "en": "A skeleton of Korean history, weighted towards what she will actually stand in front of in Seoul.",
+    "zh": "一份韓國歷史的骨架，偏重於她在首爾會親眼看到的那些地方。"
+  },
+  "events": [
+    {
+      "seedId": "gojoseon",
+      "date": "-2333",
+      "endDate": "-108",
+      "title": { "en": "Gojoseon", "zh": "古朝鮮" },
+      "description": {
+        "en": "The first Korean kingdom. Tradition places its founding in 2333 BCE under Dangun, a figure of myth rather than record. It fell to Han China in 108 BCE.",
+        "zh": "朝鮮半島上的第一個國家。傳說由檀君於西元前 2333 年建立，這位開國者屬於神話而非信史。西元前 108 年亡於漢朝。"
+      }
+    },
+    {
+      "seedId": "three-kingdoms",
+      "date": "-57",
+      "endDate": "668",
+      "title": { "en": "The Three Kingdoms", "zh": "三國時代" },
+      "description": {
+        "en": "Goguryeo, Baekje and Silla divided the peninsula for seven centuries, competing in war, craft and Buddhism. Much of what fills the National Museum comes from these three.",
+        "zh": "高句麗、百濟、新羅三分半島七百年，在戰爭、工藝與佛教上彼此競逐。國立中央博物館裡的許多藏品都出自這三國。"
+      }
+    },
+    {
+      "seedId": "unified-silla",
+      "date": "668",
+      "endDate": "935",
+      "title": { "en": "Unified Silla", "zh": "統一新羅" },
+      "description": {
+        "en": "Silla absorbed its rivals and ruled a single kingdom for nearly three centuries. Buddhism became the state religion — Bongeunsa was founded in 794, in this period.",
+        "zh": "新羅併吞對手，統一治理近三個世紀。佛教成為國教 —— 奉恩寺便創建於此時期的 794 年。"
+      }
+    },
+    {
+      "seedId": "goryeo",
+      "date": "918",
+      "endDate": "1392",
+      "title": { "en": "The Goryeo dynasty", "zh": "高麗王朝" },
+      "description": {
+        "en": "The dynasty that gave the country its English name. Goryeo produced celadon of a green no one has quite matched since, and carved the Tripitaka Koreana onto more than 80,000 wooden blocks.",
+        "zh": "「Korea」這個名字便源自高麗。高麗燒出的青瓷，那種綠色後世再難企及；並將八萬多塊木板刻成《高麗大藏經》。"
+      }
+    },
+    {
+      "seedId": "joseon",
+      "date": "1392",
+      "endDate": "1897",
+      "title": { "en": "The Joseon dynasty", "zh": "朝鮮王朝" },
+      "description": {
+        "en": "Five centuries under one family — one of the longest-lived dynasties anywhere. Confucian in law and manners, and the Korea that the palaces, the hanok and the court dress all belong to.",
+        "zh": "同一個王室統治五百餘年，是世界上最長壽的王朝之一。以儒家治國、規範禮俗 —— 宮殿、韓屋與宮廷服飾，都屬於這個朝鮮。"
+      }
+    },
+    {
+      "seedId": "hanyang-capital",
+      "date": "1394",
+      "title": { "en": "Seoul becomes the capital", "zh": "定都漢陽" },
+      "description": {
+        "en": "King Taejo moved the capital to Hanyang — mountains at its back, the Han River in front. It has been the capital ever since, and the city she is walking through is the one he laid out.",
+        "zh": "太祖將國都遷至漢陽 —— 背倚群山，前臨漢江。此後它一直是首都；她此刻走過的城市，正是當年規劃出來的那一座。"
+      }
+    },
+    {
+      "seedId": "gyeongbokgung-built",
+      "date": "1395",
+      "title": { "en": "Gyeongbokgung is built", "zh": "景福宮落成" },
+      "description": {
+        "en": "The main royal palace, its name meaning \"greatly blessed by Heaven.\" Stop 1 of Day 1.",
+        "zh": "王朝正宮，宮名意為「景命之福」。第一天的第 1 站。"
+      }
+    },
+    {
+      "seedId": "hangul",
+      "date": "1446",
+      "title": { "en": "Hangul is proclaimed", "zh": "頒布訓民正音" },
+      "description": {
+        "en": "King Sejong published an alphabet designed so that ordinary people could learn it in a morning — the letter shapes echo the mouth making the sound. Scholars who preferred Chinese characters were appalled.",
+        "zh": "世宗頒行一套文字，設計得讓平民一個早上就能學會 —— 字形模擬發音時口舌的形狀。當時偏好漢字的士大夫大為震怒。"
+      }
+    },
+    {
+      "seedId": "imjin-war",
+      "date": "1592",
+      "endDate": "1598",
+      "title": { "en": "The Imjin War", "zh": "壬辰倭亂" },
+      "description": {
+        "en": "Japanese invasions devastated the peninsula for six years. Gyeongbokgung burned and lay in ruins for nearly 270 years. Admiral Yi Sun-sin's turtle ships broke the invasion at sea.",
+        "zh": "日本入侵，半島飽受蹂躪達六年之久。景福宮焚毀，此後荒廢近 270 年。李舜臣將軍的龜船在海上擊潰了侵略軍。"
+      }
+    },
+    {
+      "seedId": "gyeongbokgung-rebuilt",
+      "date": "1867",
+      "title": { "en": "Gyeongbokgung rebuilt", "zh": "景福宮重建" },
+      "description": {
+        "en": "The regent Heungseon Daewongun rebuilt the palace to restore the dynasty's authority. It very nearly bankrupted the treasury.",
+        "zh": "興宣大院君下令重建王宮，以重振王室威權。工程幾乎拖垮國庫。"
+      }
+    },
+    {
+      "seedId": "korean-empire",
+      "date": "1897",
+      "endDate": "1910",
+      "title": { "en": "The Korean Empire", "zh": "大韓帝國" },
+      "description": {
+        "en": "King Gojong declared himself emperor, asserting equality with China and Japan as the powers closed in. It lasted thirteen years.",
+        "zh": "高宗稱帝，在列強環伺之際宣示與中日平起平坐。這個帝國只維持了十三年。"
+      }
+    },
+    {
+      "seedId": "colonial-rule",
+      "date": "1910",
+      "endDate": "1945",
+      "title": { "en": "Japanese colonial rule", "zh": "日本殖民統治" },
+      "description": {
+        "en": "Thirty-five years of annexation. The Korean language was suppressed in schools, palace buildings were demolished, and Ikseon-dong's affordable hanok were built as a quiet act of resistance.",
+        "zh": "三十五年的併吞歲月。學校裡禁用韓語，宮殿建築遭到拆毀；益善洞的平價韓屋，正是在此時作為一種無聲的抵抗而興建。"
+      }
+    },
+    {
+      "seedId": "liberation",
+      "date": "1945-08-15",
+      "title": { "en": "Liberation", "zh": "光復" },
+      "description": {
+        "en": "Japan surrendered and Korea was free — then immediately divided at the 38th parallel by the Soviet Union and the United States. The date is still a national holiday.",
+        "zh": "日本投降，朝鮮光復 —— 但隨即被蘇聯與美國以三十八度線分割。這一天至今仍是國定假日。"
+      }
+    },
+    {
+      "seedId": "korean-war",
+      "date": "1950-06-25",
+      "endDate": "1953-07-27",
+      "title": { "en": "The Korean War", "zh": "韓戰" },
+      "description": {
+        "en": "Seoul changed hands four times and was left in ruins. The war ended in an armistice, not a peace treaty — technically it has never formally ended.",
+        "zh": "首爾四度易手，最終成為廢墟。這場戰爭以停戰協定收場，而非和平條約 —— 嚴格說來，它從未正式結束。"
+      }
+    },
+    {
+      "seedId": "miracle-han",
+      "date": "1962",
+      "endDate": "1996",
+      "title": { "en": "The Miracle on the Han River", "zh": "漢江奇蹟" },
+      "description": {
+        "en": "One of the poorest countries on earth became one of the richest inside a single lifetime. Gangnam was farmland when this began; by the end it was the most expensive land in Korea.",
+        "zh": "一個世上最貧窮的國家，在一代人的時間裡躋身最富裕之列。這一切開始時，江南還是農田；結束時，它已是韓國地價最高的地方。"
+      }
+    },
+    {
+      "seedId": "june-struggle",
+      "date": "1987-06",
+      "title": { "en": "The June Democratic Struggle", "zh": "六月民主抗爭" },
+      "description": {
+        "en": "Weeks of nationwide protest forced the military government to concede direct presidential elections. Myeongdong Cathedral sheltered the protesters — police would not enter church grounds.",
+        "zh": "全國性的抗爭持續數週，迫使軍政府讓步、實行總統直選。明洞聖堂庇護了示威者 —— 警方不願踏入教堂範圍。"
+      }
+    },
+    {
+      "seedId": "seoul-olympics",
+      "date": "1988-09",
+      "title": { "en": "The Seoul Olympics", "zh": "漢城奧運" },
+      "description": {
+        "en": "The Games that introduced the country to the world, a year after it became a democracy. Much of modern Seoul was built to be seen during them.",
+        "zh": "在民主化的隔年，這場奧運將韓國介紹給全世界。現代首爾有很大一部分，就是為了在那時被看見而建起來的。"
+      }
+    },
+    {
+      "seedId": "gangnam-style",
+      "date": "2012-07",
+      "title": { "en": "Gangnam Style", "zh": "江南 Style" },
+      "description": {
+        "en": "A song satirising the pretensions of the district became the first video to reach a billion views, and taught the world a Korean place name. Stop 15 is that district.",
+        "zh": "一首調侃江南浮誇作派的歌曲，成為史上第一支破十億觀看的影片，也讓全世界記住了一個韓國地名。第 15 站就是那個江南。"
+      }
+    }
+  ]
+}

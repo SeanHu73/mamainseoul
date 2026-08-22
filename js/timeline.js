@@ -51,16 +51,41 @@ function describePlace(pos) {
            label: { en: coords, zh: coords } };
 }
 
-/** Human date: bare years stay bare, full dates get localised. */
+/** Human date: bare years stay bare, BCE gets marked, full dates get localised. */
 function displayDate(date) {
-  const s = String(date || '').trim();
-  if (/^\d{1,4}$/.test(s)) return s;
-  const m = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(s);
-  if (!m) return s;
-  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +(m[3] || 1)));
+  const p = store.parseDate(date);
+  if (!p) return String(date || '');
+
+  if (p.year < 0) return ui('tlBce', Math.abs(p.year));
+  if (p.month === null) return String(p.year);
+
+  // Intl can't be trusted with years under 1000, and none of the app's dates
+  // need month formatting that far back anyway.
+  const d = new Date(Date.UTC(p.year, p.month - 1, p.day || 1));
   return new Intl.DateTimeFormat(getLang() === 'zh' ? 'zh-TW' : 'en-GB', {
-    year: 'numeric', month: 'short', ...(m[3] ? { day: 'numeric' } : {}), timeZone: 'UTC'
+    year: 'numeric', month: 'short', ...(p.day ? { day: 'numeric' } : {}), timeZone: 'UTC'
   }).format(d);
+}
+
+/** How long a period ran, in whole years — only shown when it's meaningful. */
+function spanYears(entry) {
+  if (!entry.endDate) return null;
+  const a = store.parseDate(entry.date);
+  const b = store.parseDate(entry.endDate);
+  if (!a || !b) return null;
+  // No year zero in the historical calendar, so a BCE→CE span is one short.
+  let years = b.year - a.year;
+  if (a.year < 0 && b.year > 0) years -= 1;
+  return years >= 1 ? years : null;
+}
+
+/** "1392 – 1897 · 505 years", or just the date for a single moment. */
+function dateLine(entry) {
+  const start = displayDate(entry.date);
+  if (!entry.endDate) return start;
+  const years = spanYears(entry);
+  const range = `${start} – ${displayDate(entry.endDate)}`;
+  return years ? `${range} · ${ui('tlYearsFmt', years)}` : range;
 }
 
 /* ---------------- list view ---------------- */
@@ -75,9 +100,11 @@ export async function renderTimeline() {
       <button class="btn" id="tlReadBtn">📷 ${esc(ui('tlRead'))}</button>
     </div>`;
 
+  const seedBtn = `<button class="btn ghost" id="tlSeedBtn">📜 ${esc(ui('tlSeed'))}</button>`;
+
   if (!entries.length) {
     view.innerHTML = actions +
-      `<div class="empty"><span class="big">🕰️</span>${esc(ui('tlEmpty'))}</div>`;
+      `<div class="empty"><span class="big">🕰️</span>${esc(ui('tlEmpty'))}</div>` + seedBtn;
     wireActions();
     return;
   }
@@ -91,11 +118,17 @@ export async function renderTimeline() {
     const desc = t(e.description);
     const place = e.place
       ? `<div class="tlplace">📍 ${esc(t(e.place.label))}</div>` : '';
+    // A period gets a capsule running the height of its card instead of a
+    // dot, so "this covers a stretch of time" reads at a glance.
+    const kind = e.source === 'ai' ? 'ai' : e.source === 'history' ? 'history' : '';
+    const marker = e.endDate
+      ? `<span class="tlbar ${kind}"></span>`
+      : `<span class="tldot ${kind}"></span>`;
     return `
-      <li class="tlrow">
-        <div class="tlspine"><span class="tldot ${e.source === 'ai' ? 'ai' : ''}"></span></div>
+      <li class="tlrow${e.endDate ? ' span' : ''}">
+        <div class="tlspine">${marker}</div>
         <div class="tlcard" data-entry="${e.id}">
-          <div class="tldate">${esc(displayDate(e.date))}</div>
+          <div class="tldate">${esc(dateLine(e))}</div>
           <div class="tltitle">${esc(t(e.title))}</div>
           ${photo}
           ${desc ? `<p class="tldesc">${esc(desc)}</p>` : ''}
@@ -106,7 +139,8 @@ export async function renderTimeline() {
 
   view.innerHTML = actions +
     `<ul class="tl">${rows.join('')}</ul>
-     <button class="btn ghost" id="tlClearBtn" style="margin-top:6px">${esc(ui('tlClear'))}</button>`;
+     ${seedBtn}
+     <button class="btn ghost" id="tlClearBtn" style="margin-top:8px">${esc(ui('tlClear'))}</button>`;
 
   wireActions();
   for (const card of view.querySelectorAll('[data-entry]')) {
@@ -123,6 +157,53 @@ export async function renderTimeline() {
 function wireActions() {
   $('#tlAddBtn').addEventListener('click', () => openForm(null));
   $('#tlReadBtn').addEventListener('click', readPlaque);
+  $('#tlSeedBtn')?.addEventListener('click', seedHistory);
+}
+
+/* ---------------- the Korean history pack ---------------- */
+
+/**
+ * Drops the curated history into her timeline. Idempotent — entries carry a
+ * seedId, so tapping it twice adds nothing the second time, and anything she
+ * has since deleted stays deleted.
+ */
+async function seedHistory() {
+  const btn = $('#tlSeedBtn');
+  btn.disabled = true;
+  try {
+    const res = await fetch('content/history.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error(String(res.status));
+    const pack = await res.json();
+
+    const already = new Set(store.getTimeline().map(e => e.seedId).filter(Boolean));
+    const fresh = pack.events.filter(e => !already.has(e.seedId));
+
+    for (const e of fresh) {
+      store.addTimelineEntry({
+        seedId: e.seedId,
+        date: e.date,
+        endDate: e.endDate || null,
+        title: e.title,
+        description: e.description,
+        source: 'history'
+      });
+    }
+
+    // Re-render first — it replaces the button, so setting the text before
+    // would throw the confirmation away.
+    await renderTimeline();
+    const after = $('#tlSeedBtn');
+    if (after) {
+      after.textContent = fresh.length ? ui('tlSeedDone', fresh.length) : ui('tlSeedNone');
+      setTimeout(() => { after.textContent = `📜 ${ui('tlSeed')}`; }, 2200);
+    }
+    onChange();
+  } catch {
+    btn.textContent = '⚠️';
+    setTimeout(() => { btn.textContent = `📜 ${ui('tlSeed')}`; }, 1600);
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 /* ---------------- add / edit form ---------------- */
@@ -156,6 +237,10 @@ async function openForm(entryId, prefill = null) {
     <label class="tllabel">${esc(ui('tlDate'))}</label>
     <input class="tlinput" id="fDate" type="text" inputmode="numeric"
            placeholder="2026-08-22" value="${esc(seed.date || todayInSeoul())}">
+
+    <label class="tllabel">${esc(ui('tlEndDate'))}</label>
+    <input class="tlinput" id="fEndDate" type="text" inputmode="numeric"
+           placeholder="1897" value="${esc(seed.endDate || '')}">
 
     <label class="tllabel">${esc(ui('tlTitle'))}</label>
     <input class="tlinput" id="fTitle" type="text" value="${esc(t(seed.title) || '')}">
@@ -200,11 +285,17 @@ async function openForm(entryId, prefill = null) {
 
   $('#fSave').addEventListener('click', async () => {
     const date = $('#fDate').value.trim();
+    const endDate = $('#fEndDate').value.trim();
     const title = $('#fTitle').value.trim();
     const desc = $('#fDesc').value.trim();
 
     if (!title) { alert(ui('tlTitleRequired')); return; }
-    if (store.dateSortKey(date) === Number.MAX_SAFE_INTEGER) { alert(ui('tlDateRequired')); return; }
+    if (!store.isValidDate(date)) { alert(ui('tlDateRequired')); return; }
+    if (endDate && !store.isValidDate(endDate)) { alert(ui('tlDateRequired')); return; }
+    if (endDate && store.dateSortKey(endDate) < store.dateSortKey(date)) {
+      alert(ui('tlEndBeforeStart'));
+      return;
+    }
 
     // Typed text lands in the current language; the other side keeps whatever
     // it already had, so an edit in English doesn't wipe the Chinese.
@@ -222,7 +313,7 @@ async function openForm(entryId, prefill = null) {
       photoKey = await store.putPhoto(formPhotoBlob);
     }
 
-    const patch = { date, title: titleObj, description: descObj, place: formPlace, photoKey };
+    const patch = { date, endDate: endDate || null, title: titleObj, description: descObj, place: formPlace, photoKey };
     if (existing) store.updateTimelineEntry(existing.id, patch);
     else store.addTimelineEntry({ ...patch, source: seed.source || 'manual' });
 
@@ -393,6 +484,7 @@ function reviewEvents(events, photoBlob, place) {
     for (const e of picked) {
       store.addTimelineEntry({
         date: e.date,
+        endDate: e.endDate || null,
         title: { en: e.title_en, zh: e.title_zh },
         description: { en: e.description_en, zh: e.description_zh },
         place: place || null,

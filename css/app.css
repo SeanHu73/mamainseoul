@@ -332,6 +332,24 @@ main { flex: 1; position: relative; overflow: hidden; }
   background: var(--navy); border: 3px solid var(--cream); box-sizing: content-box;
 }
 .tldot.ai { background: var(--green); }
+.tldot.history { background: var(--orange); }
+
+/* A period is a capsule spanning its whole card, so duration reads as length
+   rather than as another dot on the line. */
+.tlrow.span .tlspine::before { display: none; }
+.tlbar {
+  position: absolute; left: 3px; top: 6px; bottom: 18px;
+  width: 8px; border-radius: 5px;
+  background: var(--navy); border: 2px solid var(--cream); box-sizing: content-box;
+}
+.tlbar.ai { background: var(--green); }
+.tlbar.history {
+  /* Faded at both ends: most of these periods have soft boundaries, and the
+     dates on them are conventions rather than moments. */
+  background: linear-gradient(180deg,
+    rgba(217,119,6,.35), var(--orange) 18%, var(--orange) 82%, rgba(217,119,6,.35));
+}
+.tlrow.span .tlcard { background: #FBF7EC; }
 
 .tlcard {
   flex: 1; text-align: left; width: 100%;
