@@ -8,6 +8,7 @@
 // Requires ANTHROPIC_API_KEY as a Vercel environment variable.
 
 import Anthropic from '@anthropic-ai/sdk';
+import { betaJSONSchemaOutputFormat } from '@anthropic-ai/sdk/helpers/beta/json-schema';
 
 const MODEL = 'claude-opus-5';
 
@@ -17,7 +18,7 @@ const MAX_IMAGE_CHARS = 3_000_000;
 
 const ALLOWED_MEDIA = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
-const SYSTEM = `You are helping a traveller in Seoul build a personal history timeline.
+const SYSTEM = `You are helping a traveller build a personal history timeline.
 
 She photographs plaques, signs, information boards and museum labels at the
 places she visits. Your job is to read what the sign says and turn it into
@@ -27,83 +28,123 @@ Rules:
 - Extract every distinct dated event the sign describes. A palace plaque might
   mention a founding, a fire and a reconstruction — that is three entries, not
   one. A sign about a single event is one entry.
-- Read Korean, Chinese, Japanese and English signage.
+- Read signage in any language, including Korean, Chinese, Japanese and English.
 - Write each entry in BOTH English and Traditional Chinese (Taiwan wording,
   not Simplified). Both must say the same thing; neither is a placeholder.
 - Titles are short — a headline, ideally under 60 characters.
 - Descriptions are one to three sentences of plain, warm prose. No bullet
   points, no markdown.
-- Dates use the most precise form the sign supports: YYYY-MM-DD, YYYY-MM, or
-  just YYYY. Never invent precision the sign does not give.
+- date uses the most precise form the sign supports: YYYY-MM-DD, YYYY-MM, or
+  just YYYY. Use a leading minus for BCE, e.g. -2333. Never invent precision
+  the sign does not give.
+- If the event covers a span of time rather than a moment — a dynasty, a war,
+  a construction that ran for years — also set endDate in the same format.
+  Leave endDate as an empty string for a single moment.
 - Stay faithful to the sign. You may add a short, well-established piece of
   context about a place the sign names, but never invent dates, names or
   numbers. If you are unsure, leave it out.
 - If the photo is not a sign, is too blurry to read, or contains no dated
-  event, set readable to false, explain briefly in note, and return an empty
-  events array.`;
+  event, return an empty events array and put a short plain-English reason in
+  note. Otherwise leave note as an empty string.`;
 
-const TOOL = {
-  name: 'record_timeline_events',
-  description: 'Record the dated historical event(s) described on the photographed sign.',
-  strict: true,
-  input_schema: {
-    type: 'object',
-    properties: {
-      readable: {
-        type: 'boolean',
-        description: 'True if the image is a legible sign describing at least one dated event.'
-      },
-      note: {
-        type: 'string',
-        description: 'If readable is false, a short plain-English reason. Otherwise an empty string.'
-      },
-      events: {
-        type: 'array',
-        description: 'One entry per distinct dated event. Empty when readable is false.',
-        items: {
-          type: 'object',
-          properties: {
-            date: {
-              type: 'string',
-              description: 'YYYY-MM-DD, YYYY-MM or YYYY. The most precise form the sign supports.'
-            },
-            title_en: { type: 'string', description: 'Short English headline.' },
-            title_zh: { type: 'string', description: 'Short Traditional Chinese headline.' },
-            description_en: { type: 'string', description: 'One to three sentences of English prose.' },
-            description_zh: { type: 'string', description: 'The same, in Traditional Chinese.' }
+const EVENTS_SCHEMA = {
+  type: 'object',
+  properties: {
+    events: {
+      type: 'array',
+      description: 'One entry per distinct dated event. Empty if nothing could be read.',
+      items: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'string',
+            description: 'YYYY-MM-DD, YYYY-MM, YYYY, or -YYYY for BCE.'
           },
-          required: ['date', 'title_en', 'title_zh', 'description_en', 'description_zh'],
-          additionalProperties: false
-        }
+          endDate: {
+            type: 'string',
+            description: 'Same format. Set only for a span of time; empty string for a moment.'
+          },
+          title_en: { type: 'string', description: 'Short English headline.' },
+          title_zh: { type: 'string', description: 'Short Traditional Chinese headline.' },
+          description_en: { type: 'string', description: 'One to three sentences of English prose.' },
+          description_zh: { type: 'string', description: 'The same, in Traditional Chinese.' }
+        },
+        required: ['date', 'endDate', 'title_en', 'title_zh', 'description_en', 'description_zh'],
+        additionalProperties: false
       }
     },
-    required: ['readable', 'note', 'events'],
-    additionalProperties: false
-  }
+    note: {
+      type: 'string',
+      description: 'Short plain-English reason when events is empty. Otherwise an empty string.'
+    }
+  },
+  required: ['events', 'note'],
+  additionalProperties: false
 };
 
-const TRANSLATE_TOOL = {
-  name: 'record_translation',
-  description: 'Return the supplied title and description in both English and Traditional Chinese.',
-  strict: true,
-  input_schema: {
-    type: 'object',
-    properties: {
-      title_en: { type: 'string' },
-      title_zh: { type: 'string' },
-      description_en: { type: 'string' },
-      description_zh: { type: 'string' }
-    },
-    required: ['title_en', 'title_zh', 'description_en', 'description_zh'],
-    additionalProperties: false
-  }
+const TRANSLATION_SCHEMA = {
+  type: 'object',
+  properties: {
+    title_en: { type: 'string' },
+    title_zh: { type: 'string' },
+    description_en: { type: 'string' },
+    description_zh: { type: 'string' }
+  },
+  required: ['title_en', 'title_zh', 'description_en', 'description_zh'],
+  additionalProperties: false
 };
 
-function firstToolInput(response, name) {
-  for (const block of response.content) {
-    if (block.type === 'tool_use' && block.name === name) return block.input;
+/**
+ * Last-ditch recovery.
+ *
+ * A previous version of this asked for the data through a tool call, and the
+ * model occasionally serialised it badly — the events ended up as literal
+ * text inside another field, so a perfectly good reading of the sign was
+ * thrown away. Structured outputs make that far less likely, but when the
+ * answer is visibly present in the response it should never be discarded.
+ */
+function salvage(response) {
+  const text = (response.content || [])
+    .filter(b => b.type === 'text')
+    .map(b => b.text)
+    .join('\n');
+  if (!text) return null;
+
+  // Prefer a complete JSON object, then a bare array of events.
+  for (const re of [/\{[\s\S]*\}/, /\[[\s\S]*\]/]) {
+    const m = re.exec(text);
+    if (!m) continue;
+    try {
+      const parsed = JSON.parse(m[0]);
+      if (Array.isArray(parsed)) return { events: parsed, note: '' };
+      if (Array.isArray(parsed?.events)) return { events: parsed.events, note: parsed.note || '' };
+    } catch { /* not JSON after all */ }
   }
   return null;
+}
+
+/** Drop anything that didn't survive as a usable entry. */
+function cleanEvents(events) {
+  return (Array.isArray(events) ? events : [])
+    .filter(e => e && typeof e.date === 'string' && /^-?\d{1,4}(-\d{2}(-\d{2})?)?$/.test(e.date.trim()))
+    .map(e => ({
+      date: e.date.trim(),
+      endDate: typeof e.endDate === 'string' && e.endDate.trim() ? e.endDate.trim() : null,
+      title_en: String(e.title_en || '').trim(),
+      title_zh: String(e.title_zh || '').trim(),
+      description_en: String(e.description_en || '').trim(),
+      description_zh: String(e.description_zh || '').trim()
+    }))
+    .filter(e => e.title_en || e.title_zh);
+}
+
+/** Never let internal markup reach a dialog on her phone. */
+function tidyNote(note) {
+  return String(note || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 200);
 }
 
 export default async function handler(req, res) {
@@ -143,26 +184,27 @@ export default async function handler(req, res) {
         return;
       }
 
-      const response = await client.beta.messages.create({
+      const response = await client.beta.messages.parse({
         model: MODEL,
         max_tokens: 4000,
         betas: ['server-side-fallback-2026-07-01'],
         fallbacks: 'default',
-        output_config: { effort: 'low' },
+        output_config: {
+          effort: 'low',
+          format: betaJSONSchemaOutputFormat(TRANSLATION_SCHEMA)
+        },
         system:
           'You translate short travel-diary entries between English and Traditional Chinese ' +
-          '(Taiwan wording, never Simplified). Keep the writer\'s voice and keep it brief. ' +
+          "(Taiwan wording, never Simplified). Keep the writer's voice and keep it brief. " +
           'Whichever language the input is in, fill in the other; return the original ' +
           'side unchanged. If the description is empty, return it empty in both languages.',
         messages: [{
           role: 'user',
           content: `Title: ${title}\n\nDescription: ${description || '(none)'}`
-        }],
-        tools: [TRANSLATE_TOOL],
-        tool_choice: { type: 'tool', name: 'record_translation' }
+        }]
       });
 
-      const out = firstToolInput(response, 'record_translation');
+      const out = response.parsed_output || salvage(response);
       if (!out) {
         res.status(502).json({ error: 'no_result', stop_reason: response.stop_reason });
         return;
@@ -189,17 +231,20 @@ export default async function handler(req, res) {
     }
 
     // Where she was standing, if known — helps disambiguate a plaque that
-    // says "this hall" without naming the palace.
+    // says "this hall" without naming the building.
     const place = typeof body.place === 'string' && body.place
       ? `She photographed this at or near: ${body.place}.`
       : 'Her exact location is unknown.';
 
-    const response = await client.beta.messages.create({
+    const response = await client.beta.messages.parse({
       model: MODEL,
       max_tokens: 8000,
       betas: ['server-side-fallback-2026-07-01'],
       fallbacks: 'default',
-      output_config: { effort: 'medium' },
+      output_config: {
+        effort: 'medium',
+        format: betaJSONSchemaOutputFormat(EVENTS_SCHEMA)
+      },
       system: SYSTEM,
       messages: [{
         role: 'user',
@@ -207,23 +252,25 @@ export default async function handler(req, res) {
           { type: 'image', source: { type: 'base64', media_type: mediaType, data: image } },
           { type: 'text', text: `${place}\n\nRead this sign and record the event or events it describes.` }
         ]
-      }],
-      tools: [TOOL],
-      tool_choice: { type: 'tool', name: 'record_timeline_events' }
+      }]
     });
 
     if (response.stop_reason === 'refusal') {
-      res.status(200).json({ readable: false, note: 'Could not process this image.', events: [] });
+      res.status(200).json({ events: [], note: 'Could not process this image.' });
       return;
     }
 
-    const out = firstToolInput(response, 'record_timeline_events');
+    const out = response.parsed_output || salvage(response);
     if (!out) {
       res.status(502).json({ error: 'no_result', stop_reason: response.stop_reason });
       return;
     }
 
-    res.status(200).json(out);
+    const events = cleanEvents(out.events);
+    res.status(200).json({
+      events,
+      note: events.length ? '' : tidyNote(out.note) || 'No dated event on that sign.'
+    });
   } catch (err) {
     // Distinguish "try again" from "this will never work" so the UI can say
     // something useful instead of a generic failure.

@@ -169,9 +169,21 @@ timeline still works fully by hand. It is also unavailable when running
 locally with a plain static server, which does not execute functions; use
 `npx vercel dev` if you want to exercise it locally.
 
-Model: `claude-opus-5`, with server-side refusal fallbacks enabled and
-structured output enforced through a strict tool schema, so the response is
-always a valid set of entries or an explicit "couldn't read it".
+Model: `claude-opus-5`, with server-side refusal fallbacks enabled and the
+response constrained by **structured outputs** (`output_config.format` with a
+JSON schema), so it comes back as a validated object rather than free text.
+
+This was originally built on a strict tool call, which failed in a way worth
+recording: the model read a plaque correctly, then serialised the tool call
+badly — the events ended up as literal text inside another field, and a good
+reading was thrown away. Structured outputs constrain the response format
+directly, which is the right mechanism for extraction; tool use is for calling
+tools. A `salvage()` fallback also scrapes JSON out of the response text if
+parsing ever fails again, because the one thing this must not do is discard an
+answer that is visibly present.
+
+Plaque events can carry an `endDate`, so a sign describing a construction that
+ran from 1930 to 1931 becomes a period on the timeline rather than a point.
 
 ## Layout
 

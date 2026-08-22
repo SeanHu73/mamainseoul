@@ -432,8 +432,11 @@ async function readPlaque() {
       if (!res.ok) { alert(ui('tlAiFail')); return; }
 
       const out = await res.json();
-      if (!out.readable || !out.events?.length) {
-        alert(`${ui('tlUnreadable')}${out.note ? `\n\n${out.note}` : ''}`);
+      if (!out.events?.length) {
+        // Keep this short and human. An earlier version pasted the server's
+        // note straight in and filled her screen with raw markup.
+        const why = String(out.note || '').replace(/<[^>]*>/g, ' ').trim().slice(0, 140);
+        alert(`${ui('tlUnreadable')}${why ? `\n\n${why}` : ''}`);
         return;
       }
 
@@ -461,7 +464,7 @@ function reviewEvents(events, photoBlob, place) {
         <label class="tlreview">
           <input type="checkbox" data-i="${i}" checked>
           <div>
-            <div class="tldate">${esc(displayDate(e.date))}</div>
+            <div class="tldate">${esc(dateLine({ date: e.date, endDate: e.endDate }))}</div>
             <div class="tltitle">${esc(lang === 'zh' ? e.title_zh : e.title_en)}</div>
             <p class="tldesc">${esc(lang === 'zh' ? e.description_zh : e.description_en)}</p>
           </div>
