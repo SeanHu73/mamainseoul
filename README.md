@@ -166,6 +166,22 @@ Because its callbacks ride the browser's rendering steps and never arrive in
 a throttled or non-compositing tab, `resize`, `orientationchange` and
 `visibilitychange` are wired as plain-event fallbacks.
 
+Each tile is centred on what it marks — the dot for a moment, the middle of
+the ribbon for a period, so an era is labelled at its centre rather than at
+its first year. The shift is a transform and so changes nothing in the flow.
+Tiles alternate sides, so the only collision risk is with the previous tile in
+the same column; where centring would cause one, the tile is pushed down just
+far enough to clear it.
+
+**Year labels run down the spine.** Their positions are interpolated from the
+entries themselves — each entry is a known (year, y) anchor — so the labels
+stay consistent with whatever the layout actually did, including inside a
+compressed stretch, rather than assuming a uniform scale that isn't true
+there. The interval snaps to a round number aiming for about a dozen labels,
+any that would land on top of each other are dropped, and year zero is skipped
+because it doesn't exist. A timeline spanning only days gets no year labels,
+which is correct — the tiles carry the dates.
+
 Tiles carry only a date, a title and a photo. Tapping one opens a card with
 the full description, the photo at size, and a **Find on map** button that
 switches to the map and drops a pin where the entry was recorded. Entries

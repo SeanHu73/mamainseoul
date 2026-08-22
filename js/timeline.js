@@ -104,11 +104,14 @@ const PX_PER_YEAR = 0.5;
 const MIN_STEP = 58;     // floor, so tiles never collide when times nearly match
 const MAX_STEP = 500;    // beyond this a gap is compressed and marked
 const MIN_MARGIN = 14;
+const SAME_SIDE_GAP = 12;   // clearance between tiles sharing a column
 const MIN_BAR = 26;      // shortest a period ribbon can be and still read
 const MAX_BAR = 380;     // longest before the capsule itself is compressed
 const BOW = 20;          // how far the spine bulges towards each tile
 const SPINE_SAMPLES = 22;   // points per segment, for tracing era ribbons
 const ERA_OFFSET = 12;      // perpendicular distance from the spine to a ribbon
+const TICK_CLAMP = 12;      // how far a year label may drift from centre
+const TICK_MIN_GAP = 54;    // px, below which a year label is dropped as clutter
 
 const DAYS = { 1: 0, 2: 31, 3: 59, 4: 90, 5: 120, 6: 151, 7: 181, 8: 212, 9: 243, 10: 273, 11: 304, 12: 334 };
 
@@ -218,6 +221,7 @@ export async function renderTimeline() {
           data-gap="${Math.round(item.gapYears)}"
           ${item.compressed && i > 0 ? 'data-compressed="1"' : ''}
           data-kind="${kind}"
+          data-year="${startValue(e) ?? ''}"
           ${item.bar ? `data-bar="${Math.round(item.bar.height)}"` : ''}
           ${item.bar?.compressed ? 'data-barsqueezed="1"' : ''}>
         ${node}
@@ -277,6 +281,46 @@ function applySpacing() {
     rows[i - 1].style.marginBottom = `${Math.max(MIN_MARGIN, step - prevH)}px`;
   }
   if (rows.length) rows[rows.length - 1].style.marginBottom = '0px';
+
+  centreTiles(rows, list);
+}
+
+/**
+ * Line each tile up with the middle of what it marks — the dot for a moment,
+ * the middle of the ribbon for a period, so an era is labelled at its centre
+ * rather than at its first year.
+ *
+ * The shift is a transform, so it moves nothing in the flow and the spacing
+ * computed above still holds. Tiles alternate sides, so the only collision
+ * risk is with the previous tile on the same side; where centring would cause
+ * one, the tile is pushed down just far enough to clear it.
+ */
+function centreTiles(rows, list) {
+  const base = list.getBoundingClientRect();
+  const lastBottom = { left: -Infinity, right: -Infinity };
+
+  for (const row of rows) {
+    const tile = row.querySelector('.tltile');
+    const node = row.querySelector('.tlnode');
+    if (!tile || !node) continue;
+
+    tile.style.transform = 'none';
+    const nodeRect = node.getBoundingClientRect();
+    const tileRect = tile.getBoundingClientRect();
+    const bar = Number(row.dataset.bar) || 0;
+
+    // A ribbon starts at the node centre and runs down; a dot is its own centre.
+    const markerCentre = nodeRect.top + nodeRect.height / 2 + bar / 2 - base.top;
+    const naturalTop = tileRect.top - base.top;
+
+    let top = markerCentre - tileRect.height / 2;
+    const side = row.dataset.side === 'right' ? 'right' : 'left';
+    const floor = lastBottom[side] + SAME_SIDE_GAP;
+    if (top < floor) top = floor;
+    lastBottom[side] = top + tileRect.height;
+
+    tile.style.transform = `translateY(${(top - naturalTop).toFixed(1)}px)`;
+  }
 }
 
 function relayout() {
@@ -309,6 +353,7 @@ function drawSpine() {
       x: r.left - base.left + r.width / 2,
       y: r.top - base.top + r.height / 2,
       side: li.dataset.side === 'right' ? 1 : li.dataset.side === 'left' ? -1 : 0,
+      year: li.dataset.year === '' ? null : Number(li.dataset.year),
       compressed: li.dataset.compressed === '1',
       gap: Number(li.dataset.gap) || 0,
       bar: Number(li.dataset.bar) || 0,
@@ -389,7 +434,68 @@ function drawSpine() {
 
   svg.innerHTML = parts.join('');
   const marksEl = document.querySelector('.tlmarks');
-  if (marksEl) marksEl.innerHTML = marks.join('');
+  if (marksEl) marksEl.innerHTML = marks.join('') + yearTicks(items, samples, base).join('');
+}
+
+/**
+ * Year labels down the spine, so the eye can read off roughly when it is
+ * without opening anything.
+ *
+ * Positions come from the entries themselves: each entry is a known
+ * (year, y) anchor, and a tick's y is interpolated between the two anchors it
+ * falls between. That keeps the ticks consistent with whatever the layout
+ * actually did, including inside the one compressed stretch, rather than
+ * assuming a uniform scale that isn't true there.
+ */
+function yearTicks(items, samples, base) {
+  const anchors = items.filter(i => i.year !== null && Number.isFinite(i.year));
+  if (anchors.length < 2) return [];
+
+  const first = anchors[0].year;
+  const last = anchors[anchors.length - 1].year;
+  const span = last - first;
+  if (span <= 0) return [];
+
+  // Aim for roughly a dozen labels, snapped to a round interval.
+  const STEPS = [1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2000];
+  const target = span / 12;
+  const stepYears = STEPS.find(v => v >= target) ?? STEPS[STEPS.length - 1];
+
+  const out = [];
+  let placedY = -Infinity;
+
+  for (let y = Math.ceil(first / stepYears) * stepYears; y <= last; y += stepYears) {
+    // Find the pair of entries this year sits between, and interpolate.
+    let px = null;
+    for (let i = 0; i < anchors.length - 1; i++) {
+      const a = anchors[i];
+      const b = anchors[i + 1];
+      if (y >= a.year && y <= b.year) {
+        const f = b.year === a.year ? 0 : (y - a.year) / (b.year - a.year);
+        px = a.y + (b.y - a.y) * f;
+        break;
+      }
+    }
+    if (px === null) continue;
+    if (y === 0) continue;   // there is no year zero in the historical calendar
+
+    // The scale is uneven, so drop labels that would land on top of each other.
+    if (px - placedY < TICK_MIN_GAP) continue;
+    placedY = px;
+
+    // Sit the label on the line, nudged back towards centre so a wide label
+    // never reaches the tiles even where the spine swings furthest out.
+    const centreX = base.width / 2;
+    const raw = xAtY(samples, px);
+    const x = Math.max(centreX - TICK_CLAMP, Math.min(raw, centreX + TICK_CLAMP));
+    out.push(`<span class="tltick" style="top:${px.toFixed(1)}px;left:${x.toFixed(1)}px">` +
+             `${esc(tickLabel(y))}</span>`);
+  }
+  return out;
+}
+
+function tickLabel(year) {
+  return year < 0 ? ui('tlBce', Math.abs(year)) : String(year);
 }
 
 /** The spine's x where it crosses a given y, interpolated between samples. */

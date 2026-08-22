@@ -374,6 +374,13 @@ main { flex: 1; position: relative; overflow: hidden; }
 
 /* where the scale had to give up, labelled on the line itself */
 .tlmarks { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.tltick {
+  position: absolute; transform: translate(-50%, -50%);
+  background: var(--cream); padding: 1px 6px; border-radius: 999px;
+  font-size: 9.5px; font-weight: 800; color: #A79E86;
+  letter-spacing: .5px; white-space: nowrap;
+}
+
 .tlmark {
   position: absolute; left: 50%; transform: translate(-50%, -50%);
   background: var(--cream); padding: 3px 10px; border-radius: 999px;
