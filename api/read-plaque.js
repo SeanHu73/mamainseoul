@@ -206,7 +206,11 @@ export default async function handler(req, res) {
 
       const out = response.parsed_output || salvage(response);
       if (!out) {
-        res.status(502).json({ error: 'no_result', stop_reason: response.stop_reason });
+        res.status(502).json({
+          error: 'no_result',
+          stop_reason: response.stop_reason,
+          raw: responseText(response).slice(0, 400)
+        });
         return;
       }
       res.status(200).json(out);
@@ -262,7 +266,11 @@ export default async function handler(req, res) {
 
     const out = response.parsed_output || salvage(response);
     if (!out) {
-      res.status(502).json({ error: 'no_result', stop_reason: response.stop_reason });
+      res.status(502).json({
+        error: 'no_result',
+        stop_reason: response.stop_reason,
+        raw: responseText(response).slice(0, 400)
+      });
       return;
     }
 
