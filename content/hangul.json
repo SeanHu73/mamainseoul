@@ -174,7 +174,7 @@
       ],
       "word": { "hangul": "명동", "roman": "myeong-dong", "meaning": { "en": "Myeongdong", "zh": "明洞" } },
       "quiz": {
-        "q": { "en": "Last one. You stood here on Day 1 — what does 명동 say?", "zh": "最後一課。第一天你就站在這裡 ——「명동」是什麼？" },
+        "q": { "en": "Last one. You walked through it on Day 1 — what does 명동 say?", "zh": "最後一課。第一天你走過那裡 ——「명동」是什麼？" },
         "options": [
           { "en": "Myeongdong", "zh": "明洞" },
           { "en": "Mokdong", "zh": "木洞" },

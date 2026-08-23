@@ -121,16 +121,19 @@ the trivia at Gyeongbokgung. Eight lessons of two to four letters, bound to
 every other stop, teach it against **loanwords** so each one pays off
 immediately:
 
-| | | |
-|---|---|---|
-| 1 · Gyeongbokgung | 커피 | coffee |
-| 2 · Changdeokgung | 카페 | cafe |
-| 3 · Ikseon-dong | 버스 | bus |
-| 4 · N Seoul Tower | 택시 | taxi |
-| 5 · Leeum | 아이스 | iced |
-| 6 · Seongsu-dong | 치킨 | fried chicken |
-| 7 · Bongeunsa | 서울 | Seoul |
-| 8 · Garosu-gil | 명동 | Myeongdong |
+The stop is only where the lesson unlocks — it has nothing to do with what
+the word means.
+
+| Lesson | Unlocks at | Word taught | Which means |
+|---|---|---|---|
+| 1 | Gyeongbokgung | 커피 | coffee |
+| 2 | Changdeokgung | 카페 | cafe |
+| 3 | Ikseon-dong | 버스 | bus |
+| 4 | N Seoul Tower | 택시 | taxi |
+| 5 | Leeum | 아이스 | iced |
+| 6 | Seongsu-dong | 치킨 | fried chicken |
+| 7 | Bongeunsa | 서울 | Seoul |
+| 8 | Garosu-gil | 명동 | Myeongdong |
 
 21 letters in total, and every payoff word uses only letters already taught.
 Each lesson ends with a real-world task — *find 커피 on a sign* — so the city
