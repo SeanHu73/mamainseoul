@@ -108,6 +108,49 @@ The two images are different jobs. The **thumbnail** identifies the place and
 is always visible. The **reference photo** is a hint for the hunt and stays
 hidden until she checks in.
 
+## Learning as she goes
+
+Two things sit under the hunt and the trivia on each stop card, unlocked by
+checking in. Both are about compounding rather than volume — more trivia would
+have given her more questions and the same amount remembered.
+
+### Reading Korean
+
+Hangul was designed in 1446 to be learnable in a morning, which is already in
+the trivia at Gyeongbokgung. Eight lessons of two to four letters, bound to
+every other stop, teach it against **loanwords** so each one pays off
+immediately:
+
+| | | |
+|---|---|---|
+| 1 · Gyeongbokgung | 커피 | coffee |
+| 2 · Changdeokgung | 카페 | cafe |
+| 3 · Ikseon-dong | 버스 | bus |
+| 4 · N Seoul Tower | 택시 | taxi |
+| 5 · Leeum | 아이스 | iced |
+| 6 · Seongsu-dong | 치킨 | fried chicken |
+| 7 · Bongeunsa | 서울 | Seoul |
+| 8 · Garosu-gil | 명동 | Myeongdong |
+
+21 letters in total, and every payoff word uses only letters already taught.
+Each lesson ends with a real-world task — *find 커피 on a sign* — so the city
+becomes the exercise. By the last one she can read a subway sign.
+
+Lessons are bound to stop ids in `content/hangul.json`, so they are
+predictable and editable rather than depending on how many places she happened
+to check in at.
+
+### Things worth noticing
+
+Four architectural details that repeat across the itinerary — dancheong
+paintwork, roof-end tiles, lattice windows, and the sun-moon-five-peaks screen
+— each appearing at three or four stops. Every stop card lists the ones
+findable there with a running count.
+
+The count is the point. Spotting dancheong once is a find; spotting it at the
+fourth palace is recognising something. The scrapbook tracks letters learned
+and motifs encountered alongside the existing counters.
+
 ## Timeline
 
 A fourth tab: a vertical, top-down timeline she builds as she goes.

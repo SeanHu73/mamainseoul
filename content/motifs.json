@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "title": { "en": "Things worth noticing", "zh": "值得留意的細節" },
+  "intro": {
+    "en": "Four details that repeat across the places she visits. Spotting one is a find; spotting the fourth is recognising something.",
+    "zh": "四個在各個景點反覆出現的細節。第一次是「找到了」，第四次就成了「認得出」。"
+  },
+  "motifs": [
+    {
+      "id": "dancheong",
+      "emoji": "🎨",
+      "name": { "en": "Dancheong", "zh": "丹青", "ko": "단청" },
+      "what": {
+        "en": "The five-colour paintwork under the eaves of palaces and temples — blue, white, red, black and yellow, one for each direction and element. It was never only decoration: the paint protected the timber from insects and rot.",
+        "zh": "宮殿與寺廟屋簷下的五彩彩繪 —— 青、白、赤、黑、黃，各對應一個方位與五行。它從來不只是裝飾：這層漆能保護木材不受蟲蛀與腐朽。"
+      },
+      "look": {
+        "en": "Look up, where the roof beams meet the pillars.",
+        "zh": "抬頭看屋樑與柱子交接的地方。"
+      },
+      "stops": ["gyeongbokgung", "changdeokgung", "nseoultower", "bongeunsa"]
+    },
+    {
+      "id": "maksae",
+      "emoji": "🏺",
+      "name": { "en": "Roof-end tiles", "zh": "瓦當", "ko": "막새" },
+      "what": {
+        "en": "The round caps closing off each row of roof tiles. Most carry a lotus, a face or a Chinese character — a small stamped signature repeated hundreds of times along a single roof.",
+        "zh": "封住每一列屋瓦末端的圓形瓦頭。上面多半有蓮花、人面或漢字 —— 同一個小小的印記，在一道屋脊上重複數百次。"
+      },
+      "look": {
+        "en": "Along the bottom edge of any tiled roof, at eye level in the hanok alleys.",
+        "zh": "在任何瓦頂的最下緣；在韓屋巷弄裡，剛好與視線齊高。"
+      },
+      "stops": ["gyeongbokgung", "bukchon", "changdeokgung", "ikseondong"]
+    },
+    {
+      "id": "munsal",
+      "emoji": "🪟",
+      "name": { "en": "Lattice windows", "zh": "窗格", "ko": "문살" },
+      "what": {
+        "en": "Wooden window and door lattices, backed with paper rather than glass. The patterns run from plain grids in servants' quarters to chrysanthemums and tortoiseshell in royal rooms — the joinery tells you who was meant to be inside.",
+        "zh": "木製的門窗格子，背面糊的是紙而非玻璃。花樣從下人房的素格，到王室廳堂的菊花紋、龜甲紋 —— 從木工的繁簡，就能看出這個房間原本是給誰用的。"
+      },
+      "look": {
+        "en": "The doors themselves. Compare a grand hall with a side building.",
+        "zh": "就看門本身。拿正殿和側廂比一比。"
+      },
+      "stops": ["changdeokgung", "bukchon", "ikseondong", "bongeunsa"]
+    },
+    {
+      "id": "irworobongdo",
+      "emoji": "⛰️",
+      "name": { "en": "Sun, moon and five peaks", "zh": "日月五峰圖", "ko": "일월오봉도" },
+      "what": {
+        "en": "A screen of five mountains under a sun and a moon, standing behind the throne. It represents the land itself, and the king completes it — the painting is only whole when he is sitting in front of it.",
+        "zh": "王座背後的屏風：日月之下五座山峰。它象徵國土，而國王本人才是畫的最後一筆 —— 唯有他端坐其前，這幅畫才算完整。"
+      },
+      "look": {
+        "en": "Behind the throne in any main hall, and in the museum's royal galleries.",
+        "zh": "任何正殿的王座後方，以及博物館的王室展廳。"
+      },
+      "stops": ["gyeongbokgung", "changdeokgung", "national-museum"]
+    }
+  ]
+}

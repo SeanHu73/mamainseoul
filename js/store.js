@@ -244,6 +244,71 @@ export async function clearTimeline() {
   localStorage.removeItem(K_TIMELINE);
 }
 
+/* ---------------- learning progress ---------------- */
+
+const K_LEARN = 'mis.learn.v1';
+
+function readLearn() {
+  try {
+    const raw = localStorage.getItem(K_LEARN);
+    const v = raw ? JSON.parse(raw) : null;
+    return { lessons: {}, motifs: {}, ...(v || {}) };
+  } catch {
+    return { lessons: {}, motifs: {} };
+  }
+}
+
+let learn = readLearn();
+
+function saveLearn() {
+  localStorage.setItem(K_LEARN, JSON.stringify(learn));
+}
+
+export function lessonState(id) {
+  return learn.lessons[id] || (learn.lessons[id] = { seen: false, quizPick: null, taskDone: false });
+}
+
+export function markLessonSeen(id) {
+  lessonState(id).seen = true;
+  saveLearn();
+}
+
+/** First answer only, same as trivia, so the count means something. */
+export function setLessonQuizPick(id, index) {
+  const s = lessonState(id);
+  if (s.quizPick === null) {
+    s.quizPick = index;
+    saveLearn();
+  }
+}
+
+export function setLessonTaskDone(id, done) {
+  lessonState(id).taskDone = !!done;
+  saveLearn();
+}
+
+/** Which stops she has spotted a given motif at. */
+export function motifState(id) {
+  return learn.motifs[id] || (learn.motifs[id] = { stops: {} });
+}
+
+export function toggleMotif(motifId, stopId) {
+  const m = motifState(motifId);
+  if (m.stops[stopId]) delete m.stops[stopId];
+  else m.stops[stopId] = new Date().toISOString();
+  saveLearn();
+  return !!m.stops[stopId];
+}
+
+export function motifCount(id) {
+  return Object.keys(motifState(id).stops).length;
+}
+
+export function resetLearn() {
+  learn = { lessons: {}, motifs: {} };
+  localStorage.removeItem(K_LEARN);
+}
+
 /* ---------------- content override (admin) ---------------- */
 
 export function readOverride() {

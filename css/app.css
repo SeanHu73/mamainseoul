@@ -247,6 +247,55 @@ main { flex: 1; position: relative; overflow: hidden; }
 }
 .addshot span { font-size: 10px; font-weight: 800; }
 
+/* ---------- learning: hangul + motifs ---------- */
+.card.learn { border-color: #D8CFB6; background: #FDFBF5; }
+
+.glyphs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.glyph {
+  flex: 1 1 66px; min-width: 66px; text-align: center;
+  background: #fff; border: 1.5px solid var(--line); border-radius: 11px;
+  padding: 9px 6px 8px;
+}
+.glyph b {
+  display: block; font-size: 30px; line-height: 1.1; color: var(--navy);
+  font-weight: 600;
+}
+.glyph .sound { display: block; font-size: 13px; font-weight: 800; color: var(--orange); margin-top: 2px; }
+.glyph .tip { display: block; font-size: 10px; color: var(--muted); line-height: 1.3; margin-top: 3px; }
+
+/* the payoff — the whole point of the lesson */
+.wordbox {
+  text-align: center; padding: 13px 10px;
+  background: #fff; border: 1.5px dashed #C9C1A9; border-radius: 12px;
+}
+.wordbox.solved { border-style: solid; border-color: var(--green); background: #F3FAF4; }
+.wordbox b { display: block; font-size: 34px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.wordbox .rom { display: block; font-size: 12.5px; font-weight: 800; color: var(--muted); letter-spacing: 1px; margin-top: 3px; }
+.wordbox .mean {
+  display: block; font-size: 15px; font-weight: 800; color: var(--green); margin-top: 5px;
+}
+
+.motif {
+  border: 1.5px solid var(--line); border-radius: 12px; background: #fff;
+  padding: 10px 12px; margin-bottom: 9px; cursor: pointer;
+}
+.motif.found { border-color: var(--green); background: #F3FAF4; }
+.motif .mhead { display: flex; align-items: center; gap: 9px; }
+.motif .mem { font-size: 20px; }
+.motif .mname { flex: 1; font-weight: 800; font-size: 14px; line-height: 1.2; }
+.motif .mname small { display: block; font-weight: 700; font-size: 11px; color: var(--muted); }
+.motif .mcount {
+  font-size: 11px; font-weight: 800; color: var(--muted);
+  background: #F1EBDA; border-radius: 999px; padding: 2px 8px;
+}
+.motif.found .mcount { background: #DCF0E0; color: var(--green); }
+.motif .mtick { font-size: 16px; font-weight: 800; color: var(--muted); }
+.motif.found .mtick { color: var(--green); }
+.motif .mwhat { font-size: 12.5px; color: #4B5563; margin-top: 7px; line-height: 1.5; }
+.motif .mlook { font-size: 11.5px; color: var(--muted); margin-top: 5px; font-weight: 700; }
+
+.stat b small { font-size: 13px; font-weight: 700; color: var(--muted); }
+
 /* ---------- itinerary list ---------- */
 .dayblock { margin-bottom: 18px; }
 .dayhead {

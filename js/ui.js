@@ -4,6 +4,7 @@ import * as store from './store.js';
 import { locate, withinRadius, formatDistance, naverUrl, kakaoUrl, webMapUrl } from './geo.js';
 import { shrinkToBlob, blobUrl } from './photo.js';
 import { renderAdminPanel, isAdmin } from './admin.js';
+import { renderLesson, renderMotifs, lettersLearned, lettersTotal, motifsSpotted, allMotifs } from './learn.js';
 
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"']/g, c =>
@@ -113,6 +114,10 @@ export async function renderBook() {
       <div class="stat"><b>${visited.length}</b><span>${esc(ui('stopsVisited'))}</span></div>
       <div class="stat"><b>${hunts}</b><span>${esc(ui('huntsDone'))}</span></div>
       <div class="stat"><b>${right}</b><span>${esc(ui('triviaRight'))}</span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>${lettersLearned()}<small>/${lettersTotal()}</small></b><span>${esc(ui('lnLetters'))}</span></div>
+      <div class="stat"><b>${motifsSpotted()}<small>/${allMotifs().length}</small></b><span>${esc(ui('lnMotifsStat'))}</span></div>
     </div>`;
 
   if (!visited.length) {
@@ -193,6 +198,8 @@ export async function renderSheet() {
 
     <div class="card ${done ? '' : 'locked'}" id="huntCard"></div>
     <div class="card ${done ? '' : 'locked'}" id="triviaCard"></div>
+    <div id="motifZone"></div>
+    <div id="lessonZone"></div>
 
     <div style="display:flex;gap:8px;margin-top:4px">
       <a class="btn ghost" href="${naverUrl(stop, t(stop.name))}">${esc(ui('naver'))}</a>
@@ -205,6 +212,11 @@ export async function renderSheet() {
   renderCheckin(stop);
   renderHunt(stop);
   renderTrivia(stop);
+  // Both only make sense once she is standing there.
+  if (done) {
+    renderMotifs($('#motifZone'), stop, onProgressChange);
+    renderLesson($('#lessonZone'), stop, onProgressChange);
+  }
   if (isAdmin()) renderAdminPanel($('#adminZone'), stop, () => { renderSheet(); onProgressChange(); });
 }
 
