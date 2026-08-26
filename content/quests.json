@@ -1,0 +1,805 @@
+{
+  "version": 1,
+  "note": "Themed scavenger hunts and trivia. Each hunt has a clue (what to look for) and a reveal (the story, shown only after she finds it). photoSearch is the search term for sourcing the answer photo.",
+  "themes": [
+    {
+      "id": "guardians",
+      "emoji": "🐉",
+      "name": { "en": "Guardians", "zh": "守護者" },
+      "blurb": {
+        "en": "Korea does not leave a building undefended. Beasts sit on roofs, crouch on bridges and stand in gateways, each with a job.",
+        "zh": "韓國不會讓一棟建築毫無防備。神獸蹲在屋脊、伏在橋畔、立於門前，各司其職。"
+      }
+    },
+    {
+      "id": "power",
+      "emoji": "👑",
+      "name": { "en": "Marks of rank", "zh": "位階的印記" },
+      "blurb": {
+        "en": "Who stood where, who could paint what, who was allowed how many of anything. Joseon wrote its hierarchy into stone and paint.",
+        "zh": "誰站在哪裡、誰能用什麼顏色、什麼東西可以有幾個 —— 朝鮮把階級寫進了石頭與彩繪裡。"
+      }
+    },
+    {
+      "id": "scars",
+      "emoji": "🩹",
+      "name": { "en": "Scars and repairs", "zh": "傷痕與修補" },
+      "blurb": {
+        "en": "Almost nothing here survived intact. Burned, demolished, buried, smuggled abroad — and then found, argued over and put back.",
+        "zh": "這裡幾乎沒有東西是完好留存下來的。焚毀、拆除、掩埋、流落海外 —— 然後被發現、被爭論，再放回原處。"
+      }
+    },
+    {
+      "id": "secondlife",
+      "emoji": "♻️",
+      "name": { "en": "Second lives", "zh": "第二次生命" },
+      "blurb": {
+        "en": "A racetrack becomes a forest, a shoe factory becomes a cafe, a stadium becomes a spaceship. Seoul rarely demolishes what it can repurpose.",
+        "zh": "賽馬場變成森林，製鞋廠變成咖啡館，體育場變成太空船。只要還能改用，首爾很少真的拆掉什麼。"
+      }
+    }
+  ],
+  "stops": {
+    "gyeongbokgung": {
+      "hunts": [
+        {
+          "id": "gbg-haetae",
+          "theme": "guardians",
+          "title": { "en": "The beast at the gate", "zh": "門前的神獸" },
+          "clue": {
+            "en": "Before you go in, look at the two stone animals flanking Gwanghwamun gate. They are not lions and not dogs. Find the single horn on the head.",
+            "zh": "進門之前，先看看光化門兩側的石獸。牠們不是獅子，也不是狗。找找頭上那隻獨角。"
+          },
+          "where": { "en": "Either side of Gwanghwamun, the main gate, before you enter.", "zh": "在正門光化門兩側，進門之前。" },
+          "reveal": {
+            "en": "This is a haetae (해태) — a mythical beast that could tell right from wrong, and was said to gore the guilty party with that horn. It was placed at the seat of government because a court that judges wrongly is more dangerous than any fire. Seoul liked it enough to make it the city's official symbol in 2008.",
+            "zh": "這是海豸（해태）—— 傳說中能辨是非的神獸，會用那隻角頂向理虧的一方。牠被安置在朝廷所在，因為一個審判不公的政府，比任何一場火災都更危險。首爾很喜歡牠，2008 年正式定牠為城市象徵。"
+          },
+          "photoSearch": "Gwanghwamun haetae haechi stone statue Gyeongbokgung"
+        },
+        {
+          "id": "gbg-seosu",
+          "theme": "guardians",
+          "title": { "en": "Eight beasts at the water", "zh": "水邊的八隻神獸" },
+          "clue": {
+            "en": "Inside the first gate, a small stone bridge crosses a shallow channel. Look along its edges and down at the water. Count the carved animals — there are eight.",
+            "zh": "進了第一道門後，有座小石橋跨過一條淺渠。沿著橋緣看，也往水面下看。數數那些石雕動物 —— 一共八隻。"
+          },
+          "where": { "en": "Yeongjegyo bridge, between Heungnyemun gate and the throne hall.", "zh": "永濟橋，位於興禮門與勤政殿之間。" },
+          "reveal": {
+            "en": "These are seosu (서수), auspicious beasts guarding the water. Every person who came to see the king — ministers, generals, foreign envoys — had to cross this bridge, and the crossing was the point: the stream washed off bad intent before anyone reached the throne. Two of the eight are looking down into the water rather than out at you. They are watching for what might come up it.",
+            "zh": "這些是瑞獸（서수），守護聖水的神獸。所有要面見國王的人 —— 大臣、將軍、外國使節 —— 都必須走過這座橋，而「走過」本身就是重點：這道水流會洗去不軌之心，才准靠近王座。八隻之中有兩隻不是看著你，而是低頭盯著水面。牠們防的是從水裡上來的東西。"
+          },
+          "photoSearch": "Yeongjegyo bridge seosu carved stone animal Gyeongbokgung 영제교 서수"
+        },
+        {
+          "id": "gbg-rank",
+          "theme": "power",
+          "title": { "en": "Where you were allowed to stand", "zh": "你被允許站的位置" },
+          "clue": {
+            "en": "In the wide courtyard before the throne hall, two rows of low stone posts line the path. Walk to the one nearest the hall and read the characters carved on it.",
+            "zh": "勤政殿前的大庭院裡，石板路兩側立著兩排矮石柱。走到最靠近殿門的那一根，讀讀上面刻的字。"
+          },
+          "where": { "en": "Geunjeongjeon courtyard, along the raised central path.", "zh": "勤政殿庭院，沿著中央御道兩側。" },
+          "reveal": {
+            "en": "These are pumgyeseok (품계석), rank stones. The nearest reads 正一品 — First Senior Rank. Officials lined up beside the stone matching their grade, civil officials on one side, military on the other, and nobody moved a place forward in their life without an appointment saying so. The raised centre path was for the king alone. Notice the courtyard stones are deliberately rough: they stopped shoes slipping, and they stopped glare off the granite blinding everyone at dawn ceremonies.",
+            "zh": "這些是品階石（품계석）。最靠近殿門的刻著「正一品」。官員按品級站在對應的石柱旁，文官一側、武官一側，沒有一紙任命，誰也不能往前挪一格。中央高起的御道只屬於國王。也注意庭院的石板是刻意做粗的：既防鞋底打滑，也避免破曉行禮時花崗岩反光刺眼。"
+          },
+          "photoSearch": "품계석 pumgyeseok rank stone Geunjeongjeon courtyard Gyeongbokgung"
+        },
+        {
+          "id": "gbg-japsang",
+          "theme": "power",
+          "title": { "en": "Count the little figures on the roof", "zh": "數數屋脊上的小人" },
+          "clue": {
+            "en": "Find the big pavilion standing in the pond. Look at the sloping corner ridges of its roof — there is a line of small clay figures walking up each one. Count them.",
+            "zh": "找到那座立在池中的大樓閣。看牠屋頂斜脊 —— 每一條上都有一列小陶偶往上走。數數看有幾隻。"
+          },
+          "where": { "en": "Gyeonghoeru, the pavilion on the pond in the north-west of the grounds.", "zh": "慶會樓，宮苑西北側池中的樓閣。" },
+          "reveal": {
+            "en": "Eleven. These are japsang (잡상), and they are characters from the Chinese novel Journey to the West — the monk Tripitaka leads, with the Monkey King behind him. The number was never decorative: it rose in odd steps with the building's importance. The throne hall has seven. Gyeonghoeru has eleven, the most of any building in Korea, because this is where the king entertained foreign envoys and the roof had to say so before anyone spoke.",
+            "zh": "十一隻。這些叫雜像（잡상），是中國小說《西遊記》裡的人物 —— 三藏法師領頭，孫悟空跟在後面。數量從來不是裝飾：它隨建築等級以奇數遞增。勤政殿有七隻。慶會樓有十一隻，是全韓國最多的，因為這裡是國王宴請外國使節之處，屋頂得在誰開口之前就把話說完。"
+          },
+          "photoSearch": "Gyeonghoeru japsang roof figures eleven 경회루 잡상"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Gyeongbokgung's throne hall courtyard is paved with rough, uneven granite slabs rather than smooth stone. One reason was grip. What was the other?",
+          "zh": "勤政殿的庭院鋪的是粗糙不平的花崗岩板，而非平整石材。原因之一是防滑。另一個原因是什麼？"
+        },
+        "options": [
+          { "en": "To stop sunlight glaring off the stone during dawn ceremonies", "zh": "避免破曉行禮時陽光在石面反光刺眼" },
+          { "en": "To drain rainwater away from the hall", "zh": "讓雨水排離大殿" },
+          { "en": "To make approaching footsteps audible", "zh": "讓走近的腳步聲聽得見" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Court ceremonies began at first light, and a polished courtyard would have thrown the low sun straight into the eyes of several hundred assembled officials. The rough finish scatters it. It also gave grip in rain and snow — the two reasons are usually cited together.",
+          "zh": "朝儀在天剛亮時舉行，若庭院打磨光滑，低角度的陽光會直射進數百名列隊官員的眼睛。粗糙的表面能把光打散。同時也在雨雪天防滑 —— 這兩個理由通常是一起被提到的。"
+        }
+      }
+    },
+
+    "bukchon": {
+      "hunts": [
+        {
+          "id": "buk-views",
+          "theme": "guardians",
+          "title": { "en": "Find a numbered view", "zh": "找到一處編號景點" },
+          "clue": {
+            "en": "Somewhere on these lanes is a small sign with a number on it, marking an official photo spot. Find any one of the eight and photograph the number.",
+            "zh": "這些巷弄裡有小小的標示牌，上面有編號，標示官方攝影點。八處之中找到任何一處，拍下編號。"
+          },
+          "where": { "en": "Scattered through the lanes; the steep one off Bukchon-ro 11-gil is the famous one.", "zh": "散布在各巷弄；北村路 11 街那條陡坡是最有名的。" },
+          "reveal": {
+            "en": "The Bukchon Eight Views were designated by the district office to send visitors to specific corners — and, quietly, away from others. People still live in these houses. Since 2025 the village has had a legal curfew: no visitors before 10am or after 5pm, with fines up to ₩100,000, after residents spent years being photographed through their own windows. You are inside the permitted hours. The signs are not just for your benefit.",
+            "zh": "「北村八景」由區公所指定，用意是把遊客導向特定角落 —— 也悄悄地引離另一些地方。這些房子裡仍然住著人。自 2025 年起，村裡實施法定門禁：上午十點前、下午五點後禁止遊客進入，違者最高罰款十萬韓元 —— 在居民被人隔著自家窗戶拍了許多年之後。你來的時間在允許範圍內。這些牌子不只是為了方便你。"
+          },
+          "photoSearch": "북촌8경 Bukchon 8 views numbered sign viewpoint marker"
+        },
+        {
+          "id": "buk-maksae",
+          "theme": "guardians",
+          "title": { "en": "The end of a roof tile", "zh": "屋瓦的盡頭" },
+          "clue": {
+            "en": "Here the roofs come down to eye level. Look at the very bottom edge of any tiled roof — each row of tiles is closed off with a round cap. Find one with a pattern on it.",
+            "zh": "在這裡，屋簷低到與視線齊平。看看任何一道瓦頂的最下緣 —— 每一列瓦片末端都用一個圓形瓦頭封住。找一個上面有紋樣的。"
+          },
+          "where": { "en": "Any hanok eave in the lanes. The lower ones are easiest.", "zh": "巷弄裡任何一處韓屋屋簷，位置低的最好找。" },
+          "reveal": {
+            "en": "These are maksae (막새), roof-end tiles. They keep rain out of the tile rows, but the pattern is the interesting part: a lotus, a face, a character, stamped from one mould and repeated hundreds of times along a single roof. You will see grander versions at the palaces this afternoon. The difference between a nobleman's roof and a king's is not the idea — it is how many people were paid to make the mould.",
+            "zh": "這些是막새（瓦當），封住瓦列末端、擋住雨水。有意思的是上面的紋樣：蓮花、人面或一個漢字，用同一個模子壓出來，在一道屋脊上重複數百次。今天下午在宮殿裡你會看到更講究的版本。貴族屋頂與國王屋頂的差別不在於構想 —— 而在於有多少人領錢去做那個模子。"
+          },
+          "photoSearch": "막새 maksae Korean roof end tile lotus pattern hanok eave"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Bukchon means \"north village\". Why did the aristocracy want this particular hillside?",
+          "zh": "北村意為「北邊的村子」。為什麼貴族偏偏想要這片山坡？"
+        },
+        "options": [
+          { "en": "It sat between the two main palaces, so officials could walk to work", "zh": "它正好夾在兩座主要王宮之間，官員步行即可上朝" },
+          { "en": "It was the only land the king would sell", "zh": "那是國王唯一肯出售的土地" },
+          { "en": "It had the city's only wells", "zh": "全城只有那裡有水井" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Bukchon sits on the slope between Gyeongbokgung and Changdeokgung — you will walk from one to the other today, which is exactly the commute it was built for. Being uphill also meant cleaner air and better drainage, and being north of the Cheonggyecheon stream put it on the right side of the water. Address has always been about proximity to power.",
+          "zh": "北村位於景福宮與昌德宮之間的坡地 —— 你今天正好會從一宮走到另一宮，那正是它當初被建造出來的通勤路線。地勢較高也意味著空氣較好、排水較佳；位在清溪川以北，則站對了水的那一邊。地段這回事，向來關乎離權力有多近。"
+        }
+      }
+    },
+
+    "changdeokgung": {
+      "hunts": [
+        {
+          "id": "cdg-lightbulbs",
+          "theme": "power",
+          "title": { "en": "Something in the throne hall is too modern", "zh": "正殿裡有樣東西太新了" },
+          "clue": {
+            "en": "You cannot go inside, but you can look through the open doors of the main throne hall. Something in there was not there in 1405. Look up, and look down at the floor.",
+            "zh": "你進不去，但可以從正殿敞開的門往裡看。裡面有些東西在 1405 年是不存在的。抬頭看，也低頭看地板。"
+          },
+          "where": { "en": "Injeongjeon, the main throne hall. Look through the front doors.", "zh": "仁政殿正殿，從正門往裡看。" },
+          "reveal": {
+            "en": "Electric lights, glass windows, curtains, and a parquet wooden floor — all installed in 1908 for Sunjong, the last monarch, who had moved here the year before. The traditional black brick floor was torn out for parquet. Two years later Korea was annexed and there was no throne left to light. You saw the older arrangement this morning at Gyeongbokgung; this is the same kind of room, wired for electricity in the dynasty's final months.",
+            "zh": "電燈、玻璃窗、窗簾，還有拼花木地板 —— 全是 1908 年為前一年遷居於此的末代君主純宗所裝設。傳統的黑磚地被拆掉，換成了拼花木板。兩年後韓國被併吞，再也沒有王座需要點燈。今天早上你在景福宮看到的是更早的樣貌；這是同一種殿堂，在王朝最後的幾個月裡接上了電。"
+          },
+          "photoSearch": "Injeongjeon interior electric lamp parquet floor Changdeokgung 인정전 내부",
+          "callback": "gbg-rank"
+        },
+        {
+          "id": "cdg-japsang",
+          "theme": "guardians",
+          "title": { "en": "Count them again", "zh": "再數一次" },
+          "clue": {
+            "en": "You counted eleven on the pavilion this morning. Find the corner ridges of this throne hall's roof and count the little figures again. Is the number the same?",
+            "zh": "早上在慶會樓你數到十一隻。找到這座正殿屋頂的斜脊，再數一次上面的小陶偶。數字一樣嗎？"
+          },
+          "where": { "en": "The sloping corner ridges of Injeongjeon's roof.", "zh": "仁政殿屋頂的斜角脊上。" },
+          "reveal": {
+            "en": "Fewer. Injeongjeon carries a smaller set than Gyeonghoeru's eleven, because the count tracked a building's standing, not its size. Once you know to look, you can rank almost any old roof in Korea from the ground without reading a single sign — which is exactly what a visiting official was expected to do.",
+            "zh": "比較少。仁政殿的數量少於慶會樓的十一隻，因為這個數字對應的是建築的地位，而非大小。一旦你知道該看哪裡，站在地上就能替韓國幾乎任何一座古建築排位，一塊說明牌都不必讀 —— 而這正是當年來訪官員被期待做到的事。"
+          },
+          "photoSearch": "Injeongjeon roof japsang figures corner ridge Changdeokgung",
+          "callback": "gbg-japsang"
+        },
+        {
+          "id": "cdg-donhwamun",
+          "theme": "scars",
+          "title": { "en": "The oldest thing standing", "zh": "還立著的最老的東西" },
+          "clue": {
+            "en": "The gate you walked in through is older than almost everything else you will see today. Stand under it and look up into the roof structure.",
+            "zh": "你走進來的那道門，比你今天會看到的幾乎所有東西都老。站在門下，抬頭看屋頂的木構。"
+          },
+          "where": { "en": "Donhwamun, the main entrance gate.", "zh": "敦化門，正門。" },
+          "reveal": {
+            "en": "Donhwamun dates from 1412 and is the oldest surviving palace gate in Seoul. It came through the 1592 invasion that burned Gyeongbokgung to the ground — which is why Changdeokgung, not Gyeongbokgung, became the working palace for the next 270 years while the grander one lay in ruins. The second-choice palace ended up being the one the dynasty actually lived in.",
+            "zh": "敦化門建於 1412 年，是首爾現存最古老的宮門。它挺過了 1592 年那場把景福宮燒成平地的戰火 —— 這正是為什麼在此後的 270 年間，成為實際使用宮殿的是昌德宮，而非景福宮；那座更宏偉的宮殿一直是廢墟。這座備選的宮殿，最後成了王朝真正生活的地方。"
+          },
+          "photoSearch": "Donhwamun gate Changdeokgung 1412 oldest palace gate Seoul"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Changdeokgung is a UNESCO World Heritage site while Gyeongbokgung is not. What did UNESCO single out?",
+          "zh": "昌德宮列入世界遺產，景福宮則沒有。聯合國教科文組織看重的是什麼？"
+        },
+        "options": [
+          { "en": "That it was laid out to follow the hill rather than flatten it", "zh": "它依著山勢而建，而非把地削平" },
+          { "en": "That it is the largest palace in Korea", "zh": "它是韓國規模最大的宮殿" },
+          { "en": "That it was never damaged", "zh": "它從未受損" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Gyeongbokgung is a formal grid, laid out on a north–south axis in the Chinese manner. Changdeokgung bends around the terrain — buildings sit where the slope allows, not where symmetry demands. UNESCO called it outstanding for that adaptation to its setting. Roughly 60% of the grounds is the rear garden, which is why you can only enter it on a timed tour.",
+          "zh": "景福宮是規整的方格佈局，依中國制度沿南北軸線展開。昌德宮則順著地形彎折 —— 建築蓋在坡度允許的地方，而不是對稱要求的地方。聯合國教科文組織正是為這種與環境的融合而稱其傑出。宮域約六成是後苑，這也是為什麼那裡只能跟著定時導覽進入。"
+        }
+      }
+    },
+
+    "insadong": {
+      "hunts": [
+        {
+          "id": "ins-starbucks",
+          "theme": "secondlife",
+          "title": { "en": "The sign that had to change", "zh": "那塊不得不改的招牌" },
+          "clue": {
+            "en": "Find the Starbucks on the main street and look at its sign. Something about it is different from every other Starbucks on earth.",
+            "zh": "在主街上找到那家星巴克，看看它的招牌。它跟全世界任何一家星巴克都不一樣。"
+          },
+          "where": { "en": "On Insadong-gil, the main pedestrian street.", "zh": "在仁寺洞街，主要的步行街上。" },
+          "reveal": {
+            "en": "It reads 스타벅스 in Hangul. When the branch opened in 2001 the merchants' association and the district office pushed back on Latin lettering in a street designated for traditional culture, and Starbucks agreed to a Korean-script sign — its first anywhere in the world. Other chains on this street followed. It is a small thing, and it is also a neighbourhood deciding what it would look like.",
+            "zh": "上面寫的是韓文「스타벅스」。2001 年這家分店開幕時，商圈協會與區公所反對在一條被指定為傳統文化街區的街上使用拉丁字母，星巴克同意改用韓文招牌 —— 這是它在全世界的第一塊。這條街上其他連鎖店也跟進了。這是件小事，也是一個街區自己決定要長什麼樣子。"
+          },
+          "photoSearch": "Insadong Starbucks Korean Hangul sign 스타벅스 인사동"
+        },
+        {
+          "id": "ins-brush",
+          "theme": "power",
+          "title": { "en": "A brush shop window", "zh": "筆莊的櫥窗" },
+          "clue": {
+            "en": "Find a shop selling calligraphy brushes and look at the range hanging up. Find the largest one — some are as thick as your wrist.",
+            "zh": "找一家賣毛筆的店，看看掛著的各種筆。找出最大的那一枝 —— 有些粗得像手腕。"
+          },
+          "where": { "en": "Several on and just off Insadong-gil, often with brushes hanging in the doorway.", "zh": "仁寺洞街上及附近巷內都有幾家，門口常掛著成排的筆。" },
+          "reveal": {
+            "en": "Insadong became an art street for an unglamorous reason: when the Joseon court collapsed, the families of former officials living nearby sold off what they owned, and dealers set up where the goods were. Brushes, ink, hanji paper and antiques have been traded on this street ever since. On Day 3 you will see a temple signboard written by Kim Jeong-hui, the greatest calligrapher of the late Joseon — a brush like these made it.",
+            "zh": "仁寺洞成為藝術街的原因並不浪漫：朝鮮朝廷崩解後，住在附近的舊官宦人家變賣家產，商販便在貨源所在之處落腳。從此毛筆、墨、韓紙與古董就在這條街上流通。第三天你會看到一塊由金正喜題寫的寺院匾額 —— 他是朝鮮後期最偉大的書法家，而那正是用這樣一枝筆寫成的。"
+          },
+          "photoSearch": "Insadong calligraphy brush shop display Korean writing brushes 붓"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Ssamziegil, the shopping complex in the middle of Insadong, is built with an unusual feature. What is it?",
+          "zh": "仁寺洞正中央的商場「쌈지길」有一個不尋常的設計。是什麼？"
+        },
+        "options": [
+          { "en": "It has no stairs — one continuous ramp spirals from bottom to top", "zh": "它沒有樓梯 —— 一道連續的坡道從底盤旋到頂" },
+          { "en": "It has no roof", "zh": "它沒有屋頂" },
+          { "en": "It has no interior walls", "zh": "它沒有室內隔牆" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Ssamziegil is a single ramp wound around an open courtyard, so you walk the whole building without ever meeting a step. It was designed that way so that no shop is on a dead floor — everyone passes every unit. Look over the railing at the padlocks people have left on the upper level.",
+          "zh": "쌈지길是一道環繞著露天中庭盤旋而上的坡道，走完整棟樓也遇不到一級台階。這樣設計是為了讓沒有一家店位在「死樓層」—— 每個人都會經過每一間店。走到上層時，往欄杆外看看人們留下的那些鎖。"
+        }
+      }
+    },
+
+    "ikseondong": {
+      "hunts": [
+        {
+          "id": "iks-beams",
+          "theme": "secondlife",
+          "title": { "en": "The ceiling of a cafe", "zh": "咖啡館的天花板" },
+          "clue": {
+            "en": "Step into any cafe here and look straight up. Most have left the original roof structure exposed. Find the thick curved beam running across.",
+            "zh": "隨便走進這裡任何一家咖啡館，抬頭直視上方。多數店家都保留了原本的屋頂結構。找找那根橫過屋頂、粗而彎的樑。"
+          },
+          "where": { "en": "Almost any cafe in the alleys — the smaller and older-looking, the better.", "zh": "巷弄裡幾乎任何一家咖啡館 —— 越小、看起來越舊的越好。" },
+          "reveal": {
+            "en": "That beam is about a hundred years old and was never meant to be seen by a customer. These are 1920s hanok, and they exist because of one man: Jeong Se-gwon, a developer who bought up land in the colonial capital and covered it with small, cheap, mass-produced hanok so that ordinary Koreans could still afford to live in the centre of their own city. He built tens of thousands of them. This alley is a housing estate that survived long enough to become fashionable.",
+            "zh": "那根樑大約有一百年歷史，當初根本沒打算讓客人看見。這些是 1920 年代的韓屋，而它們的存在源於一個人：鄭世權 —— 一位開發商，他在殖民統治下的首都收購土地，蓋滿了小巧、廉價、量產的韓屋，好讓一般韓國人還住得起自己城市的中心。他蓋了數以萬計。這條巷子是一片撐得夠久、久到變時髦的國民住宅區。"
+          },
+          "photoSearch": "Ikseon-dong hanok cafe exposed wooden roof beams interior 익선동 한옥 카페"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Ikseon-dong was almost demolished. What saved it?",
+          "zh": "益善洞差點被拆掉。是什麼救了它？"
+        },
+        "options": [
+          { "en": "A redevelopment plan stalled for years, and cafes moved in before it restarted", "zh": "一項重建計畫停擺多年，咖啡館趁機進駐，計畫再也沒重啟" },
+          { "en": "It was declared a national treasure", "zh": "它被指定為國寶" },
+          { "en": "A famous film was shot there", "zh": "有部知名電影在那裡取景" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Ikseon-dong was zoned for redevelopment in 2004 and the towers never came. While the plan sat unresolved, rents stayed low, small operators took the empty hanok, and by the time anyone revisited the scheme the neighbourhood had become too popular to knock down. It was saved by delay rather than by protection.",
+          "zh": "益善洞在 2004 年被劃入重建區，但高樓始終沒有蓋起來。計畫懸而未決的期間，租金維持低廉，小店主承租了空置的韓屋；等到有人重新檢視這項計畫時，這個街區已經紅到拆不得了。救了它的不是保護，而是拖延。"
+        }
+      }
+    },
+
+    "myeongdong": {
+      "hunts": [
+        {
+          "id": "myd-cathedral",
+          "theme": "scars",
+          "title": { "en": "The church on the hill", "zh": "坡上的教堂" },
+          "clue": {
+            "en": "Walk up off the shopping street until the red brick tower comes into view. Stand at the foot of the steps and look up at the spire.",
+            "zh": "從購物街往上走，直到那座紅磚鐘塔進入視野。站在階梯下，抬頭看那尖塔。"
+          },
+          "where": { "en": "Myeongdong Cathedral, up the rise at the east end of the district.", "zh": "明洞聖堂，在明洞東側坡上。" },
+          "reveal": {
+            "en": "Finished in 1898, and for most of a century it was simply the seat of Korean Catholicism. Then in June 1987, student protesters demanding direct presidential elections took refuge inside, and riot police stopped at the gate — unwilling to force their way onto church ground in front of the world's cameras. The standoff held for days. The government conceded elections that month. The building you are looking at is why the sit-in worked.",
+            "zh": "1898 年落成，此後將近一個世紀，它就只是韓國天主教的主教座堂。然後在 1987 年六月，要求總統直選的學生示威者躲進堂內，鎮暴警察在門口停住 —— 不願在全世界的鏡頭前強行踏進教堂的土地。對峙持續了數日。政府在那個月讓步，同意直選。你眼前這棟建築，正是那場靜坐能夠奏效的原因。"
+          },
+          "photoSearch": "Myeongdong Cathedral exterior spire red brick Seoul 명동성당"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Myeongdong has some of the most expensive retail rent on earth. What was on this land before the shops?",
+          "zh": "明洞的店面租金是全球最貴的地段之一。在店家進駐之前，這片土地上是什麼？"
+        },
+        "options": [
+          { "en": "A quiet residential quarter of the old walled city", "zh": "舊城牆內一片安靜的住宅區" },
+          { "en": "The royal stables", "zh": "王室馬廄" },
+          { "en": "Rice paddies outside the wall", "zh": "城外的稻田" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Myeongdong was an ordinary residential district inside the city walls, called Myeongnyebang in Joseon times. It became a commercial and banking centre under Japanese rule, then Seoul's fashion district after the war. The cathedral was built here in the 1890s precisely because it was a modest neighbourhood where land could be had.",
+          "zh": "明洞原是城牆內一片普通的住宅區，朝鮮時代稱為明禮坊。日本統治時期成為商業與金融中心，戰後才變成首爾的流行時尚區。1890 年代教堂之所以蓋在這裡，正是因為當時這裡地段平常、買得到地。"
+        }
+      }
+    },
+
+    "nseoultower": {
+      "hunts": [
+        {
+          "id": "nst-wall",
+          "theme": "scars",
+          "title": { "en": "A wall on a mountain", "zh": "山上的一道牆" },
+          "clue": {
+            "en": "Somewhere on the way up or around the base, a low stone wall runs along the ridge. Find it and look at the stones — they are not all the same age or shape.",
+            "zh": "上山途中或塔基周邊，有一道矮石牆沿著稜線延伸。找到它，看看那些石頭 —— 它們的年代和形狀並不一致。"
+          },
+          "where": { "en": "The Seoul City Wall trail runs across Namsan below and around the tower.", "zh": "首爾城郭步道橫越南山，就在塔的下方與周邊。" },
+          "reveal": {
+            "en": "This is Hanyangdoseong, the Seoul City Wall, begun in 1396 to enclose the new capital — 18km of it, around four mountains. The Namsan stretch was heavily damaged under Japanese rule, and most of what you are touching was rebuilt after 2000. Look for the joins: old stones are irregular and weathered, restored ones are cut square. On Day 2 you will find the bottom of this same wall dug out from under a demolished baseball stadium.",
+            "zh": "這是漢陽都城，首爾城郭，始建於 1396 年，用以圍起新都 —— 全長 18 公里，環繞四座山。南山這一段在日本統治時期嚴重受損，你現在摸到的大部分是 2000 年後重建的。找找接縫處：舊石塊不規則且風化，修復的石塊則切得方正。第二天，你會看到同一道城牆的牆基，從一座拆除的棒球場底下被挖了出來。"
+          },
+          "photoSearch": "Seoul City Wall Namsan Hanyangdoseong stone wall near N Seoul Tower 남산 성곽"
+        },
+        {
+          "id": "nst-locks",
+          "theme": "secondlife",
+          "title": { "en": "A language you cannot read", "zh": "一種你看不懂的文字" },
+          "clue": {
+            "en": "The fences by the deck are buried under padlocks. Find one written in a script you cannot read at all, and photograph it.",
+            "zh": "觀景台旁的欄杆上掛滿了同心鎖。找一把用你完全看不懂的文字寫的，把它拍下來。"
+          },
+          "where": { "en": "The lock terraces around the base of the tower.", "zh": "塔基周圍的同心鎖平台。" },
+          "reveal": {
+            "en": "The locks arrived after a Korean television drama filmed here in the mid-2000s, and there are now hundreds of thousands. The tower staff cut them off periodically and the weight comes straight back. It is worth noticing what this hill has been asked to carry: a fortress wall, a Japanese Shinto shrine during the occupation, a broadcast mast from 1969, and now this.",
+            "zh": "這些鎖是在 2000 年代中期一部韓劇在此取景之後出現的，如今已有數十萬把。塔方會定期剪除，重量隨即又回來。值得留意這座山被要求承載過什麼：一道城牆、殖民時期的一座日本神社、1969 年的一座廣播塔，以及現在這些。"
+          },
+          "photoSearch": "N Seoul Tower love locks fence padlocks Namsan"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "The tower's spire is lit in different colours at night. What is it reporting?",
+          "zh": "首爾塔的塔尖夜裡會亮起不同顏色。它在報告什麼？"
+        },
+        "options": [
+          { "en": "Seoul's air quality — blue means the air is clean", "zh": "首爾的空氣品質 —— 藍色代表空氣乾淨" },
+          { "en": "Tomorrow's weather forecast", "zh": "明天的天氣預報" },
+          { "en": "Whether the observation deck is open", "zh": "觀景台是否開放" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Blue means fine dust levels are good. Seoul spends a lot of the year watching its air, and the tower is visible from most of the city, so it was turned into a status light you can read from your kitchen window. If it is not blue tonight, that is the answer.",
+          "zh": "藍色表示細懸浮微粒濃度良好。首爾一年當中有不少日子都在盯著空氣品質，而這座塔在城裡大部分地方都看得見，於是被改造成一盞從自家廚房窗口就能讀懂的狀態燈。如果今晚它不是藍的，那就是答案了。"
+        }
+      }
+    },
+
+    "national-museum": {
+      "hunts": [
+        {
+          "id": "nmk-pagoda",
+          "theme": "scars",
+          "title": { "en": "The tower that was stolen", "zh": "被偷走的那座塔" },
+          "clue": {
+            "en": "In the tall entrance hall stands a stone pagoda ten storeys high, indoors. Get close and look at the stone itself — it is not the grey granite of every other Korean pagoda.",
+            "zh": "在挑高的入口大廳裡，立著一座十層石塔，就在室內。走近看看石材本身 —— 它不是其他韓國石塔那種灰色花崗岩。"
+          },
+          "where": { "en": "The Path to History gallery, the full-height hall you enter through.", "zh": "「歷史之路」大廳，就是你進館時穿過的那個挑高空間。" },
+          "reveal": {
+            "en": "It is marble, and it is the first Korean pagoda known to have been made from it — carved in 1348. In 1907 Tanaka Mitsuaki, Japan's Minister of Imperial Household Affairs, had it dismantled and shipped to Japan. Two foreign journalists in Seoul, Ernest Bethell of Britain and Homer Hulbert of America, ran a press campaign about the theft until it became an international embarrassment. It came back in 1918. It stood outside for decades, weathering, before being brought indoors here in 2005 — which is why it is inside a building at all.",
+            "zh": "它是大理石的，也是已知第一座以大理石雕成的韓國石塔 —— 建於 1348 年。1907 年，日本宮內大臣田中光顯將它拆解運往日本。兩位在首爾的外國記者 —— 英國的裴說（Ernest Bethell）與美國的赫爾伯特（Homer Hulbert）—— 持續在報上揭露此事，直到它成為一樁國際醜聞。石塔於 1918 年歸還。它在戶外風吹雨打數十年，直到 2005 年才被移入館內 —— 這就是為什麼它會在一棟建築物裡。"
+          },
+          "photoSearch": "Gyeongcheonsa ten-story marble pagoda National Museum of Korea 경천사지 십층석탑"
+        },
+        {
+          "id": "nmk-pensive",
+          "theme": "power",
+          "title": { "en": "A room that makes you slow down", "zh": "一個讓你慢下來的房間" },
+          "clue": {
+            "en": "Find the gallery with no other exhibits in it — dark, quiet, with a sloping floor. Two gilt-bronze figures sit at the far end, each with one leg crossed and fingertips at the cheek.",
+            "zh": "找到那間裡面沒有其他展品的展廳 —— 昏暗、安靜、地板微微傾斜。兩尊金銅像坐在最裡端，各自一腿交疊、指尖輕觸臉頰。"
+          },
+          "where": { "en": "The Room of Quiet Contemplation, second floor.", "zh": "「思惟之室」，二樓。" },
+          "reveal": {
+            "en": "These two Pensive Bodhisattvas are National Treasures 78 and 83, made in the late 6th and early 7th centuries, and they had never been displayed side by side until this room opened in 2021. The room is engineered to disorient gently: floor, walls and ceiling are all tilted very slightly so you cannot judge distance, the walls are packed with earth and herbs so it smells faintly of soil, and the ceiling is a night sky. Over 660,000 people came in the first year to look at two statues.",
+            "zh": "這兩尊金銅半跏思惟像是韓國國寶第 78 號與第 83 號，分別造於六世紀末與七世紀初，在 2021 年這個展廳開放之前，從未並列展出過。這個空間被刻意設計成讓人輕微失去方向感：地板、牆壁與天花板都略微傾斜，使你無法判斷距離；牆體以泥土與香草夯製，因而隱隱有土的氣味；天花板則是一片星空。第一年就有超過 66 萬人前來，只為看這兩尊像。"
+          },
+          "photoSearch": "Room of Quiet Contemplation two Pensive Bodhisattva National Treasure 78 83 사유의 방"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "The Room of Quiet Contemplation has tilted floors, walls and ceiling. Why?",
+          "zh": "「思惟之室」的地板、牆面與天花板都是傾斜的。為什麼？"
+        },
+        "options": [
+          { "en": "So visitors cannot judge distance, and slow down without being told to", "zh": "讓人無法判斷距離，於是不必被告知也會自然放慢腳步" },
+          { "en": "To protect the statues from vibration", "zh": "為了保護塑像不受震動影響" },
+          { "en": "To fit the room under a staircase", "zh": "為了把展廳塞進樓梯下方的空間" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "The architect wanted people to stop walking at museum pace. Removing the level references makes the far wall hard to read, so visitors slow, and the room narrows towards the statues so they arrive rather than pass. The walls are earth mixed with herbs, and the ceiling reads as a night sky. It is a 439 m² room built to hold two objects.",
+          "zh": "建築師希望人們別再用逛博物館的速度走路。抽掉水平參照之後，遠端的牆變得難以判讀，於是人自然放慢；空間又朝著塑像逐漸收窄，讓人是「抵達」而非「路過」。牆體是泥土混合香草夯成，天花板則像一片夜空。這是一間 439 平方公尺、只為容納兩件文物而建的房間。"
+        }
+      }
+    },
+
+    "leeum": {
+      "hunts": [
+        {
+          "id": "lee-rotunda",
+          "theme": "secondlife",
+          "title": { "en": "Look straight up the stairwell", "zh": "沿著樓梯間往正上方看" },
+          "clue": {
+            "en": "One of the three buildings is a cone of terracotta brick. Inside it, a staircase winds up the wall of a round shaft. Stand at the bottom, point your camera up.",
+            "zh": "三棟建築中有一棟是赤陶磚砌的圓錐體。裡面有一道樓梯沿著圓形井壁盤旋而上。站在底部，鏡頭朝上。"
+          },
+          "where": { "en": "Museum 1 (Mario Botta's building), the rotunda stair.", "zh": "一號館（馬里奧·博塔設計），圓廳樓梯。" },
+          "reveal": {
+            "en": "Botta shaped the building after a Korean ceramic pot — the collection inside it is largely ceramics, so the container quotes its contents. Three architects were given one site: Botta the brick cone for traditional art, Jean Nouvel the corroded-steel boxes for contemporary, Rem Koolhaas the black concrete education centre. They worked in parallel, and the seams where the three meet are worth finding.",
+            "zh": "博塔以韓國陶罐的形體來塑造這棟建築 —— 館內收藏以陶瓷為主，於是容器引用了它所盛裝之物。同一塊基地交給了三位建築師：博塔以磚砌圓錐容納古美術，讓·努維爾以鏽蝕鋼盒盛放當代藝術，雷姆·庫哈斯做了黑色混凝土的教育中心。他們同時進行，而三者交接的縫隙處，值得你去找一找。"
+          },
+          "photoSearch": "Leeum Museum Mario Botta rotunda spiral staircase interior 리움미술관 계단"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Leeum's three buildings were designed by three different architects working at the same time. Why split one museum three ways?",
+          "zh": "Leeum 的三棟建築由三位建築師同時設計。為什麼要把一座美術館拆成三份？"
+        },
+        "options": [
+          { "en": "Each collection got a building suited to it, rather than one style imposed on everything", "zh": "每一批收藏都獲得一棟合適的建築，而非把單一風格套用在所有東西上" },
+          { "en": "The three architects were rivals and refused to collaborate", "zh": "三位建築師互為對手，拒絕合作" },
+          { "en": "The site was owned by three different families", "zh": "這塊地屬於三個不同的家族" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Traditional ceramics, contemporary installation and a children's education centre want completely different rooms — different light, ceiling heights and circulation. Rather than compromise, the museum commissioned a specialist for each and let the three buildings sit against one another. Standing outside, you can see all three materials meeting: brick, rusted steel, black concrete.",
+          "zh": "傳統陶瓷、當代裝置與兒童教育中心所需要的空間完全不同 —— 採光、樓高、動線都不一樣。與其折衷，美術館索性各請一位專擅者，讓三棟建築彼此相鄰而立。站在戶外，你可以同時看見三種材料的交會：磚、鏽鋼、黑色混凝土。"
+        }
+      }
+    },
+
+    "ddp": {
+      "hunts": [
+        {
+          "id": "ddp-wall",
+          "theme": "scars",
+          "title": { "en": "The wall from yesterday, underground", "zh": "昨天那道牆，在地底下" },
+          "clue": {
+            "en": "On the park side of the building, below the main deck, there is an excavated area open to the sky. Find the stone foundations and the arched opening at the bottom.",
+            "zh": "在建築靠公園那一側、主平台下方，有一處露天的考古遺址。找到那些石造基礎，以及底部的拱形開口。"
+          },
+          "where": { "en": "Dongdaemun History & Culture Park, within the DDP grounds.", "zh": "東大門歷史文化公園，就在 DDP 園區內。" },
+          "reveal": {
+            "en": "This is the foot of the same city wall you walked beside on Namsan, and the arch is Igansumun — a two-arched water gate that let a stream out through the fortification. It was found in 2008–09 when they demolished the old Dongdaemun baseball stadium to build DDP. The heritage authority wanted a full excavation; the city wanted its plaza. They compromised: the ruins stay, exposed, and Zaha Hadid's building curves around them. You are looking at the argument's outcome.",
+            "zh": "這是你在南山旁走過的那道城牆的牆基，而那道拱門是二間水門 —— 一座雙拱水門，讓溪水穿過城防流出城外。它是 2008 至 09 年間拆除舊東大門棒球場、興建 DDP 時被挖出來的。文化財主管機關主張全面發掘；市政府則要它的廣場。雙方各退一步：遺址原地保留、露天展示，扎哈·哈迪德的建築則繞著它彎過去。你眼前看到的，就是那場爭論的結果。"
+          },
+          "photoSearch": "Igansumun water gate Seoul city wall ruins Dongdaemun History Culture Park DDP 이간수문",
+          "callback": "nst-wall"
+        },
+        {
+          "id": "ddp-panels",
+          "theme": "secondlife",
+          "title": { "en": "Find two identical panels", "zh": "找出兩片一模一樣的板子" },
+          "clue": {
+            "en": "The whole skin of the building is aluminium panels. Try to find two next to each other that are exactly the same shape.",
+            "zh": "整棟建築的外皮都是鋁板。試著找出相鄰的兩片，形狀完全相同。"
+          },
+          "where": { "en": "Anywhere on the exterior. The curved underside is easiest to study.", "zh": "外牆任何一處。彎曲的底面最容易觀察。" },
+          "reveal": {
+            "en": "You will not find them. There are roughly 45,000 panels and almost every one is a different shape, individually formed to fit a surface with no repeating geometry. That is why the building took so long and cost so much, and why it could not have been built before computer-controlled fabrication. Underneath it is a demolished stadium and a 600-year-old wall.",
+            "zh": "你找不到的。外殼約有 45,000 片鋁板，幾乎每一片形狀都不同，各自成形以貼合一個沒有重複幾何的曲面。這正是這棟建築耗時如此之久、造價如此之高的原因，也是它在電腦控制的加工技術出現之前不可能被建造出來的原因。而它底下，是一座被拆除的體育場，和一道六百年的城牆。"
+          },
+          "photoSearch": "DDP Zaha Hadid aluminium panel facade close up curved cladding"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "DDP was built on the site of Dongdaemun Stadium. What had that stadium been used for in its final years?",
+          "zh": "DDP 蓋在東大門運動場的舊址上。那座運動場在最後幾年被拿來做什麼？"
+        },
+        "options": [
+          { "en": "A flea market and stallholders' car park", "zh": "跳蚤市場與攤商停車場" },
+          { "en": "It was abandoned and sealed off", "zh": "它已被廢棄封閉" },
+          { "en": "Professional baseball, right up to demolition", "zh": "職業棒球比賽，一直到拆除為止" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Built in 1925 under Japanese rule and long since replaced for serious sport, the stadium spent its last years as market space serving the Dongdaemun clothing trade around it. When it came down the stallholders were relocated, the archaeologists moved in, and the site changed identity for the third time in a century.",
+          "zh": "這座運動場建於日本統治下的 1925 年，正式賽事早已他遷，最後幾年淪為市集空間，服務周邊的東大門成衣商圈。拆除時攤商被遷走，考古隊進駐，這塊基地在一個世紀內第三度改換了身分。"
+        }
+      }
+    },
+
+    "seongsu": {
+      "hunts": [
+        {
+          "id": "sng-factory",
+          "theme": "secondlife",
+          "title": { "en": "A cafe that used to make something", "zh": "曾經在做東西的咖啡館" },
+          "clue": {
+            "en": "Find a cafe that has kept its industrial past visible — raw brick, steel roof trusses, factory windows, or a piece of old machinery still standing inside.",
+            "zh": "找一家保留了工業痕跡的咖啡館 —— 裸磚、鋼構屋架、廠房窗戶，或是仍留在店裡的舊機器。"
+          },
+          "where": { "en": "Throughout the district. Daelim Changgo, a converted warehouse, is the best known.", "zh": "整個街區都有。大林倉庫是最有名的一處倉庫改造。" },
+          "reveal": {
+            "en": "Seongsu made shoes. At its height the district held over a thousand small shoe workshops, and many still operate on the upper floors above the cafes — the trade did not leave, it just stopped being the only thing here. When Seoul's rents pushed creative businesses out of Gangnam, they crossed the river to where the ceilings were high and the floors could take weight. The exposed brick is not a style choice; it is what was already there.",
+            "zh": "聖水洞做鞋。全盛時期，這一帶有上千家小型製鞋工坊，其中許多至今仍在咖啡館樓上運作 —— 這門行業並沒有離開，只是不再是這裡唯一的東西。當首爾的租金把創意產業擠出江南，他們渡過漢江，來到樓高夠高、樓板夠承重的地方。那些裸露的磚牆不是風格選擇，而是本來就在那裡。"
+          },
+          "photoSearch": "Daelim Changgo Seongsu converted warehouse cafe interior brick 대림창고"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Seongsu-dong is nicknamed after a New York neighbourhood. Which one, and why that one?",
+          "zh": "聖水洞的綽號來自紐約的一個區。是哪一個，又為什麼是那一個？"
+        },
+        "options": [
+          { "en": "Brooklyn — old industry across the river from the expensive district", "zh": "布魯克林 —— 昂貴城區對岸的老工業區" },
+          { "en": "SoHo — art galleries in former lofts", "zh": "蘇活 —— 開在舊閣樓裡的藝廊" },
+          { "en": "Harlem — a residential area that gentrified", "zh": "哈林 —— 一個仕紳化的住宅區" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "The comparison is geographic as much as cultural: Seongsu sits across the Han from Gangnam the way Brooklyn sits across the East River from Manhattan, and it followed the same path — working industry, cheap space, artists, cafes, then rents that push out the people who made it interesting. Locals use the nickname with some irony.",
+          "zh": "這個比喻既是文化上的，也是地理上的：聖水洞隔著漢江與江南相望，一如布魯克林隔著東河與曼哈頓相望，而它走的也是同一條路 —— 運作中的工業、便宜的空間、藝術家、咖啡館，接著是把當初讓這裡有趣的人擠走的租金。當地人用這個綽號時，帶著幾分自嘲。"
+        }
+      }
+    },
+
+    "seoul-forest": {
+      "hunts": [
+        {
+          "id": "sf-deer",
+          "theme": "secondlife",
+          "title": { "en": "Find the deer", "zh": "找到那些鹿" },
+          "clue": {
+            "en": "At the far end of the park, away from the entrance, there is a fenced enclosure with a small herd of spotted deer in it.",
+            "zh": "在公園的另一端、離入口較遠處，有一片圍起來的鹿苑，裡面養著一小群梅花鹿。"
+          },
+          "where": { "en": "The Ecological Forest, in the far corner of the park.", "zh": "生態林，位於公園的遠端角落。" },
+          "reveal": {
+            "en": "The deer are not decorative. Ttukseom — this bend in the river — was a royal hunting ground for Joseon kings, and deer are what they came here to hunt. The land then became a horse racetrack, then a water treatment plant and a golf course, before opening as a park in 2005. Putting deer back was a deliberate reference to what the ground was for in the first place.",
+            "zh": "這些鹿不是擺設。纛島 —— 河灣的這一段 —— 曾是朝鮮國王的狩獵場，而他們來這裡獵的正是鹿。這塊地後來變成賽馬場，再變成淨水廠與高爾夫球場，直到 2005 年才闢為公園。把鹿放回來，是對這塊土地最初用途的刻意致意。"
+          },
+          "photoSearch": "Seoul Forest deer enclosure sika deer ecological forest 서울숲 꽃사슴"
+        },
+        {
+          "id": "sf-pillars",
+          "theme": "scars",
+          "title": { "en": "Rows of concrete pillars", "zh": "一排排混凝土柱" },
+          "clue": {
+            "en": "Somewhere in the park is a colonnade of plain concrete pillars that clearly held something up once. Find them.",
+            "zh": "公園裡某處有一列樸素的混凝土柱，一看就知道曾經撐著什麼東西。找到它們。"
+          },
+          "where": { "en": "The former water treatment plant structures, kept as a park feature.", "zh": "舊淨水廠的構造物，被保留為公園的一部分。" },
+          "reveal": {
+            "en": "They are the remains of the water filtration plant that stood here, left standing rather than cleared. Seoul does this repeatedly — you saw a stadium's foundations under DDP and a city wall under that. Keeping the pillars costs money and yields no floorspace; they were kept because a park that hides its own history is just landscaping.",
+            "zh": "這些是原本坐落於此的淨水設施殘留下來的部分，被留下而非清除。首爾一再這麼做 —— 你在 DDP 底下看過一座運動場的基礎，在那底下還有一道城牆。留著這些柱子要花錢，又不能換來任何樓地板面積；它們之所以被留下，是因為一座隱藏自身歷史的公園，就只是造景而已。"
+          },
+          "photoSearch": "Seoul Forest old water treatment plant concrete pillars colonnade 서울숲 정수장",
+          "callback": "ddp-wall"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Seoul Forest has been several things. Which of these was it NOT?",
+          "zh": "首爾林曾經有過好幾種身分。以下哪一項它「不」曾是？"
+        },
+        "options": [
+          { "en": "A military airfield", "zh": "一座軍用機場" },
+          { "en": "A royal hunting ground", "zh": "王室狩獵場" },
+          { "en": "A horse racecourse", "zh": "一座賽馬場" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Ttukseom was a hunting ground for Joseon kings, then Seoul's racecourse from the 1950s, then a water treatment plant and golf course, and a park since 2005. No airfield. The one constant is water: it is a low bend of the Han, which is why it was never built on properly and why it could become 480,000 m² of park in a city with almost no spare land.",
+          "zh": "纛島曾是朝鮮國王的狩獵場，1950 年代起是首爾的賽馬場，之後是淨水廠與高爾夫球場，2005 年起成為公園。從來沒有機場。唯一不變的是水：這裡是漢江地勢低窪的河灣，因此始終沒能好好蓋起建築 —— 也因此才能在一座幾乎沒有餘地的城市裡，變成 48 萬平方公尺的公園。"
+        }
+      }
+    },
+
+    "bongeunsa": {
+      "hunts": [
+        {
+          "id": "bes-panjeon",
+          "theme": "power",
+          "title": { "en": "The last thing a dying man wrote", "zh": "一個將死之人寫下的最後一件作品" },
+          "clue": {
+            "en": "Find the hall named Panjeon (판전) — a small, plain building, not the grandest one. Look at the wooden signboard above its door and at the small vertical line of characters to the left of the last big character.",
+            "zh": "找到那座名為「板殿」（판전）的殿宇 —— 一棟樸素的小建築，不是最宏偉的那座。看看門上的木匾，以及最後一個大字左側那行小字。"
+          },
+          "where": { "en": "Panjeon, up at the back of the temple grounds. It is the oldest building here.", "zh": "板殿，在寺院後方高處。它是這裡最古老的建築。" },
+          "reveal": {
+            "en": "The signboard was written by Kim Jeong-hui, brush name Chusa, the greatest calligrapher of late Joseon — three days before he died in 1856. The small characters read 七十一果病中作: 'written while ill, at Gwacheon, aged seventy-one.' He signed his own condition into the work. The hall was built that same year to store woodblocks, and it is the oldest structure standing at Bongeunsa. You saw brushes like his in Insadong on Day 1.",
+            "zh": "這塊匾額出自金正喜之手 —— 號秋史，朝鮮後期最偉大的書法家 —— 寫於 1856 年他去世前三天。左側的小字是「七十一果病中作」：「七十一歲，於果川，病中所作。」他把自己的境況也一併署進了作品裡。這座殿宇同年落成，用以收藏經版，是奉恩寺現存最古老的建築。第一天在仁寺洞，你看過和他用的同一類毛筆。"
+          },
+          "photoSearch": "봉은사 판전 현판 김정희 Bongeunsa Panjeon signboard Kim Jeong-hui calligraphy",
+          "callback": "ins-brush"
+        },
+        {
+          "id": "bes-buddha",
+          "theme": "guardians",
+          "title": { "en": "Buddha and the towers", "zh": "佛與高樓" },
+          "clue": {
+            "en": "Climb the steps behind the main hall to the tall stone Buddha. Find an angle where the statue and the Gangnam office towers are both in the frame.",
+            "zh": "沿著大雄殿後方的台階往上走，到那尊高大的石佛前。找一個角度，讓佛像與江南的辦公大樓同時入鏡。"
+          },
+          "where": { "en": "The Maitreya Buddha (미륵대불), at the top of the grounds.", "zh": "彌勒大佛（미륵대불），在寺域最高處。" },
+          "reveal": {
+            "en": "This is Maitreya — the Buddha who has not arrived yet, who will come when the current teaching has been forgotten. He is 23 metres tall, took ten years to carve, and faces a district that did not exist when this temple was founded in 794. Gangnam was farmland until the 1970s. The temple did not move; the city arrived around it.",
+            "zh": "這是彌勒 —— 尚未到來的佛，將在現世佛法被遺忘之後降臨。佛像高 23 公尺，雕造耗時十年，面向的是一片在這座寺院於 794 年創建時根本不存在的城區。江南直到 1970 年代都還是農田。不是寺院搬了過來，而是城市在它周圍長了出來。"
+          },
+          "photoSearch": "Bongeunsa Maitreya Buddha statue Gangnam skyscrapers background 봉은사 미륵대불"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Bongeunsa was founded in 794. What is directly across the road from it now?",
+          "zh": "奉恩寺創建於 794 年。如今與它一街之隔的是什麼？"
+        },
+        "options": [
+          { "en": "COEX — one of the largest underground shopping complexes in the world", "zh": "COEX —— 世界最大的地下購物中心之一" },
+          { "en": "The National Assembly", "zh": "國會議事堂" },
+          { "en": "Seoul's oldest cemetery", "zh": "首爾最古老的墓園" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Your next stop. A temple that predates the Goryeo dynasty faces a shopping mall with an aquarium and a convention centre in it, separated by six lanes of traffic. Neither has moved. The temple has simply been there long enough to watch a rice-growing floodplain turn into the most expensive real estate in Korea.",
+          "zh": "就是你的下一站。一座比高麗王朝還早的寺院，隔著六線道，面對著一座裡面有水族館與會展中心的購物商場。兩者都沒有移動過。只是這座寺院待得夠久，久到足以看著一片種稻的氾濫平原，變成全韓國最昂貴的地產。"
+        }
+      }
+    },
+
+    "coex": {
+      "hunts": [
+        {
+          "id": "cox-shelf",
+          "theme": "secondlife",
+          "title": { "en": "The books you cannot reach", "zh": "你搆不到的那些書" },
+          "clue": {
+            "en": "Stand at the base of the tallest shelf and look up. Now look at the books near the very top and ask yourself how anyone gets one down.",
+            "zh": "站在最高那座書架底下往上看。然後看看接近頂端的那些書，想想有誰能把它們取下來。"
+          },
+          "where": { "en": "Starfield Library, in the middle of the COEX Mall atrium.", "zh": "星空圖書館，位於 COEX 商場中庭。" },
+          "reveal": {
+            "en": "Mostly, nobody does. The shelves run about 13 metres and hold something like 70,000 books and magazines — the reachable ones are real and free to read, and a good number near the ceiling are dummies. That is the honest answer, and it does not much matter: the library was built to make people stop in a shopping mall, and it works. The mall was losing footfall; it gave away its most valuable floor space and got the crowd back.",
+            "zh": "大多數情況下，沒有人取。書架高約 13 公尺，藏書與雜誌約有七萬冊 —— 搆得到的都是真書，可以免費閱讀，而靠近天花板的那些，有相當一部分是道具書。這是誠實的答案，其實也無妨：這座圖書館建造的目的，是讓人願意在購物中心裡停下腳步，而它做到了。商場當時人潮下滑；它讓出了最值錢的樓面，換回了人群。"
+          },
+          "photoSearch": "Starfield Library COEX tall bookshelf 13 metres atrium 별마당 도서관"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Starfield Library occupies prime retail floor in the middle of a mall, and charges nothing. Why would the mall give that space away?",
+          "zh": "星空圖書館佔據了商場正中央最值錢的樓面，卻不收任何費用。商場為什麼要讓出這塊地方？"
+        },
+        "options": [
+          { "en": "Footfall had fallen, and a free landmark brought people back through the doors", "zh": "來客量下滑，一個免費的地標把人重新帶進門" },
+          { "en": "It was a condition of the building permit", "zh": "那是建築許可的附帶條件" },
+          { "en": "It is a public library run by the city", "zh": "它是市政府經營的公立圖書館" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "COEX had been through a renovation that left shoppers confused and numbers down. The library opened in 2017 as an anchor with no till: somewhere to arrange to meet, sit down, and photograph. Visitor numbers recovered. It is one of the more effective pieces of retail design in Seoul, and it is a room full of books.",
+          "zh": "COEX 先前的一次改裝讓購物者動線混亂、來客下滑。這座圖書館於 2017 年開幕，作為一個沒有收銀台的主力空間：一個約人見面、坐下來、拍張照的地方。來客量因此回升。它是首爾最成功的零售空間設計之一 —— 而它是一個裝滿書的房間。"
+        }
+      }
+    },
+
+    "garosugil": {
+      "hunts": [
+        {
+          "id": "grs-ginkgo",
+          "theme": "guardians",
+          "title": { "en": "The tree the street is named after", "zh": "這條街以之命名的那種樹" },
+          "clue": {
+            "en": "The street is named for its trees. Find one and look closely at a leaf — it is a fan with a split down the middle, unlike any other tree here.",
+            "zh": "這條街是以路樹命名的。找一棵，仔細看一片葉子 —— 扇形，中間有一道裂口，和這裡任何其他的樹都不一樣。"
+          },
+          "where": { "en": "Both sides of Garosu-gil, the main street.", "zh": "林蔭道主街兩側。" },
+          "reveal": {
+            "en": "Ginkgo. The species is a living fossil — effectively unchanged for well over 100 million years, and extinct in the wild across most of its range, surviving because people kept planting it. Seoul plants it heavily because it tolerates pollution and poor soil better than almost anything else. In late autumn the whole street turns yellow at once, and the fallen fruit smells so bad the city schedules crews to clear it.",
+            "zh": "銀杏。這個物種是活化石 —— 一億多年來幾乎沒有改變，在原生範圍的大部分地區野外早已滅絕，全靠人類不斷栽種才存續下來。首爾大量種植它，因為它耐污染、耐貧瘠土壤的能力幾乎勝過所有樹種。深秋時整條街會在同一時間轉黃，而落下的果實臭得讓市府得專門派人清理。"
+          },
+          "photoSearch": "ginkgo leaf close up fan shaped Garosu-gil Seoul street trees 은행나무"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Garosu-gil's side alleys have their own nickname. What does it mean?",
+          "zh": "林蔭道的巷弄有自己的暱稱。它是什麼意思？"
+        },
+        "options": [
+          { "en": "Serosu-gil — 'vertical street', because the alleys run at right angles to the main one", "zh": "세로수길 —— 「直的街」，因為巷子與主街垂直" },
+          { "en": "Cheap street, because rents are lower", "zh": "便宜街，因為租金較低" },
+          { "en": "Quiet street, because there is no traffic", "zh": "安靜街，因為沒有車" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "Garo (가로) means horizontal, sero (세로) means vertical — so the alleys running off the main street became Serosu-gil, a pun that stuck. As rents on the main street rose, the interesting small shops moved into them, which is the usual pattern and worth knowing if the main drag feels like chain stores.",
+          "zh": "가로是「橫」，세로是「直」—— 於是從主街分岔出去的巷子就成了「세로수길」，這個雙關語就此流傳下來。隨著主街租金上漲，有意思的小店紛紛遷入巷內，這是常見的模式；如果你覺得主街上淨是連鎖店，這點值得記住。"
+        }
+      }
+    },
+
+    "banpo": {
+      "hunts": [
+        {
+          "id": "bnp-fountain",
+          "theme": "secondlife",
+          "title": { "en": "Water falling off a bridge", "zh": "從橋上落下的水" },
+          "clue": {
+            "en": "Wait for the show and watch where the water actually comes from. It is not pumped up from a tank — look at what is underneath it.",
+            "zh": "等演出開始，注意水究竟從哪裡來。它不是從水塔打上來的 —— 看看它下方是什麼。"
+          },
+          "where": { "en": "Banpo Bridge, seen from the riverside park. Shows run several times an evening, April to October.", "zh": "盤浦大橋，從江邊公園觀看。四月至十月，每晚數場。" },
+          "reveal": {
+            "en": "It draws straight from the Han, pumps it up through the bridge and throws it back — nearly 1,140 metres of nozzles, around 380 a side, which holds a Guinness record as the world's longest bridge fountain. The bridge was already there, built in 1982; the fountain was added in 2009. Seoul has a habit of adding a second purpose to something that was only ever meant to do one job — a stadium became a plaza, a filtration plant became a park, and a road bridge became a light show.",
+            "zh": "它直接從漢江取水，經由橋體抽上來，再拋回去 —— 噴嘴綿延近 1,140 公尺，兩側各約 380 個，並以「世界最長的橋樑噴泉」列入金氏世界紀錄。橋本身早在 1982 年就已建成；噴泉是 2009 年才加上去的。首爾有個習慣：替一件原本只做一件事的東西，再添一個用途 —— 運動場變成廣場，淨水廠變成公園，而一座公路橋變成了一場燈光秀。"
+          },
+          "photoSearch": "Banpo Bridge Moonlight Rainbow Fountain night colours 반포대교 달빛무지개분수",
+          "callback": "sf-pillars"
+        }
+      ],
+      "trivia": {
+        "q": {
+          "en": "Banpo Bridge is a double-decker. What is the lower deck for?",
+          "zh": "盤浦大橋是雙層橋。下層是做什麼用的？"
+        },
+        "options": [
+          { "en": "It is the Jamsu Bridge, designed to be submerged when the river floods", "zh": "那是潛水橋，設計成在漢江氾濫時被淹沒" },
+          { "en": "A railway line", "zh": "一條鐵路" },
+          { "en": "A pedestrian-only promenade", "zh": "行人專用步道" }
+        ],
+        "answer": 0,
+        "explain": {
+          "en": "The lower deck is Jamsu Bridge — the name means 'submerged bridge'. It was built low on purpose in 1976, so that in a serious flood the river goes over it rather than tearing it out, and Banpo Bridge was stacked on top in 1982. It closes and disappears under the water several times most summers, then reopens once the level drops.",
+          "zh": "下層是潛水橋 —— 名字的意思就是「會被淹沒的橋」。它在 1976 年被刻意蓋得很低，好讓大洪水時江水漫過橋面，而不是把橋沖毀；盤浦大橋則於 1982 年疊建於其上。大多數夏天，它都會封閉並沒入水下數次，等水位下降後再重新開放。"
+        }
+      }
+    }
+  }
+}

@@ -16,10 +16,10 @@ const SHELL = [
   './js/admin.js',
   './js/content.js',
   './js/timeline.js',
-  './js/learn.js',
+  './js/quests.js',
   './content/stops.json',
   './content/history.json',
-  './content/motifs.json',
+  './content/quests.json',
   './manifest.webmanifest'
 ];
 

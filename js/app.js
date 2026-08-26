@@ -6,7 +6,7 @@ import { getStop } from './content.js';
 import { locate } from './geo.js';
 import { initAdmin } from './admin.js';
 import { initTimeline, renderTimeline, closeForm as closeTimelineForm } from './timeline.js';
-import { loadLearn } from './learn.js';
+import { loadQuests } from './quests.js';
 
 const $ = sel => document.querySelector(sel);
 
@@ -52,7 +52,7 @@ function showView(name) {
 
 async function main() {
   await loadContent();
-  await loadLearn();
+  await loadQuests();
 
   UI.initUI({ onProgressChange: () => {
     UI.updateProgressPill();

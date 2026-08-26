@@ -4,7 +4,7 @@ import * as store from './store.js';
 import { locate, withinRadius, formatDistance, naverUrl, kakaoUrl, webMapUrl } from './geo.js';
 import { shrinkToBlob, blobUrl } from './photo.js';
 import { renderAdminPanel, isAdmin } from './admin.js';
-import { renderMotifs, motifsSpotted, allMotifs } from './learn.js';
+import { renderQuests, renderThemeProgress, triviaForStop, totalHunts } from './quests.js';
 
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"']/g, c =>
@@ -103,21 +103,20 @@ export async function renderBook() {
   const view = $('#view-book');
   const stops = allStops();
   const visited = stops.filter(s => store.stopState(s.id).checkedInAt);
-  const hunts = stops.filter(s => store.stopState(s.id).huntDone).length;
+  const hunts = store.huntsFoundCount();
   const right = stops.filter(s => {
     const p = store.stopState(s.id).triviaPick;
-    return p !== null && p === s.trivia.answer;
+    const tv = triviaForStop(s.id) || s.trivia;
+    return p !== null && p === tv.answer;
   }).length;
 
   const stats = `
     <div class="stats">
       <div class="stat"><b>${visited.length}</b><span>${esc(ui('stopsVisited'))}</span></div>
-      <div class="stat"><b>${hunts}</b><span>${esc(ui('huntsDone'))}</span></div>
+      <div class="stat"><b>${hunts}<small>/${totalHunts()}</small></b><span>${esc(ui('huntsDone'))}</span></div>
       <div class="stat"><b>${right}</b><span>${esc(ui('triviaRight'))}</span></div>
     </div>
-    <div class="stats">
-      <div class="stat"><b>${motifsSpotted()}<small>/${allMotifs().length}</small></b><span>${esc(ui('lnMotifsStat'))}</span></div>
-    </div>`;
+    <div class="themes"><h3>${esc(ui('qThemes'))}</h3>${renderThemeProgress()}</div>`;
 
   if (!visited.length) {
     view.innerHTML = stats +
@@ -195,9 +194,8 @@ export async function renderSheet() {
 
     <div id="checkinZone"></div>
 
-    <div class="card ${done ? '' : 'locked'}" id="huntCard"></div>
+    <div id="huntZone"></div>
     <div class="card ${done ? '' : 'locked'}" id="triviaCard"></div>
-    <div id="motifZone"></div>
 
     <div style="display:flex;gap:8px;margin-top:4px">
       <a class="btn ghost" href="${naverUrl(stop, t(stop.name))}">${esc(ui('naver'))}</a>
@@ -210,8 +208,6 @@ export async function renderSheet() {
   renderCheckin(stop);
   renderHunt(stop);
   renderTrivia(stop);
-  // Both only make sense once she is standing there.
-  if (done) renderMotifs($('#motifZone'), stop, onProgressChange);
   if (isAdmin()) renderAdminPanel($('#adminZone'), stop, () => { renderSheet(); onProgressChange(); });
 }
 
@@ -281,44 +277,29 @@ function renderCheckin(stop) {
 }
 
 function renderHunt(stop) {
-  const card = $('#huntCard');
+  const host = $('#huntZone');
   const s = store.stopState(stop.id);
-  const locked = !s.checkedInAt;
 
-  if (locked) {
-    card.innerHTML = `<h3>🔍 ${esc(ui('hunt'))}</h3><p>🔒 ${esc(ui('lockedHunt'))}</p>`;
+  if (!s.checkedInAt) {
+    host.innerHTML = `<div class="card locked"><h3>🔎 ${esc(ui('hunt'))}</h3>
+      <p>🔒 ${esc(ui('lockedHunt'))}</p></div>`;
     return;
   }
 
-  const ref = stop.hunt.photo
-    ? `<img class="refphoto" src="${stop.hunt.photo}" alt="">` : '';
+  renderQuests(host, stop, stopName, () => { renderSheet(); onProgressChange(); });
 
-  card.innerHTML = `
-    <h3>🔍 ${esc(ui('hunt'))}</h3>
-    ${ref}
-    <p>${esc(t(stop.hunt.task))}</p>
-    ${t(stop.hunt.hint) ? `
-      <button class="btn ghost small" id="hintBtn" style="margin-top:9px">💡 ${esc(ui('showHint'))}</button>
-      <div class="hint" id="hintBox" hidden>${esc(t(stop.hunt.hint))}</div>` : ''}
-    <button class="btn ${s.huntDone ? 'ghost' : ''}" id="foundBtn" style="margin-top:11px">
-      ${s.huntDone ? `✓ ${esc(ui('foundDone'))}` : esc(ui('found'))}
-    </button>
-    <h3 style="margin-top:15px">📷 ${esc(ui('photos'))}</h3>
-    <div class="shots" id="shots"></div>`;
-
-  card.querySelector('#hintBtn')?.addEventListener('click', e => {
-    const box = card.querySelector('#hintBox');
-    box.hidden = !box.hidden;
-    e.currentTarget.hidden = !box.hidden;
-  });
-
-  card.querySelector('#foundBtn').addEventListener('click', () => {
-    store.setHuntDone(stop.id, !s.huntDone);
-    renderSheet();
-    onProgressChange();
-  });
-
+  // Her own photos live below the hunts, not inside any one of them.
+  const shots = document.createElement('div');
+  shots.className = 'card';
+  shots.innerHTML = `<h3>📷 ${esc(ui('photos'))}</h3><div class="shots" id="shots"></div>`;
+  host.append(shots);
   renderShots(stop);
+}
+
+/** Short name of a stop, for callback lines like "You met this at Insadong". */
+function stopName(stopId) {
+  const st = getStop(stopId);
+  return st ? t(st.name) : '';
 }
 
 async function renderShots(stop) {
@@ -365,6 +346,7 @@ async function renderShots(stop) {
 function renderTrivia(stop) {
   const card = $('#triviaCard');
   const s = store.stopState(stop.id);
+  const trivia = triviaForStop(stop.id) || stop.trivia;
 
   if (!s.checkedInAt) {
     card.innerHTML = `<h3>💡 ${esc(ui('trivia'))}</h3><p>🔒 ${esc(ui('lockedTrivia'))}</p>`;
@@ -372,10 +354,10 @@ function renderTrivia(stop) {
   }
 
   const answered = s.triviaPick !== null;
-  const opts = stop.trivia.options.map((o, i) => {
+  const opts = trivia.options.map((o, i) => {
     let cls = 'opt';
     if (answered) {
-      if (i === stop.trivia.answer) cls += ' right';
+      if (i === trivia.answer) cls += ' right';
       else if (i === s.triviaPick) cls += ' wrong';
     }
     return `<button class="${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>
@@ -384,13 +366,13 @@ function renderTrivia(stop) {
   }).join('');
 
   const verdict = answered
-    ? `<div class="explain"><b>${s.triviaPick === stop.trivia.answer
-        ? '✓ ' + esc(ui('correct')) : '✗ ' + esc(ui('notQuite'))}</b><br>${esc(t(stop.trivia.explain))}</div>`
+    ? `<div class="explain"><b>${s.triviaPick === trivia.answer
+        ? '✓ ' + esc(ui('correct')) : '✗ ' + esc(ui('notQuite'))}</b><br>${esc(t(trivia.explain))}</div>`
     : '';
 
   card.innerHTML = `
     <h3>💡 ${esc(ui('trivia'))}</h3>
-    <p>${esc(t(stop.trivia.q))}</p>
+    <p>${esc(t(trivia.q))}</p>
     <div class="opts">${opts}</div>
     ${verdict}`;
 

@@ -244,46 +244,45 @@ export async function clearTimeline() {
   localStorage.removeItem(K_TIMELINE);
 }
 
-/* ---------------- learning progress ---------------- */
+/* ---------------- scavenger hunts ---------------- */
 
-const K_LEARN = 'mis.learn.v1';
+const K_QUESTS = 'mis.quests.v1';
 
-function readLearn() {
+function readQuests() {
   try {
-    const raw = localStorage.getItem(K_LEARN);
+    const raw = localStorage.getItem(K_QUESTS);
     const v = raw ? JSON.parse(raw) : null;
-    return { motifs: {}, ...(v || {}) };
+    return { hunts: {}, ...(v || {}) };
   } catch {
-    return { motifs: {} };
+    return { hunts: {} };
   }
 }
 
-let learn = readLearn();
+let quests = readQuests();
 
-function saveLearn() {
-  localStorage.setItem(K_LEARN, JSON.stringify(learn));
+function saveQuests() {
+  localStorage.setItem(K_QUESTS, JSON.stringify(quests));
 }
 
-/** Which stops she has spotted a given motif at. */
-export function motifState(id) {
-  return learn.motifs[id] || (learn.motifs[id] = { stops: {} });
+/** A hunt is either found or not; the reveal stays sealed until it is. */
+export function huntFound(id) {
+  return !!quests.hunts[id];
 }
 
-export function toggleMotif(motifId, stopId) {
-  const m = motifState(motifId);
-  if (m.stops[stopId]) delete m.stops[stopId];
-  else m.stops[stopId] = new Date().toISOString();
-  saveLearn();
-  return !!m.stops[stopId];
+export function toggleHunt(id) {
+  if (quests.hunts[id]) delete quests.hunts[id];
+  else quests.hunts[id] = new Date().toISOString();
+  saveQuests();
+  return huntFound(id);
 }
 
-export function motifCount(id) {
-  return Object.keys(motifState(id).stops).length;
+export function huntsFoundCount() {
+  return Object.keys(quests.hunts).length;
 }
 
-export function resetLearn() {
-  learn = { motifs: {} };
-  localStorage.removeItem(K_LEARN);
+export function resetQuests() {
+  quests = { hunts: {} };
+  localStorage.removeItem(K_QUESTS);
 }
 
 /* ---------------- content override (admin) ---------------- */

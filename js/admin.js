@@ -4,6 +4,7 @@
 // Turn on with ?admin=1 in the URL, or by tapping the app title five times.
 
 import { getContent, setContent } from './content.js';
+import { questsForStop, triviaForStop, getQuestData, saveQuestOverride, clearQuestOverride } from './quests.js';
 import { writeOverride, clearOverride } from './store.js';
 import { locate } from './geo.js';
 import { shrinkToDataUrl } from './photo.js';
@@ -59,6 +60,7 @@ export function initAdmin(handlers) {
   });
 
   document.querySelector('#admExport').addEventListener('click', exportJSON);
+  document.querySelector('#admExportQuests').addEventListener('click', exportQuests);
 }
 
 function enter() {
@@ -99,6 +101,28 @@ function exportJSON() {
 
   const kb = Math.round(json.length / 1024);
   alert(`Exported stops.json (${kb} KB).\n\nReplace content/stops.json in the repo with this file and redeploy. Then use "Clear local edits" so the app reads the committed version.`);
+}
+
+function saveQuests() {
+  const res = saveQuestOverride();
+  if (!res.ok) {
+    alert('Could not save locally — browser storage is full.\n\n' +
+      'That is almost always the answer photos. Export quests.json now so you ' +
+      'do not lose them, commit it, then clear local edits.');
+  }
+  return res.ok;
+}
+
+function exportQuests() {
+  const json = JSON.stringify(getQuestData(), null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'quests.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  alert(`Exported quests.json (${Math.round(json.length / 1024)} KB).\n\n` +
+    'Replace content/quests.json in the repo with this file and redeploy.');
 }
 
 function persist() {
@@ -250,43 +274,53 @@ export function renderAdminPanel(host, stop, refresh) {
   geoBtns.append(hereBtn, centerBtn);
   box.append(geoBtns);
 
-  /* hunt */
-  box.append(
-    field('Hunt task (EN)', stop.hunt.task.en, v => { stop.hunt.task.en = v; save(); }, { multiline: true }),
-    field('Hunt task (中文)', stop.hunt.task.zh, v => { stop.hunt.task.zh = v; save(); }, { multiline: true }),
-    field('Hint (EN)', stop.hunt.hint?.en, v => { (stop.hunt.hint ||= {}).en = v; save(); }),
-    field('Hint (中文)', stop.hunt.hint?.zh, v => { (stop.hunt.hint ||= {}).zh = v; save(); })
-  );
+  /* scavenger hunts — this is where the answer photos go */
+  const hLabel = document.createElement('label');
+  hLabel.textContent = `Scavenger hunts at this stop (${questsForStop(stop.id).length})`;
+  box.append(hLabel);
 
-  /* thumbnail — fills the emoji tile in the sheet header and the scrapbook */
-  box.append(imagePicker({
-    label: 'Thumbnail (replaces the emoji tile)',
-    get: () => stop.thumb,
-    set: v => { stop.thumb = v; },
-    maxEdge: 600,
-    save, refresh
-  }));
+  for (const h of questsForStop(stop.id)) {
+    const wrap = document.createElement('div');
+    wrap.className = 'admhunt';
+    const head = document.createElement('div');
+    head.className = 'admhunthead';
+    head.textContent = `${h.id} — ${h.title.en}`;
+    wrap.append(head);
 
-  /* reference photo — the hint image shown above the hunt task */
-  box.append(imagePicker({
-    label: 'Reference photo (shown with the hunt)',
-    get: () => stop.hunt.photo,
-    set: v => { stop.hunt.photo = v; },
-    maxEdge: 900,
-    save, refresh
-  }));
+    const search = document.createElement('div');
+    search.className = 'admsearch';
+    search.textContent = `Search: ${h.photoSearch}`;
+    wrap.append(search);
+
+    wrap.append(imagePicker({
+      label: 'Answer photo',
+      get: () => h.photo,
+      set: v => { h.photo = v; },
+      maxEdge: 900,
+      save: saveQuests, refresh
+    }));
+
+    wrap.append(
+      field('Clue (EN)', h.clue.en, v => { h.clue.en = v; saveQuests(); }, { multiline: true }),
+      field('Clue (中文)', h.clue.zh, v => { h.clue.zh = v; saveQuests(); }, { multiline: true }),
+      field('Reveal (EN)', h.reveal.en, v => { h.reveal.en = v; saveQuests(); }, { multiline: true }),
+      field('Reveal (中文)', h.reveal.zh, v => { h.reveal.zh = v; saveQuests(); }, { multiline: true })
+    );
+    box.append(wrap);
+  }
 
   /* trivia */
+  const tv = triviaForStop(stop.id) || stop.trivia;
   box.append(
-    field('Trivia question (EN)', stop.trivia.q.en, v => { stop.trivia.q.en = v; save(); }, { multiline: true }),
-    field('Trivia question (中文)', stop.trivia.q.zh, v => { stop.trivia.q.zh = v; save(); }, { multiline: true })
+    field('Trivia question (EN)', tv.q.en, v => { tv.q.en = v; saveQuests(); }, { multiline: true }),
+    field('Trivia question (中文)', tv.q.zh, v => { tv.q.zh = v; saveQuests(); }, { multiline: true })
   );
 
-  stop.trivia.options.forEach((opt, i) => {
+  tv.options.forEach((opt, i) => {
     const letter = String.fromCharCode(65 + i);
     box.append(
-      field(`Option ${letter} (EN)`, opt.en, v => { opt.en = v; save(); }),
-      field(`Option ${letter} (中文)`, opt.zh, v => { opt.zh = v; save(); })
+      field(`Option ${letter} (EN)`, opt.en, v => { opt.en = v; saveQuests(); }),
+      field(`Option ${letter} (中文)`, opt.zh, v => { opt.zh = v; saveQuests(); })
     );
   });
 
@@ -294,19 +328,19 @@ export function renderAdminPanel(host, stop, refresh) {
   ansLabel.textContent = 'Correct answer';
   const ansSel = document.createElement('select');
   ansSel.style.cssText = 'width:100%;border:1.5px solid #E2DCC8;border-radius:9px;padding:8px 10px;background:#fff';
-  stop.trivia.options.forEach((opt, i) => {
+  tv.options.forEach((opt, i) => {
     const o = document.createElement('option');
     o.value = i;
     o.textContent = `${String.fromCharCode(65 + i)} — ${opt.en}`;
-    o.selected = i === stop.trivia.answer;
+    o.selected = i === tv.answer;
     ansSel.append(o);
   });
-  ansSel.addEventListener('change', () => { stop.trivia.answer = Number(ansSel.value); save(); });
+  ansSel.addEventListener('change', () => { tv.answer = Number(ansSel.value); saveQuests(); });
   box.append(ansLabel, ansSel);
 
   box.append(
-    field('Explanation (EN)', stop.trivia.explain.en, v => { stop.trivia.explain.en = v; save(); }, { multiline: true }),
-    field('Explanation (中文)', stop.trivia.explain.zh, v => { stop.trivia.explain.zh = v; save(); }, { multiline: true })
+    field('Explanation (EN)', tv.explain.en, v => { tv.explain.en = v; saveQuests(); }, { multiline: true }),
+    field('Explanation (中文)', tv.explain.zh, v => { tv.explain.zh = v; saveQuests(); }, { multiline: true })
   );
 
   /* housekeeping */
@@ -339,16 +373,22 @@ export function renderAdminPanel(host, stop, refresh) {
     input.click();
   });
 
+  const qExpBtn = document.createElement('button');
+  qExpBtn.className = 'btn small ghost';
+  qExpBtn.textContent = '⬇️ Export quests.json';
+  qExpBtn.addEventListener('click', exportQuests);
+
   const clrBtn = document.createElement('button');
   clrBtn.className = 'btn small ghost';
   clrBtn.textContent = '🧹 Clear local edits';
   clrBtn.addEventListener('click', () => {
-    if (!confirm('Discard local edits and reload the committed stops.json?')) return;
+    if (!confirm('Discard ALL local edits (stops and quests) and reload the committed files?')) return;
     clearOverride();
+    clearQuestOverride();
     location.reload();
   });
 
-  tools.append(expBtn, impBtn, clrBtn);
+  tools.append(expBtn, qExpBtn, impBtn, clrBtn);
   box.append(tools, status);
 
   host.append(box);

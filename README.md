@@ -84,75 +84,60 @@ Open any stop and you get an editor beneath the normal card:
 | Names (EN / 中文 / 한국어) | |
 | **Coordinates** | Type them, or **📍 Use my location** while standing there, or **🎯 Use map centre** after dragging the map |
 | **Check-in radius** | Widen it if a stop turns out to be bigger than expected |
-| Hunt task + hint, both languages | |
 | **Thumbnail** | Replaces the emoji tile — shows in the stop's header and as its scrapbook card until she takes her own photo |
-| **Reference photo** | Attach a picture of the thing she's meant to find — it appears above the hunt text, after check-in |
+| **Answer photo, per hunt** | One slot per scavenger-hunt item, with its search term printed above it. This is the picture she sees after she finds the thing |
+| Hunt clue and reveal, both languages | One block per item |
 | Trivia question, 3 options, correct answer, explanation | |
 
 Edits save to the browser immediately (`localStorage`) so you can keep working.
 They are **local to that browser** until you commit them:
 
-1. Tap **⬇️ Export stops.json**
-2. Replace `content/stops.json` in this repo with the downloaded file
+1. Tap **stops.json** or **quests.json** in the black bar — they export separately
+2. Replace the matching file in `content/` with the download
 3. Redeploy
-4. Tap **🧹 Clear local edits** so the app reads the committed version again
+4. Tap **🧹 Clear local edits** so the app reads the committed versions again
 
-Both image slots are embedded in `stops.json` as data URIs — thumbnails at
-600 px, reference photos at 900 px. That keeps deployment to a single file with
-no asset pipeline, but `localStorage` caps out around 5 MB. Filling both slots
-on all 16 stops will get close to that, so export and commit as you go rather
-than doing every stop in one sitting; if saving ever fails you'll get a warning
-telling you to export before you lose anything.
+Stop details (names, coordinates, thumbnails) live in `stops.json`; hunts and
+trivia live in `quests.json`. Answer photos are the bulk of the second file.
 
-The two images are different jobs. The **thumbnail** identifies the place and
-is always visible. The **reference photo** is a hint for the hunt and stays
-hidden until she checks in.
+Images are embedded as data URIs — thumbnails at 600 px, answer photos at
+900 px — which keeps deployment to plain files with no asset pipeline. But
+`localStorage` caps out around 5 MB, and 28 answer photos will approach it.
+Export and commit as you go rather than doing all of them in one sitting; if
+saving ever fails you get a warning telling you to export before you lose
+anything.
 
-## Learning as she goes
+## Scavenger hunts
 
-Two things sit under the hunt and the trivia on each stop card, unlocked by
-checking in. Both are about compounding rather than volume — more trivia would
-have given her more questions and the same amount remembered.
+28 items across the 16 stops, in `content/quests.json`, grouped into four
+themes that run the length of the trip:
 
-### Reading Korean
+| | Theme | Items |
+|---|---|---|
+| 🐉 | **Guardians** — beasts placed to protect a building | 7 |
+| 👑 | **Marks of rank** — how Joseon wrote hierarchy into stone and paint | 6 |
+| 🩹 | **Scars and repairs** — burned, demolished, buried, smuggled, put back | 6 |
+| ♻️ | **Second lives** — a racetrack becomes a forest, a factory a cafe | 9 |
 
-Hangul was designed in 1446 to be learnable in a morning, which is already in
-the trivia at Gyeongbokgung. Eight lessons of two to four letters, bound to
-every other stop, teach it against **loanwords** so each one pays off
-immediately:
+Each item is a **clue** and a **reveal**, and the reveal stays sealed until she
+taps "I found it". That ordering is the whole point — reading the story first
+turns a hunt into a paragraph.
 
-The stop is only where the lesson unlocks — it has nothing to do with what
-the word means.
+Six items carry a **callback** to an item at an earlier stop, and the callback
+line only appears once she has actually found the earlier one. Counting roof
+figures at Changdeokgung says *"You met this at Gyeongbokgung"*; the city wall
+foundations under DDP refer back to the wall on Namsan two days before.
 
-| Lesson | Unlocks at | Word taught | Which means |
-|---|---|---|---|
-| 1 | Gyeongbokgung | 커피 | coffee |
-| 2 | Changdeokgung | 카페 | cafe |
-| 3 | Ikseon-dong | 버스 | bus |
-| 4 | N Seoul Tower | 택시 | taxi |
-| 5 | Leeum | 아이스 | iced |
-| 6 | Seongsu-dong | 치킨 | fried chicken |
-| 7 | Bongeunsa | 서울 | Seoul |
-| 8 | Garosu-gil | 명동 | Myeongdong |
+Every claim was checked against at least two sources before it went in — see
+`docs/answer-photos.md` for the item list and `docs/research-sources.md` for
+what was verified where. Facts that could not be confirmed twice were cut.
 
-21 letters in total, and every payoff word uses only letters already taught.
-Each lesson ends with a real-world task — *find 커피 on a sign* — so the city
-becomes the exercise. By the last one she can read a subway sign.
+### Answer photos
 
-Lessons are bound to stop ids in `content/hangul.json`, so they are
-predictable and editable rather than depending on how many places she happened
-to check in at.
-
-### Things worth noticing
-
-Four architectural details that repeat across the itinerary — dancheong
-paintwork, roof-end tiles, lattice windows, and the sun-moon-five-peaks screen
-— each appearing at three or four stops. Every stop card lists the ones
-findable there with a running count.
-
-The count is the point. Spotting dancheong once is a find; spotting it at the
-fourth palace is recognising something. The scrapbook tracks letters learned
-and motifs encountered alongside the existing counters.
+Each item has an empty `photo` slot and a `photoSearch` term. In admin mode
+every hunt shows its search term above an **Answer photo** picker; fill them
+in, then **Export quests.json** from the black bar and commit the file. The
+full shopping list is `docs/answer-photos.md`.
 
 ## Timeline
 
