@@ -252,9 +252,9 @@ function readLearn() {
   try {
     const raw = localStorage.getItem(K_LEARN);
     const v = raw ? JSON.parse(raw) : null;
-    return { lessons: {}, motifs: {}, ...(v || {}) };
+    return { motifs: {}, ...(v || {}) };
   } catch {
-    return { lessons: {}, motifs: {} };
+    return { motifs: {} };
   }
 }
 
@@ -262,29 +262,6 @@ let learn = readLearn();
 
 function saveLearn() {
   localStorage.setItem(K_LEARN, JSON.stringify(learn));
-}
-
-export function lessonState(id) {
-  return learn.lessons[id] || (learn.lessons[id] = { seen: false, quizPick: null, taskDone: false });
-}
-
-export function markLessonSeen(id) {
-  lessonState(id).seen = true;
-  saveLearn();
-}
-
-/** First answer only, same as trivia, so the count means something. */
-export function setLessonQuizPick(id, index) {
-  const s = lessonState(id);
-  if (s.quizPick === null) {
-    s.quizPick = index;
-    saveLearn();
-  }
-}
-
-export function setLessonTaskDone(id, done) {
-  lessonState(id).taskDone = !!done;
-  saveLearn();
 }
 
 /** Which stops she has spotted a given motif at. */
@@ -305,7 +282,7 @@ export function motifCount(id) {
 }
 
 export function resetLearn() {
-  learn = { lessons: {}, motifs: {} };
+  learn = { motifs: {} };
   localStorage.removeItem(K_LEARN);
 }
 

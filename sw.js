@@ -19,7 +19,6 @@ const SHELL = [
   './js/learn.js',
   './content/stops.json',
   './content/history.json',
-  './content/hangul.json',
   './content/motifs.json',
   './manifest.webmanifest'
 ];
